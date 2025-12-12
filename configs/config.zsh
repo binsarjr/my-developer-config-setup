@@ -229,50 +229,41 @@ unset -f _has_bin
 unset _external_tools
 
 # =============================================================================
-# Random Tips on Load (weighted)
+# Random Tips on Load
 # =============================================================================
 _config_tips=(
-    # High priority (3x) - most used
     "gs → git status"
-    "gs → git status"
-    "gs → git status"
-    "gaa → git add all"
-    "gaa → git add all"
+    "ga → git add"
     "gaa → git add all"
     "gc 'msg' → git commit"
-    "gc 'msg' → git commit"
-    "gc 'msg' → git commit"
+    "gca → amend commit"
     "gp → git push"
-    "gp → git push"
-    "gp → git push"
-    "gac 'msg' → add all + commit"
-    "gac 'msg' → add all + commit"
-    "gac 'msg' → add all + commit"
-    "config-help → show all aliases"
-    "config-help → show all aliases"
-    "config-help → show all aliases"
-
-    # Medium priority (2x)
-    "gd → git diff"
-    "gd → git diff"
-    "glog → pretty git log"
-    "glog → pretty git log"
-    "wip → quick WIP commit"
-    "wip → quick WIP commit"
-    "nah → undo all changes"
-    "nah → undo all changes"
-    "project-cleanup → clean deps"
-    "project-cleanup → clean deps"
-
-    # Low priority (1x)
+    "gpf → force push (safe)"
     "gl → git pull"
+    "gd → git diff"
     "gds → diff staged"
+    "glog → pretty git log"
+    "gloga → log all branches"
     "gst → git stash"
     "gstp → stash pop"
-    "lg → lazygit"
+    "gstl → stash list"
+    "gb → git branch"
+    "gbd → delete branch"
     "gco → checkout"
     "gcob → checkout -b"
-    "gb → git branch"
+    "gsw → switch branch"
+    "gswc → switch -c"
+    "gm → merge"
+    "grh → reset HEAD"
+    "grhh → reset hard"
+    "gf → fetch"
+    "gfa → fetch all"
+    "gac 'msg' → add + commit"
+    "wip → quick WIP commit"
+    "nah → undo everything"
+    "lg → lazygit"
+    "project-cleanup → clean deps"
+    "config-help → show all aliases"
 )
 
 # Show 3 random tips (unique)
@@ -282,7 +273,6 @@ for i in {1..3}; do
     while true; do
         _idx=$((RANDOM % ${#_config_tips[@]} + 1))
         _tip="${_config_tips[$_idx]}"
-        # Check if already shown
         if [[ ! " ${_shown[*]} " =~ " ${_tip} " ]]; then
             _shown+=("$_tip")
             echo "  💡 $_tip"
