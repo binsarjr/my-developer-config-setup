@@ -113,6 +113,14 @@ if _has_bin rg; then
 fi
 
 # =============================================================================
+# starship - Shell prompt
+# =============================================================================
+if _has_bin starship; then
+    export STARSHIP_CONFIG="$BINARY_DIR/starship.toml"
+    eval "$(starship init zsh)"
+fi
+
+# =============================================================================
 # Show recommendation for external tools
 # =============================================================================
 if [[ ${#_external_tools[@]} -gt 0 ]]; then

@@ -15,3 +15,4 @@ binary-files/*
 !binary-files/README.md
 !binary-files/install-helper
 !binary-files/config.zsh
+!binary-files/starship.toml

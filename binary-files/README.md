@@ -20,6 +20,7 @@ install-helper
 | lsd | `ls` modern dengan icons | [lsd-rs/lsd](https://github.com/lsd-rs/lsd/releases) |
 | lazygit | Terminal UI untuk git | [jesseduffield/lazygit](https://github.com/jesseduffield/lazygit/releases) |
 | delta | Git diff viewer | [dandavison/delta](https://github.com/dandavison/delta/releases) |
+| starship | Shell prompt | [starship/starship](https://github.com/starship/starship/releases) |
 
 ## Filename Pattern per Arsitektur
 
@@ -34,6 +35,7 @@ install-helper
 | lsd | `lsd-v*-aarch64-apple-darwin.tar.gz` |
 | lazygit | `lazygit_*_Darwin_arm64.tar.gz` |
 | delta | `delta-*-aarch64-apple-darwin.tar.gz` |
+| starship | `starship-aarch64-apple-darwin.tar.gz` |
 
 ### Intel (x86_64)
 
@@ -46,6 +48,7 @@ install-helper
 | lsd | `lsd-v*-x86_64-apple-darwin.tar.gz` |
 | lazygit | `lazygit_*_Darwin_x86_64.tar.gz` |
 | delta | `delta-*-x86_64-apple-darwin.tar.gz` |
+| starship | `starship-x86_64-apple-darwin.tar.gz` |
 
 ## Cara Install Manual
 
@@ -93,3 +96,4 @@ File `config.zsh` akan otomatis:
 | fzf | Ctrl+R (history), Ctrl+T (file picker) |
 | fd | Digunakan fzf untuk pencarian file |
 | rg | Digunakan fzf untuk pencarian konten |
+| starship | Shell prompt dengan config dari `starship.toml` |
