@@ -266,19 +266,44 @@ _config_tips=(
     "config-help → show all aliases"
 )
 
+# Random headers
+_headers=(
+    "📌 Quick Tips:"
+    "🚀 Boost your workflow:"
+    "⚡ Work smarter, not harder:"
+    "🎯 Pro tips:"
+    "✨ Did you know?"
+)
+
+# Add time-based greeting to headers pool
+_hour=$(date +%H)
+if (( _hour >= 5 && _hour < 12 )); then
+    _headers+=("☀️ Good morning! Here are today's tips:")
+elif (( _hour >= 12 && _hour < 17 )); then
+    _headers+=("🌤️ Good afternoon! Quick tips:")
+elif (( _hour >= 17 && _hour < 21 )); then
+    _headers+=("🌅 Good evening! Some tips for you:")
+else
+    _headers+=("🌙 Working late? Here are some tips:")
+fi
+
+# Pick random header
+_header="${_headers[$((RANDOM % ${#_headers[@]} + 1))]}"
+
 # Show 5 random tips (unique)
 _shown=()
 echo -e "\033[2m"
+echo "  $_header"
 for i in {1..5}; do
     while true; do
         _idx=$((RANDOM % ${#_config_tips[@]} + 1))
         _tip="${_config_tips[$_idx]}"
         if [[ ! " ${_shown[*]} " =~ " ${_tip} " ]]; then
             _shown+=("$_tip")
-            echo "  💡 $_tip"
+            echo "    💡 $_tip"
             break
         fi
     done
 done
 echo -e "\033[0m"
-unset _config_tips _shown _tip _idx
+unset _config_tips _headers _shown _tip _idx _hour _header
