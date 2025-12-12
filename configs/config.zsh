@@ -1,9 +1,21 @@
 # Shell Configuration
 # Source this file from .zshrc:
-#   source "$HOME/Developers/configs/config.zsh"
+#   source "/path/to/your/configs/config.zsh"
+#
+# Paths are auto-detected from script location.
+# Override if needed:
+#   CONFIG_DIR="/custom/path" source "/path/to/configs/config.zsh"
 
-CONFIG_DIR="${CONFIG_DIR:-$HOME/Developers/configs}"
-BINARY_DIR="${BINARY_DIR:-$HOME/Developers/binary-files}"
+# Auto-detect CONFIG_DIR from sourced script location
+# ${0:A:h} = absolute path to directory of this script (zsh)
+if [[ -n "${CONFIG_DIR:-}" ]]; then
+    : # User explicitly set CONFIG_DIR, use it
+else
+    CONFIG_DIR="${0:A:h}"
+fi
+
+# BINARY_DIR is sibling to configs folder (../binary-files)
+BINARY_DIR="${BINARY_DIR:-${CONFIG_DIR:h}/binary-files}"
 
 # Add to PATH
 export PATH="$PATH:$BINARY_DIR:$CONFIG_DIR"

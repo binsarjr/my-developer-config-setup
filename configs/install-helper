@@ -7,7 +7,11 @@ BOLD='\033[1m'
 DIM='\033[2m'
 NC='\033[0m'
 
-INSTALL_DIR="$HOME/Developers/binary-files"
+# Auto-detect script location and derive INSTALL_DIR
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+INSTALL_DIR="${SCRIPT_DIR}/../binary-files"
+# Normalize path (resolve ../)
+INSTALL_DIR="$(cd "$INSTALL_DIR" 2>/dev/null && pwd || echo "$INSTALL_DIR")"
 ARCH=$(uname -m)
 
 # Determine arch labels
