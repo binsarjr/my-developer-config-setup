@@ -128,6 +128,7 @@ fi
 if _has_bin zoxide; then
     eval "$(zoxide init zsh)"
     alias cd="z"
+    alias cdi="zi"  # interactive mode with fzf
 fi
 
 # =============================================================================
@@ -263,7 +264,8 @@ config-help() {
     echo "  ls, ll, la, lt  - lsd (if installed)"
     echo "  cat, catp       - bat (if installed)"
     echo "  lg              - lazygit (if installed)"
-    echo "  cd              - zoxide (if installed)"
+    echo "  cd              - zoxide smart jump (if installed)"
+    echo "  cdi             - zoxide interactive (fzf picker)"
     echo ""
     echo -e "\033[1mUtilities:\033[0m"
     echo "  project-cleanup     - clean node_modules, vendor, __pycache__"
@@ -337,7 +339,7 @@ tips() {
     command -v lazygit &>/dev/null && _tips+=("lg → lazygit")
     command -v lsd &>/dev/null && _tips+=("ls → lsd with icons" "lt → tree view")
     command -v bat &>/dev/null && _tips+=("cat → bat with syntax highlighting")
-    command -v zoxide &>/dev/null && _tips+=("cd → zoxide smart jump")
+    command -v zoxide &>/dev/null && _tips+=("cd → zoxide smart jump" "cdi → interactive directory picker")
 
     local _headers=(
         "📌 Quick Tips:"
@@ -446,7 +448,7 @@ _config_tips=(
 command -v lazygit &>/dev/null && _config_tips+=("lg → lazygit")
 command -v lsd &>/dev/null && _config_tips+=("ls → lsd with icons" "lt → tree view")
 command -v bat &>/dev/null && _config_tips+=("cat → bat with syntax highlighting")
-command -v zoxide &>/dev/null && _config_tips+=("cd → zoxide smart jump")
+command -v zoxide &>/dev/null && _config_tips+=("cd → zoxide smart jump" "cdi → interactive directory picker")
 
 # Random headers
 _headers=(
