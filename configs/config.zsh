@@ -55,7 +55,16 @@ fi
 # delta - Git diff viewer
 # =============================================================================
 if _has_bin delta; then
-    export GIT_PAGER="delta"
+    # Configure git to use delta (only if not already configured)
+    if [[ "$(git config --global core.pager 2>/dev/null)" != "delta" ]]; then
+        git config --global core.pager delta
+        git config --global interactive.diffFilter "delta --color-only"
+        git config --global delta.navigate true
+        git config --global delta.line-numbers true
+        git config --global delta.side-by-side false
+        git config --global merge.conflictStyle diff3
+        git config --global diff.colorMoved default
+    fi
 fi
 
 # =============================================================================
