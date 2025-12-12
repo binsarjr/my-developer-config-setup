@@ -20,6 +20,7 @@ case "$ARCH" in
         BAT_FILE="bat-vVERSION-aarch64-apple-darwin.tar.gz"
         LAZYGIT_FILE="lazygit_VERSION_Darwin_arm64.tar.gz"
         DELTA_FILE="delta-VERSION-aarch64-apple-darwin.tar.gz"
+        LSD_FILE="lsd-vVERSION-aarch64-apple-darwin.tar.gz"
         ;;
     x86_64)
         ARCH_LABEL="Intel (x86_64)"
@@ -29,6 +30,7 @@ case "$ARCH" in
         BAT_FILE="bat-vVERSION-x86_64-apple-darwin.tar.gz"
         LAZYGIT_FILE="lazygit_VERSION_Darwin_x86_64.tar.gz"
         DELTA_FILE="delta-VERSION-x86_64-apple-darwin.tar.gz"
+        LSD_FILE="lsd-vVERSION-x86_64-apple-darwin.tar.gz"
         ;;
     *)
         echo "Unsupported architecture: $ARCH"
@@ -82,6 +84,12 @@ echo -e "${BOLD}delta${NC} - Git diff viewer [$(is_installed delta)]"
 echo -e "  GitHub: ${CYAN}https://github.com/dandavison/delta/releases${NC}"
 echo -e "  File:   $DELTA_FILE"
 echo -e "  Extract: ${DIM}tar -xzf <file> && mv */delta $INSTALL_DIR/${NC}"
+echo ""
+
+echo -e "${BOLD}lsd${NC} - Modern ls replacement [$(is_installed lsd)]"
+echo -e "  GitHub: ${CYAN}https://github.com/lsd-rs/lsd/releases${NC}"
+echo -e "  File:   $LSD_FILE"
+echo -e "  Extract: ${DIM}tar -xzf <file> && mv */lsd $INSTALL_DIR/${NC}"
 echo ""
 
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
