@@ -18,6 +18,7 @@ Jalankan `install-helper` untuk melihat panduan download sesuai arsitektur Mac.
 | lazygit | Terminal UI untuk git | [jesseduffield/lazygit](https://github.com/jesseduffield/lazygit/releases) |
 | delta | Git diff viewer | [dandavison/delta](https://github.com/dandavison/delta/releases) |
 | starship | Shell prompt | [starship/starship](https://github.com/starship/starship/releases) |
+| zoxide | Smart cd replacement | [ajeetdsouza/zoxide](https://github.com/ajeetdsouza/zoxide/releases) |
 
 ## Cara Install Manual
 

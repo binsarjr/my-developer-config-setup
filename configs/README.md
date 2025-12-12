@@ -37,6 +37,7 @@ source "$HOME/Developers/configs/config.zsh"
 | fzf | Ctrl+R (history), Ctrl+T (file picker) |
 | fd | Digunakan fzf untuk pencarian file |
 | rg | Digunakan fzf untuk pencarian konten |
+| zoxide | `cd` → smart cd dengan history |
 | starship | Shell prompt dengan config dari `starship.toml` |
 
 ## Customization
