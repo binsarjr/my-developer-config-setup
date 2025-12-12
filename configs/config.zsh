@@ -179,6 +179,61 @@ alias wip='git add -A && git commit -m "WIP"'
 alias nah='git reset --hard && git clean -df'
 
 # =============================================================================
+# Directory Shortcuts
+# =============================================================================
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
+
+# =============================================================================
+# Productivity Functions
+# =============================================================================
+# mkcd - create directory and cd into it
+mkcd() { mkdir -p "$1" && cd "$1" }
+
+# backup - create timestamped backup
+backup() { cp "$1" "$1.bak.$(date +%Y%m%d_%H%M%S)" }
+
+# extract - universal archive extractor
+extract() {
+    if [[ -f "$1" ]]; then
+        case "$1" in
+            *.tar.bz2) tar xjf "$1" ;;
+            *.tar.gz)  tar xzf "$1" ;;
+            *.tar.xz)  tar xJf "$1" ;;
+            *.bz2)     bunzip2 "$1" ;;
+            *.gz)      gunzip "$1" ;;
+            *.tar)     tar xf "$1" ;;
+            *.tbz2)    tar xjf "$1" ;;
+            *.tgz)     tar xzf "$1" ;;
+            *.zip)     unzip "$1" ;;
+            *.Z)       uncompress "$1" ;;
+            *.7z)      7z x "$1" ;;
+            *.rar)     unrar x "$1" ;;
+            *) echo "Cannot extract '$1'" ;;
+        esac
+    else
+        echo "'$1' is not a valid file"
+    fi
+}
+
+# =============================================================================
+# Quick Utilities
+# =============================================================================
+# ports - show listening ports
+ports() { lsof -i -P -n | grep LISTEN }
+
+# myip - show public IP
+myip() { curl -s ifconfig.me && echo "" }
+
+# localip - show local IP
+localip() { ipconfig getifaddr en0 }
+
+# weather - show weather (optional city)
+weather() { curl -s "wttr.in/${1:-}?format=3" }
+
+# =============================================================================
 # Help Command
 # =============================================================================
 config-help() {
@@ -206,6 +261,19 @@ config-help() {
     echo "  project-cleanup -n  - dry run (preview)"
     echo "  install-helper      - show binary download guide"
     echo "  tips                - show random tips"
+    echo ""
+    echo -e "\033[1mProductivity:\033[0m"
+    echo "  mkcd <dir>          - create & enter directory"
+    echo "  backup <file>       - create timestamped backup"
+    echo "  extract <archive>   - auto extract any archive"
+    echo ""
+    echo -e "\033[1mQuick Utilities:\033[0m"
+    echo "  ports               - show listening ports"
+    echo "  myip / localip      - show IP address"
+    echo "  weather [city]      - show weather"
+    echo ""
+    echo -e "\033[1mDirectory Shortcuts:\033[0m"
+    echo "  .. / ... / ....     - go up directories"
     echo ""
 }
 
@@ -247,6 +315,13 @@ tips() {
         "project-cleanup → clean deps"
         "config-help → show all aliases"
         "tips → show random tips"
+        "mkcd dir → create & enter"
+        "backup file → timestamped backup"
+        "extract file → auto extract"
+        "ports → show listening ports"
+        "myip → show public IP"
+        "weather → check weather"
+        ".. / ... → go up directories"
     )
 
     # Tool-specific tips (only if installed)
@@ -349,6 +424,13 @@ _config_tips=(
     "project-cleanup → clean deps"
     "config-help → show all aliases"
     "tips → show random tips"
+    "mkcd dir → create & enter"
+    "backup file → timestamped backup"
+    "extract file → auto extract"
+    "ports → show listening ports"
+    "myip → show public IP"
+    "weather → check weather"
+    ".. / ... → go up directories"
 )
 
 # Tool-specific tips (only if installed)
