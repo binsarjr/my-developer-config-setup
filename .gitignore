@@ -1,0 +1,11 @@
+# Environment files (contains secrets)
+.env
+**/.env
+
+# Keep example files
+!.env.example
+!**/.env.example
+
+# Binary files folder
+binary-files/*
+!binary-files/.gitkeep

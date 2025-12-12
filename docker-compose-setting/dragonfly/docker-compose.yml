@@ -1,0 +1,18 @@
+services:
+  dragonfly:
+    image: docker.dragonflydb.io/dragonflydb/dragonfly:latest
+    container_name: dragonfly
+    cap_add:
+      - SYS_RESOURCE
+    security_opt:
+      - seccomp=unconfined
+    command: >
+      --port=${DRAGONFLY_PORT:-6379}
+      --requirepass=${DRAGONFLY_PASSWORD}
+      --maxmemory=${DRAGONFLY_MAXMEMORY:-4gb}
+    volumes:
+      - dragonflydata:/data
+    network_mode: "host"
+
+volumes:
+  dragonflydata:
