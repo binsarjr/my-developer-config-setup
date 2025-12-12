@@ -213,6 +213,7 @@ config-help() {
 # Tips Command
 # =============================================================================
 tips() {
+    # Git aliases (always available)
     local _tips=(
         "gs → git status"
         "ga → git add"
@@ -243,10 +244,16 @@ tips() {
         "gac 'msg' → add + commit"
         "wip → quick WIP commit"
         "nah → undo everything"
-        "lg → lazygit"
         "project-cleanup → clean deps"
         "config-help → show all aliases"
+        "tips → show random tips"
     )
+
+    # Tool-specific tips (only if installed)
+    command -v lazygit &>/dev/null && _tips+=("lg → lazygit")
+    command -v lsd &>/dev/null && _tips+=("ls → lsd with icons" "lt → tree view")
+    command -v bat &>/dev/null && _tips+=("cat → bat with syntax highlighting")
+    command -v zoxide &>/dev/null && _tips+=("cd → zoxide smart jump")
 
     local _headers=(
         "📌 Quick Tips:"
@@ -339,10 +346,16 @@ _config_tips=(
     "gac 'msg' → add + commit"
     "wip → quick WIP commit"
     "nah → undo everything"
-    "lg → lazygit"
     "project-cleanup → clean deps"
     "config-help → show all aliases"
+    "tips → show random tips"
 )
+
+# Tool-specific tips (only if installed)
+command -v lazygit &>/dev/null && _config_tips+=("lg → lazygit")
+command -v lsd &>/dev/null && _config_tips+=("ls → lsd with icons" "lt → tree view")
+command -v bat &>/dev/null && _config_tips+=("cat → bat with syntax highlighting")
+command -v zoxide &>/dev/null && _config_tips+=("cd → zoxide smart jump")
 
 # Random headers
 _headers=(
