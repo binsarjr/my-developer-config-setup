@@ -266,10 +266,10 @@ _config_tips=(
     "config-help → show all aliases"
 )
 
-# Show 3 random tips (unique)
+# Show 5 random tips (unique)
 _shown=()
 echo -e "\033[2m"
-for i in {1..3}; do
+for i in {1..5}; do
     while true; do
         _idx=$((RANDOM % ${#_config_tips[@]} + 1))
         _tip="${_config_tips[$_idx]}"
