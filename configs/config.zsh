@@ -229,19 +229,66 @@ unset -f _has_bin
 unset _external_tools
 
 # =============================================================================
-# Random Tip on Load
+# Random Tips on Load (weighted)
 # =============================================================================
 _config_tips=(
+    # High priority (3x) - most used
     "gs → git status"
-    "glog → pretty git log graph"
+    "gs → git status"
+    "gs → git status"
+    "gaa → git add all"
+    "gaa → git add all"
+    "gaa → git add all"
+    "gc 'msg' → git commit"
+    "gc 'msg' → git commit"
+    "gc 'msg' → git commit"
+    "gp → git push"
+    "gp → git push"
+    "gp → git push"
     "gac 'msg' → add all + commit"
+    "gac 'msg' → add all + commit"
+    "gac 'msg' → add all + commit"
+    "config-help → show all aliases"
+    "config-help → show all aliases"
+    "config-help → show all aliases"
+
+    # Medium priority (2x)
+    "gd → git diff"
+    "gd → git diff"
+    "glog → pretty git log"
+    "glog → pretty git log"
+    "wip → quick WIP commit"
     "wip → quick WIP commit"
     "nah → undo all changes"
-    "gd → git diff, gds → diff staged"
-    "lg → lazygit (if installed)"
-    "project-cleanup → clean node_modules, vendor"
-    "config-help → show all available aliases"
+    "nah → undo all changes"
+    "project-cleanup → clean deps"
+    "project-cleanup → clean deps"
+
+    # Low priority (1x)
+    "gl → git pull"
+    "gds → diff staged"
+    "gst → git stash"
+    "gstp → stash pop"
+    "lg → lazygit"
+    "gco → checkout"
+    "gcob → checkout -b"
+    "gb → git branch"
 )
-_tip="${_config_tips[$((RANDOM % ${#_config_tips[@]} + 1))]}"
-echo -e "\033[2m💡 $_tip\033[0m"
-unset _config_tips _tip
+
+# Show 3 random tips (unique)
+_shown=()
+echo -e "\033[2m"
+for i in {1..3}; do
+    while true; do
+        _idx=$((RANDOM % ${#_config_tips[@]} + 1))
+        _tip="${_config_tips[$_idx]}"
+        # Check if already shown
+        if [[ ! " ${_shown[*]} " =~ " ${_tip} " ]]; then
+            _shown+=("$_tip")
+            echo "  💡 $_tip"
+            break
+        fi
+    done
+done
+echo -e "\033[0m"
+unset _config_tips _shown _tip _idx
