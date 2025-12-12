@@ -37,7 +37,7 @@ fi
 # bat - Cat with syntax highlighting
 # =============================================================================
 if _has_bin bat; then
-    alias cat="bat --paging=never"
+    alias cat="bat -p"
     alias catp="bat"  # with pager
     export BAT_THEME="TwoDark"
     export MANPAGER="sh -c 'col -bx | bat -l man -p'"
