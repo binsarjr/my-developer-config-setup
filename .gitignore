@@ -12,3 +12,4 @@
 # Binary files folder
 binary-files/*
 !binary-files/.gitkeep
+!binary-files/README.md
