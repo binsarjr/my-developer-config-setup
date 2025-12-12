@@ -32,6 +32,7 @@ case "$ARCH" in
         BTM_FILE="bottom_aarch64-apple-darwin.tar.gz"
         TLDR_FILE="tealdeer-macos-arm64"
         FASTFETCH_FILE="fastfetch-macos-universal.tar.gz"
+        JQ_FILE="jq-macos-arm64"
         ;;
     x86_64)
         ARCH_LABEL="Intel (x86_64)"
@@ -49,6 +50,7 @@ case "$ARCH" in
         BTM_FILE="bottom_x86_64-apple-darwin.tar.gz"
         TLDR_FILE="tealdeer-macos-x86_64"
         FASTFETCH_FILE="fastfetch-macos-universal.tar.gz"
+        JQ_FILE="jq-macos-amd64"
         ;;
     *)
         echo "Unsupported architecture: $ARCH"
@@ -150,6 +152,12 @@ echo -e "${BOLD}fastfetch${NC} - System info display [$(is_installed fastfetch)]
 echo -e "  GitHub: ${CYAN}https://github.com/fastfetch-cli/fastfetch/releases${NC}"
 echo -e "  File:   $FASTFETCH_FILE"
 echo -e "  Extract: ${DIM}tar -xzf <file> && mv fastfetch-*/usr/bin/fastfetch $INSTALL_DIR/${NC}"
+echo ""
+
+echo -e "${BOLD}jq${NC} - JSON processor [$(is_installed jq)]"
+echo -e "  GitHub: ${CYAN}https://github.com/jqlang/jq/releases${NC}"
+echo -e "  File:   $JQ_FILE"
+echo -e "  Extract: ${DIM}mv <file> $INSTALL_DIR/jq && chmod +x $INSTALL_DIR/jq${NC}"
 echo ""
 
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"

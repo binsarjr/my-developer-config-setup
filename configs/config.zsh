@@ -469,6 +469,7 @@ tips() {
     command -v btm &>/dev/null && _tips+=("top → btm (modern system monitor)")
     command -v tldr &>/dev/null && _tips+=("help <cmd> → tldr pages")
     command -v fastfetch &>/dev/null && _tips+=("ff → fastfetch (system info)")
+    command -v jq &>/dev/null && _tips+=("jq → JSON processor")
 
     local _headers=(
         "📌 Quick Tips:"
@@ -614,6 +615,7 @@ command -v duf &>/dev/null && _config_tips+=("df → duf (colorful disk free)")
 command -v btm &>/dev/null && _config_tips+=("top → btm (modern system monitor)")
 command -v tldr &>/dev/null && _config_tips+=("help <cmd> → tldr pages")
 command -v fastfetch &>/dev/null && _config_tips+=("ff → fastfetch (system info)")
+command -v jq &>/dev/null && _config_tips+=("jq → JSON processor")
 
 # Random headers
 _headers=(
