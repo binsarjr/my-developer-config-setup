@@ -7,8 +7,21 @@ BINARY_DIR="${BINARY_DIR:-$HOME/Developers/binary-files}"
 # Add to PATH
 export PATH="$PATH:$BINARY_DIR"
 
-# Helper: check if tool exists (in binary-files OR system PATH)
-_has_bin() { [[ -x "$BINARY_DIR/$1" ]] || command -v "$1" &>/dev/null; }
+# Tracking for external tools
+typeset -a _external_tools=()
+
+# Helper: check if tool exists and track source
+_has_bin() {
+    local tool=$1
+    if [[ -x "$BINARY_DIR/$tool" ]]; then
+        return 0
+    elif command -v "$tool" &>/dev/null; then
+        local path=$(command -v "$tool")
+        _external_tools+=("$tool:$path")
+        return 0
+    fi
+    return 1
+}
 
 # =============================================================================
 # lsd - Modern ls replacement
@@ -72,7 +85,7 @@ if _has_bin fzf; then
     "
 
     # Ctrl+T - File selection
-    if _has_bin bat; then
+    if [[ -x "$BINARY_DIR/bat" ]] || command -v bat &>/dev/null; then
         export FZF_CTRL_T_OPTS="--preview 'bat --color=always --style=numbers --line-range=:500 {}'"
     fi
 
@@ -93,17 +106,28 @@ if _has_bin fzf; then
 fi
 
 # =============================================================================
-# fd - Fast file finder (used by fzf, no alias to avoid conflicts)
-# =============================================================================
-# fd is configured above for fzf integration
-
-# =============================================================================
 # rg - ripgrep (fast grep)
 # =============================================================================
 if _has_bin rg; then
-    # Use rg for fzf grep if available
     export FZF_DEFAULT_COMMAND="${FZF_DEFAULT_COMMAND:-rg --files --hidden --follow --glob '!.git/*'}"
 fi
 
-# Cleanup helper function
+# =============================================================================
+# Show recommendation for external tools
+# =============================================================================
+if [[ ${#_external_tools[@]} -gt 0 ]]; then
+    echo "\033[33m[binary-files]\033[0m Tools from system (consider adding to binary-files):"
+    for _item in "${_external_tools[@]}"; do
+        _tool="${_item%%:*}"
+        _toolpath="${_item#*:}"
+        echo "  → \033[1m$_tool\033[0m ($_toolpath)"
+    done
+    echo ""
+    echo "  Run: \033[36m$BINARY_DIR/install.sh\033[0m for download guide"
+    echo ""
+    unset _item _tool _toolpath
+fi
+
+# Cleanup
 unset -f _has_bin
+unset _external_tools
