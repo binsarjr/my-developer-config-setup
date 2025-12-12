@@ -140,6 +140,36 @@ if _has_bin starship; then
 fi
 
 # =============================================================================
+# Modern CLI Tools
+# =============================================================================
+# dust - Better du (disk usage visualizer)
+if _has_bin dust; then
+    alias du="dust"
+fi
+
+# duf - Better df (disk free)
+if _has_bin duf; then
+    alias df="duf"
+fi
+
+# bottom - Better top/htop (system monitor)
+if _has_bin btm; then
+    alias top="btm"
+    alias htop="btm"
+fi
+
+# tealdeer - Better man pages (tldr)
+if _has_bin tldr; then
+    alias help="tldr"
+fi
+
+# fastfetch - System info display
+if _has_bin fastfetch; then
+    alias ff="fastfetch"
+    alias neofetch="fastfetch"
+fi
+
+# =============================================================================
 # Git Aliases
 # =============================================================================
 # Basic operations
@@ -187,6 +217,58 @@ alias gr="git remote -v"
 alias gac='git add -A && git commit -m'
 alias wip='git add -A && git commit -m "WIP"'
 alias nah='git reset --hard && git clean -df'
+
+# =============================================================================
+# PHP & Laravel Aliases
+# =============================================================================
+# Artisan
+alias art="php artisan"
+alias artm="php artisan migrate"
+alias artmf="php artisan migrate:fresh"
+alias artmfs="php artisan migrate:fresh --seed"
+alias artmr="php artisan migrate:rollback"
+alias arts="php artisan serve"
+alias artt="php artisan tinker"
+alias artc="php artisan cache:clear"
+alias artcc="php artisan config:clear"
+alias artrc="php artisan route:cache"
+alias artrl="php artisan route:list"
+alias artdb="php artisan db:seed"
+alias artmk="php artisan make:"
+
+# Composer
+alias ci="composer install"
+alias cu="composer update"
+alias cr="composer require"
+alias crd="composer require --dev"
+alias cdu="composer dump-autoload"
+alias cda="composer dump-autoload -o"
+
+# Laravel Sail (Docker)
+alias sail="./vendor/bin/sail"
+alias sa="sail artisan"
+alias sac="sail artisan cache:clear"
+alias sam="sail artisan migrate"
+alias samf="sail artisan migrate:fresh --seed"
+
+# PHPUnit / Pest
+alias pf="./vendor/bin/phpunit --filter"
+alias pu="./vendor/bin/phpunit"
+alias pest="./vendor/bin/pest"
+alias pestf="./vendor/bin/pest --filter"
+
+# Laravel utilities
+alias lnew="composer create-project laravel/laravel"
+alias laralog="tail -f storage/logs/laravel.log"
+
+# Clear all Laravel caches
+artclear() {
+    php artisan cache:clear
+    php artisan config:clear
+    php artisan route:clear
+    php artisan view:clear
+    echo "All caches cleared!"
+}
 
 # =============================================================================
 # Directory Shortcuts
@@ -260,12 +342,28 @@ config-help() {
     echo "  wip        - quick WIP commit"
     echo "  nah        - reset hard + clean"
     echo ""
+    echo -e "\033[1mPHP & Laravel:\033[0m"
+    echo "  art, artm, artmf, artmfs, artmr  - artisan commands"
+    echo "  arts, artt, artc, artcc, artrl   - serve, tinker, cache"
+    echo "  artclear                         - clear all caches"
+    echo "  ci, cu, cr, crd, cdu, cda        - composer"
+    echo "  sail, sa, sam, samf              - Laravel Sail"
+    echo "  pu, pf, pest, pestf              - testing"
+    echo "  lnew, laralog                    - utilities"
+    echo ""
     echo -e "\033[1mTool Aliases:\033[0m"
     echo "  ls, ll, la, lt  - lsd (if installed)"
     echo "  cat, catp       - bat (if installed)"
     echo "  lg              - lazygit (if installed)"
     echo "  cd              - zoxide smart jump (if installed)"
     echo "  cdi             - zoxide interactive (fzf picker)"
+    echo ""
+    echo -e "\033[1mModern CLI Tools:\033[0m"
+    echo "  du              - dust (if installed)"
+    echo "  df              - duf (if installed)"
+    echo "  top, htop       - btm/bottom (if installed)"
+    echo "  help <cmd>      - tldr (if installed)"
+    echo "  ff, neofetch    - fastfetch (if installed)"
     echo ""
     echo -e "\033[1mUtilities:\033[0m"
     echo "  project-cleanup     - clean node_modules, vendor, __pycache__"
@@ -333,6 +431,20 @@ tips() {
         "myip → show public IP"
         "weather → check weather"
         ".. / ... → go up directories"
+        "art → php artisan"
+        "artm → migrate"
+        "artmfs → migrate:fresh --seed"
+        "arts → artisan serve"
+        "artt → artisan tinker"
+        "artclear → clear all caches"
+        "ci → composer install"
+        "cu → composer update"
+        "cr → composer require"
+        "sail → Laravel Sail"
+        "sa → sail artisan"
+        "pu → phpunit"
+        "pest → run Pest tests"
+        "laralog → tail Laravel log"
     )
 
     # Tool-specific tips (only if installed)
@@ -340,6 +452,11 @@ tips() {
     command -v lsd &>/dev/null && _tips+=("ls → lsd with icons" "lt → tree view")
     command -v bat &>/dev/null && _tips+=("cat → bat with syntax highlighting")
     command -v zoxide &>/dev/null && _tips+=("cd → zoxide smart jump" "cdi → interactive directory picker")
+    command -v dust &>/dev/null && _tips+=("du → dust (visual disk usage)")
+    command -v duf &>/dev/null && _tips+=("df → duf (colorful disk free)")
+    command -v btm &>/dev/null && _tips+=("top → btm (modern system monitor)")
+    command -v tldr &>/dev/null && _tips+=("help <cmd> → tldr pages")
+    command -v fastfetch &>/dev/null && _tips+=("ff → fastfetch (system info)")
 
     local _headers=(
         "📌 Quick Tips:"
@@ -442,6 +559,20 @@ _config_tips=(
     "myip → show public IP"
     "weather → check weather"
     ".. / ... → go up directories"
+    "art → php artisan"
+    "artm → migrate"
+    "artmfs → migrate:fresh --seed"
+    "arts → artisan serve"
+    "artt → artisan tinker"
+    "artclear → clear all caches"
+    "ci → composer install"
+    "cu → composer update"
+    "cr → composer require"
+    "sail → Laravel Sail"
+    "sa → sail artisan"
+    "pu → phpunit"
+    "pest → run Pest tests"
+    "laralog → tail Laravel log"
 )
 
 # Tool-specific tips (only if installed)
@@ -449,6 +580,11 @@ command -v lazygit &>/dev/null && _config_tips+=("lg → lazygit")
 command -v lsd &>/dev/null && _config_tips+=("ls → lsd with icons" "lt → tree view")
 command -v bat &>/dev/null && _config_tips+=("cat → bat with syntax highlighting")
 command -v zoxide &>/dev/null && _config_tips+=("cd → zoxide smart jump" "cdi → interactive directory picker")
+command -v dust &>/dev/null && _config_tips+=("du → dust (visual disk usage)")
+command -v duf &>/dev/null && _config_tips+=("df → duf (colorful disk free)")
+command -v btm &>/dev/null && _config_tips+=("top → btm (modern system monitor)")
+command -v tldr &>/dev/null && _config_tips+=("help <cmd> → tldr pages")
+command -v fastfetch &>/dev/null && _config_tips+=("ff → fastfetch (system info)")
 
 # Random headers
 _headers=(

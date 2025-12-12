@@ -23,6 +23,11 @@ case "$ARCH" in
         LSD_FILE="lsd-vVERSION-aarch64-apple-darwin.tar.gz"
         STARSHIP_FILE="starship-aarch64-apple-darwin.tar.gz"
         ZOXIDE_FILE="zoxide-VERSION-aarch64-apple-darwin.tar.gz"
+        DUST_FILE="dust-vVERSION-aarch64-apple-darwin.tar.gz"
+        DUF_FILE="duf_VERSION_darwin_arm64.tar.gz"
+        BTM_FILE="bottom_aarch64-apple-darwin.tar.gz"
+        TLDR_FILE="tealdeer-macos-arm64"
+        FASTFETCH_FILE="fastfetch-macos-universal.tar.gz"
         ;;
     x86_64)
         ARCH_LABEL="Intel (x86_64)"
@@ -35,6 +40,11 @@ case "$ARCH" in
         LSD_FILE="lsd-vVERSION-x86_64-apple-darwin.tar.gz"
         STARSHIP_FILE="starship-x86_64-apple-darwin.tar.gz"
         ZOXIDE_FILE="zoxide-VERSION-x86_64-apple-darwin.tar.gz"
+        DUST_FILE="dust-vVERSION-x86_64-apple-darwin.tar.gz"
+        DUF_FILE="duf_VERSION_darwin_amd64.tar.gz"
+        BTM_FILE="bottom_x86_64-apple-darwin.tar.gz"
+        TLDR_FILE="tealdeer-macos-x86_64"
+        FASTFETCH_FILE="fastfetch-macos-universal.tar.gz"
         ;;
     *)
         echo "Unsupported architecture: $ARCH"
@@ -106,6 +116,36 @@ echo -e "${BOLD}zoxide${NC} - Smart cd replacement [$(is_installed zoxide)]"
 echo -e "  GitHub: ${CYAN}https://github.com/ajeetdsouza/zoxide/releases${NC}"
 echo -e "  File:   $ZOXIDE_FILE"
 echo -e "  Extract: ${DIM}tar -xzf <file> && mv zoxide $INSTALL_DIR/${NC}"
+echo ""
+
+echo -e "${BOLD}dust${NC} - Better du (disk usage) [$(is_installed dust)]"
+echo -e "  GitHub: ${CYAN}https://github.com/bootandy/dust/releases${NC}"
+echo -e "  File:   $DUST_FILE"
+echo -e "  Extract: ${DIM}tar -xzf <file> && mv */dust $INSTALL_DIR/${NC}"
+echo ""
+
+echo -e "${BOLD}duf${NC} - Better df (disk free) [$(is_installed duf)]"
+echo -e "  GitHub: ${CYAN}https://github.com/muesli/duf/releases${NC}"
+echo -e "  File:   $DUF_FILE"
+echo -e "  Extract: ${DIM}tar -xzf <file> && mv duf $INSTALL_DIR/${NC}"
+echo ""
+
+echo -e "${BOLD}btm${NC} - Bottom (system monitor) [$(is_installed btm)]"
+echo -e "  GitHub: ${CYAN}https://github.com/ClementTsang/bottom/releases${NC}"
+echo -e "  File:   $BTM_FILE"
+echo -e "  Extract: ${DIM}tar -xzf <file> && mv btm $INSTALL_DIR/${NC}"
+echo ""
+
+echo -e "${BOLD}tldr${NC} - Tealdeer (simplified man pages) [$(is_installed tldr)]"
+echo -e "  GitHub: ${CYAN}https://github.com/dbrgn/tealdeer/releases${NC}"
+echo -e "  File:   $TLDR_FILE"
+echo -e "  Extract: ${DIM}mv <file> $INSTALL_DIR/tldr && chmod +x $INSTALL_DIR/tldr${NC}"
+echo ""
+
+echo -e "${BOLD}fastfetch${NC} - System info display [$(is_installed fastfetch)]"
+echo -e "  GitHub: ${CYAN}https://github.com/fastfetch-cli/fastfetch/releases${NC}"
+echo -e "  File:   $FASTFETCH_FILE"
+echo -e "  Extract: ${DIM}tar -xzf <file> && mv fastfetch-*/usr/bin/fastfetch $INSTALL_DIR/${NC}"
 echo ""
 
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
