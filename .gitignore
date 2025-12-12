@@ -13,3 +13,4 @@
 binary-files/*
 !binary-files/.gitkeep
 !binary-files/README.md
+!binary-files/install.sh

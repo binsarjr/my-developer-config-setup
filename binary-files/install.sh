@@ -1,0 +1,94 @@
+#!/bin/bash
+
+# Colors
+GREEN='\033[0;32m'
+CYAN='\033[0;36m'
+BOLD='\033[1m'
+DIM='\033[2m'
+NC='\033[0m'
+
+INSTALL_DIR="$(cd "$(dirname "$0")" && pwd)"
+ARCH=$(uname -m)
+
+# Determine arch labels
+case "$ARCH" in
+    arm64|aarch64)
+        ARCH_LABEL="Apple Silicon (arm64)"
+        FZF_FILE="fzf-VERSION-darwin_arm64.zip"
+        RG_FILE="ripgrep-VERSION-aarch64-apple-darwin.tar.gz"
+        FD_FILE="fd-vVERSION-aarch64-apple-darwin.tar.gz"
+        BAT_FILE="bat-vVERSION-aarch64-apple-darwin.tar.gz"
+        LAZYGIT_FILE="lazygit_VERSION_Darwin_arm64.tar.gz"
+        DELTA_FILE="delta-VERSION-aarch64-apple-darwin.tar.gz"
+        ;;
+    x86_64)
+        ARCH_LABEL="Intel (x86_64)"
+        FZF_FILE="fzf-VERSION-darwin_amd64.zip"
+        RG_FILE="ripgrep-VERSION-x86_64-apple-darwin.tar.gz"
+        FD_FILE="fd-vVERSION-x86_64-apple-darwin.tar.gz"
+        BAT_FILE="bat-vVERSION-x86_64-apple-darwin.tar.gz"
+        LAZYGIT_FILE="lazygit_VERSION_Darwin_x86_64.tar.gz"
+        DELTA_FILE="delta-VERSION-x86_64-apple-darwin.tar.gz"
+        ;;
+    *)
+        echo "Unsupported architecture: $ARCH"
+        exit 1
+        ;;
+esac
+
+is_installed() {
+    [[ -x "$INSTALL_DIR/$1" ]] && echo "${GREEN}installed${NC}" || echo "${DIM}not installed${NC}"
+}
+
+echo ""
+echo -e "${BOLD}Binary Files Setup Guide${NC}"
+echo -e "${DIM}Your system: macOS $ARCH_LABEL${NC}"
+echo ""
+echo -e "${CYAN}Tools & Download Info:${NC}"
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo ""
+
+echo -e "${BOLD}fzf${NC} - Fuzzy finder [$(is_installed fzf)]"
+echo -e "  GitHub: ${CYAN}https://github.com/junegunn/fzf/releases${NC}"
+echo -e "  File:   $FZF_FILE"
+echo -e "  Extract: ${DIM}unzip <file> && mv fzf $INSTALL_DIR/${NC}"
+echo ""
+
+echo -e "${BOLD}rg${NC} - ripgrep (fast grep) [$(is_installed rg)]"
+echo -e "  GitHub: ${CYAN}https://github.com/BurntSushi/ripgrep/releases${NC}"
+echo -e "  File:   $RG_FILE"
+echo -e "  Extract: ${DIM}tar -xzf <file> && mv */rg $INSTALL_DIR/${NC}"
+echo ""
+
+echo -e "${BOLD}fd${NC} - Fast file finder [$(is_installed fd)]"
+echo -e "  GitHub: ${CYAN}https://github.com/sharkdp/fd/releases${NC}"
+echo -e "  File:   $FD_FILE"
+echo -e "  Extract: ${DIM}tar -xzf <file> && mv */fd $INSTALL_DIR/${NC}"
+echo ""
+
+echo -e "${BOLD}bat${NC} - Cat with syntax highlighting [$(is_installed bat)]"
+echo -e "  GitHub: ${CYAN}https://github.com/sharkdp/bat/releases${NC}"
+echo -e "  File:   $BAT_FILE"
+echo -e "  Extract: ${DIM}tar -xzf <file> && mv */bat $INSTALL_DIR/${NC}"
+echo ""
+
+echo -e "${BOLD}lazygit${NC} - Terminal UI for git [$(is_installed lazygit)]"
+echo -e "  GitHub: ${CYAN}https://github.com/jesseduffield/lazygit/releases${NC}"
+echo -e "  File:   $LAZYGIT_FILE"
+echo -e "  Extract: ${DIM}tar -xzf <file> && mv lazygit $INSTALL_DIR/${NC}"
+echo ""
+
+echo -e "${BOLD}delta${NC} - Git diff viewer [$(is_installed delta)]"
+echo -e "  GitHub: ${CYAN}https://github.com/dandavison/delta/releases${NC}"
+echo -e "  File:   $DELTA_FILE"
+echo -e "  Extract: ${DIM}tar -xzf <file> && mv */delta $INSTALL_DIR/${NC}"
+echo ""
+
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo ""
+echo -e "${BOLD}Steps:${NC}"
+echo "  1. Visit GitHub releases page"
+echo "  2. Download the file matching your architecture"
+echo "  3. Extract and move binary to: $INSTALL_DIR"
+echo "  4. Run: chmod +x <binary>"
+echo ""
