@@ -1,11 +1,12 @@
-# Binary Files Configuration
+# Shell Configuration
 # Source this file from .zshrc:
-#   source "$HOME/Developers/binary-files/config.zsh"
+#   source "$HOME/Developers/configs/config.zsh"
 
+CONFIG_DIR="${CONFIG_DIR:-$HOME/Developers/configs}"
 BINARY_DIR="${BINARY_DIR:-$HOME/Developers/binary-files}"
 
 # Add to PATH
-export PATH="$PATH:$BINARY_DIR"
+export PATH="$PATH:$BINARY_DIR:$CONFIG_DIR"
 
 # Tracking for external tools
 typeset -a _external_tools=()
@@ -90,8 +91,8 @@ if _has_bin fzf; then
     fi
 
     # Key bindings (Ctrl+R, Ctrl+T)
-    if [[ -f "$BINARY_DIR/fzf-key-bindings.zsh" ]]; then
-        source "$BINARY_DIR/fzf-key-bindings.zsh"
+    if [[ -f "$CONFIG_DIR/fzf-key-bindings.zsh" ]]; then
+        source "$CONFIG_DIR/fzf-key-bindings.zsh"
     else
         # Inline key bindings
         __fzf_history__() {
@@ -116,7 +117,7 @@ fi
 # starship - Shell prompt
 # =============================================================================
 if _has_bin starship; then
-    export STARSHIP_CONFIG="$BINARY_DIR/starship.toml"
+    export STARSHIP_CONFIG="$CONFIG_DIR/starship.toml"
     eval "$(starship init zsh)"
 fi
 
@@ -124,7 +125,7 @@ fi
 # Show recommendation for external tools
 # =============================================================================
 if [[ ${#_external_tools[@]} -gt 0 ]]; then
-    echo "\033[33m[binary-files]\033[0m Tools from system (consider adding to binary-files):"
+    echo "\033[33m[configs]\033[0m Tools from system (consider adding to binary-files):"
     for _item in "${_external_tools[@]}"; do
         _tool="${_item%%:*}"
         _toolpath="${_item#*:}"

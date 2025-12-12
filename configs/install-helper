@@ -7,7 +7,7 @@ BOLD='\033[1m'
 DIM='\033[2m'
 NC='\033[0m'
 
-INSTALL_DIR="$(cd "$(dirname "$0")" && pwd)"
+INSTALL_DIR="$HOME/Developers/binary-files"
 ARCH=$(uname -m)
 
 # Determine arch labels

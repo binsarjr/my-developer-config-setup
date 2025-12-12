@@ -11,7 +11,8 @@ This is a development utilities repository containing Docker Compose configurati
 - `docker-compose-setting/` - Docker Compose configurations for local services
   - `dragonfly/` - DragonflyDB (Redis-compatible in-memory database)
   - `minio/` - MinIO (S3-compatible object storage)
-- `binary-files/` - Standalone binary tools (gitignored, only .gitkeep tracked)
+- `binary-files/` - Standalone binary tools (gitignored, only .gitkeep and README tracked)
+- `configs/` - Shell configuration files (config.zsh, starship.toml, install-helper)
 
 ## Common Commands
 

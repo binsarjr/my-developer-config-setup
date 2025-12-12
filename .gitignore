@@ -9,10 +9,7 @@
 !.env.example
 !**/.env.example
 
-# Binary files folder
+# Binary files folder (only track .gitkeep and README)
 binary-files/*
 !binary-files/.gitkeep
 !binary-files/README.md
-!binary-files/install-helper
-!binary-files/config.zsh
-!binary-files/starship.toml
