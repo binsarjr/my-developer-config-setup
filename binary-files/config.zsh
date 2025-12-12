@@ -123,7 +123,7 @@ if [[ ${#_external_tools[@]} -gt 0 ]]; then
         echo "  → \033[1m$_tool\033[0m ($_toolpath)"
     done
     echo ""
-    echo "  Run: \033[36m$BINARY_DIR/install.sh\033[0m for download guide"
+    echo "  Run: \033[36minstall-helper\033[0m for download guide"
     echo ""
     unset _item _tool _toolpath
 fi

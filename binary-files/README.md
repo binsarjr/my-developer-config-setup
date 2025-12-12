@@ -6,7 +6,7 @@ Folder untuk menyimpan binary CLI tools standalone.
 
 ```bash
 # Lihat panduan download sesuai arsitektur Mac kamu
-./install.sh
+install-helper
 ```
 
 ## Tools yang Direkomendasikan
