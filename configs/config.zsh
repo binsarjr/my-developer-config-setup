@@ -205,7 +205,85 @@ config-help() {
     echo "  project-cleanup     - clean node_modules, vendor, __pycache__"
     echo "  project-cleanup -n  - dry run (preview)"
     echo "  install-helper      - show binary download guide"
+    echo "  tips                - show random tips"
     echo ""
+}
+
+# =============================================================================
+# Tips Command
+# =============================================================================
+tips() {
+    local _tips=(
+        "gs → git status"
+        "ga → git add"
+        "gaa → git add all"
+        "gc 'msg' → git commit"
+        "gca → amend commit"
+        "gp → git push"
+        "gpf → force push (safe)"
+        "gl → git pull"
+        "gd → git diff"
+        "gds → diff staged"
+        "glog → pretty git log"
+        "gloga → log all branches"
+        "gst → git stash"
+        "gstp → stash pop"
+        "gstl → stash list"
+        "gb → git branch"
+        "gbd → delete branch"
+        "gco → checkout"
+        "gcob → checkout -b"
+        "gsw → switch branch"
+        "gswc → switch -c"
+        "gm → merge"
+        "grh → reset HEAD"
+        "grhh → reset hard"
+        "gf → fetch"
+        "gfa → fetch all"
+        "gac 'msg' → add + commit"
+        "wip → quick WIP commit"
+        "nah → undo everything"
+        "lg → lazygit"
+        "project-cleanup → clean deps"
+        "config-help → show all aliases"
+    )
+
+    local _headers=(
+        "📌 Quick Tips:"
+        "🚀 Boost your workflow:"
+        "⚡ Work smarter, not harder:"
+        "🎯 Pro tips:"
+        "✨ Did you know?"
+    )
+
+    local _hour=$(date +%H)
+    if (( _hour >= 5 && _hour < 12 )); then
+        _headers+=("☀️ Good morning! Here are today's tips:")
+    elif (( _hour >= 12 && _hour < 17 )); then
+        _headers+=("🌤️ Good afternoon! Quick tips:")
+    elif (( _hour >= 17 && _hour < 21 )); then
+        _headers+=("🌅 Good evening! Some tips for you:")
+    else
+        _headers+=("🌙 Working late? Here are some tips:")
+    fi
+
+    local _header="${_headers[$((RANDOM % ${#_headers[@]} + 1))]}"
+    local _shown=()
+
+    echo -e "\033[2m"
+    echo "  $_header"
+    for i in {1..5}; do
+        while true; do
+            local _idx=$((RANDOM % ${#_tips[@]} + 1))
+            local _tip="${_tips[$_idx]}"
+            if [[ ! " ${_shown[*]} " =~ " ${_tip} " ]]; then
+                _shown+=("$_tip")
+                echo "    💡 $_tip"
+                break
+            fi
+        done
+    done
+    echo -e "\033[0m"
 }
 
 # =============================================================================
