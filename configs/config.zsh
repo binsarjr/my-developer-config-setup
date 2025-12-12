@@ -179,6 +179,36 @@ alias wip='git add -A && git commit -m "WIP"'
 alias nah='git reset --hard && git clean -df'
 
 # =============================================================================
+# Help Command
+# =============================================================================
+config-help() {
+    echo ""
+    echo -e "\033[1mGit Aliases:\033[0m"
+    echo "  g, gs, ga, gaa, gc, gca, gp, gpf, gl"
+    echo "  gb, gbd, gco, gcob, gsw, gswc, gm"
+    echo "  gd, gds, glog, gloga"
+    echo "  gst, gstp, gstl"
+    echo "  grh, grhh, gclean, gf, gfa, gr"
+    echo ""
+    echo -e "\033[1mPower Aliases:\033[0m"
+    echo "  gac 'msg'  - git add all + commit"
+    echo "  wip        - quick WIP commit"
+    echo "  nah        - reset hard + clean"
+    echo ""
+    echo -e "\033[1mTool Aliases:\033[0m"
+    echo "  ls, ll, la, lt  - lsd (if installed)"
+    echo "  cat, catp       - bat (if installed)"
+    echo "  lg              - lazygit (if installed)"
+    echo "  cd              - zoxide (if installed)"
+    echo ""
+    echo -e "\033[1mUtilities:\033[0m"
+    echo "  project-cleanup     - clean node_modules, vendor, __pycache__"
+    echo "  project-cleanup -n  - dry run (preview)"
+    echo "  install-helper      - show binary download guide"
+    echo ""
+}
+
+# =============================================================================
 # Show recommendation for external tools
 # =============================================================================
 if [[ ${#_external_tools[@]} -gt 0 ]]; then
@@ -197,3 +227,21 @@ fi
 # Cleanup
 unset -f _has_bin
 unset _external_tools
+
+# =============================================================================
+# Random Tip on Load
+# =============================================================================
+_config_tips=(
+    "gs → git status"
+    "glog → pretty git log graph"
+    "gac 'msg' → add all + commit"
+    "wip → quick WIP commit"
+    "nah → undo all changes"
+    "gd → git diff, gds → diff staged"
+    "lg → lazygit (if installed)"
+    "project-cleanup → clean node_modules, vendor"
+    "config-help → show all available aliases"
+)
+_tip="${_config_tips[$((RANDOM % ${#_config_tips[@]} + 1))]}"
+echo -e "\033[2m💡 $_tip\033[0m"
+unset _config_tips _tip
