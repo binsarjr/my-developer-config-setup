@@ -7,6 +7,10 @@ Repository ini berisi konfigurasi dan tools untuk mendukung development lokal di
 ```
 .
 ├── binary-files/          # Binary tools standalone
+├── configs/               # Shell configuration files
+│   ├── config.zsh
+│   ├── starship.toml
+│   └── install-helper
 ├── docker-compose-setting/
 │   ├── dragonfly/         # Redis-compatible in-memory database
 │   └── minio/             # S3-compatible object storage
@@ -14,6 +18,20 @@ Repository ini berisi konfigurasi dan tools untuk mendukung development lokal di
 ```
 
 ## Quick Start
+
+### Shell Configuration
+
+Tambahkan ke `~/.zshrc`:
+
+```bash
+source "$HOME/Developers/configs/config.zsh"
+```
+
+Ini akan otomatis setup PATH, aliases, dan tool configurations. Lihat [configs/README.md](configs/README.md) untuk detail.
+
+### Binary Tools
+
+Jalankan `install-helper` untuk melihat panduan download binary sesuai arsitektur Mac. Lihat [binary-files/README.md](binary-files/README.md).
 
 ### Docker Services
 
@@ -28,7 +46,3 @@ cd docker-compose-setting/dragonfly
 cp .env.example .env
 docker compose up -d
 ```
-
-### Binary Tools
-
-Lihat [binary-files/README.md](binary-files/README.md) untuk cara setup PATH di macOS.
