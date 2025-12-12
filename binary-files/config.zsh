@@ -7,8 +7,8 @@ BINARY_DIR="${BINARY_DIR:-$HOME/Developers/binary-files}"
 # Add to PATH
 export PATH="$PATH:$BINARY_DIR"
 
-# Helper: check if tool exists in binary-files
-_has_bin() { [[ -x "$BINARY_DIR/$1" ]]; }
+# Helper: check if tool exists (in binary-files OR system PATH)
+_has_bin() { [[ -x "$BINARY_DIR/$1" ]] || command -v "$1" &>/dev/null; }
 
 # =============================================================================
 # lsd - Modern ls replacement
