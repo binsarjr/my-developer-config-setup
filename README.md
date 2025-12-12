@@ -2,6 +2,24 @@
 
 Repository ini berisi konfigurasi dan tools untuk mendukung development lokal di macOS.
 
+## Kenapa Repo Ini Ada?
+
+**Capek install sana-sini, eh pas mau hapus malah ribet.**
+
+Kita semua pernah mengalami:
+- Install tool A, ternyata butuh dependency B, C, D
+- Setahun kemudian mau uninstall, eh "package X is required by Y, Z, ..."
+- Homebrew packages yang numpuk kayak koleksi action figure yang lupa pernah beli
+- `/usr/local/bin` yang isinya udah kayak gudang rongsok
+
+**Solusinya?** Filosofi yang simple:
+
+1. **Binary standalone** - Download, taruh di folder, selesai. Mau hapus? Delete file. Done.
+2. **Docker untuk services** - Database, cache, storage? Containerized. `docker compose down && docker volume rm` = bersih tanpa bekas.
+3. **Config yang portable** - Satu source file, semua setup jalan. Pindah laptop? Copy folder, source, profit.
+
+Intinya: **Install cepat, hapus lebih cepat, nggak ada drama dependency.**
+
 ## Struktur
 
 ```
@@ -13,7 +31,9 @@ Repository ini berisi konfigurasi dan tools untuk mendukung development lokal di
 │   └── install-helper
 ├── docker-compose-setting/
 │   ├── dragonfly/         # Redis-compatible in-memory database
-│   └── minio/             # S3-compatible object storage
+│   ├── minio/             # S3-compatible object storage
+│   ├── mongodb/           # NoSQL document database
+│   └── postgresql/        # Relational database
 └── CLAUDE.md              # AI assistant guidance
 ```
 
@@ -39,6 +59,8 @@ Setiap service memiliki dokumentasi lengkap di folder masing-masing:
 
 - [DragonflyDB](docker-compose-setting/dragonfly/README.md) - In-memory database (Redis replacement)
 - [MinIO](docker-compose-setting/minio/README.md) - Object storage (S3 replacement)
+- [MongoDB](docker-compose-setting/mongodb/README.md) - NoSQL document database
+- [PostgreSQL](docker-compose-setting/postgresql/README.md) - Relational database
 
 ```bash
 # Contoh menjalankan DragonflyDB
