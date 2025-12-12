@@ -1,0 +1,103 @@
+#!/bin/bash
+
+# Colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+CYAN='\033[0;36m'
+BOLD='\033[1m'
+NC='\033[0m'
+
+DRY_RUN=false
+SCAN_DIR="."
+
+usage() {
+    echo "Usage: project-cleanup [options] [directory]"
+    echo ""
+    echo "Clean up node_modules, vendor, and __pycache__ folders"
+    echo ""
+    echo "Options:"
+    echo "  -n, --dry-run    Preview what would be deleted"
+    echo "  -h, --help       Show this help"
+    echo ""
+    echo "Arguments:"
+    echo "  directory        Directory to scan (default: current directory)"
+}
+
+# Parse arguments
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        -n|--dry-run) DRY_RUN=true; shift ;;
+        -h|--help) usage; exit 0 ;;
+        -*) echo "Unknown option: $1"; usage; exit 1 ;;
+        *) SCAN_DIR="$1"; shift ;;
+    esac
+done
+
+# Validate directory
+if [[ ! -d "$SCAN_DIR" ]]; then
+    echo -e "${RED}Error: Directory '$SCAN_DIR' does not exist.${NC}"
+    exit 1
+fi
+
+SCAN_DIR=$(cd "$SCAN_DIR" && pwd)  # Get absolute path
+
+echo -e "${BOLD}Scanning:${NC} $SCAN_DIR"
+$DRY_RUN && echo -e "${YELLOW}(Dry run - nothing will be deleted)${NC}"
+echo ""
+
+TOTAL_SIZE=0
+
+delete_folder() {
+    local folder="$1"
+    local size=$(du -sh "$folder" 2>/dev/null | cut -f1)
+    local bytes=$(du -s "$folder" 2>/dev/null | cut -f1)
+    TOTAL_SIZE=$((TOTAL_SIZE + bytes))
+
+    if $DRY_RUN; then
+        echo -e "  ${CYAN}[DRY]${NC} $folder ${YELLOW}($size)${NC}"
+    else
+        echo -e "  ${RED}Deleting${NC} $folder ${YELLOW}($size)${NC}"
+        rm -rf "$folder"
+    fi
+}
+
+# node_modules
+echo -e "${BOLD}node_modules:${NC}"
+found=false
+while IFS= read -r -d '' dir; do
+    found=true
+    delete_folder "$dir"
+done < <(find "$SCAN_DIR" -type d -name "node_modules" -prune -print0 2>/dev/null)
+$found || echo "  (none found)"
+
+# vendor (with composer.json)
+echo ""
+echo -e "${BOLD}vendor (PHP/Composer):${NC}"
+found=false
+while IFS= read -r -d '' dir; do
+    if [[ -f "$(dirname "$dir")/composer.json" ]]; then
+        found=true
+        delete_folder "$dir"
+    fi
+done < <(find "$SCAN_DIR" -type d -name "vendor" -prune -print0 2>/dev/null)
+$found || echo "  (none found)"
+
+# __pycache__
+echo ""
+echo -e "${BOLD}__pycache__ (Python):${NC}"
+found=false
+while IFS= read -r -d '' dir; do
+    found=true
+    delete_folder "$dir"
+done < <(find "$SCAN_DIR" -type d -name "__pycache__" -prune -print0 2>/dev/null)
+$found || echo "  (none found)"
+
+# Summary
+echo ""
+TOTAL_HUMAN=$(numfmt --to=iec $((TOTAL_SIZE * 1024)) 2>/dev/null || echo "${TOTAL_SIZE}K")
+if $DRY_RUN; then
+    echo -e "${GREEN}Would free: ~$TOTAL_HUMAN${NC}"
+else
+    echo -e "${GREEN}Freed: ~$TOTAL_HUMAN${NC}"
+fi
