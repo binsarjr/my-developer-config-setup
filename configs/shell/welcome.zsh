@@ -41,6 +41,25 @@ _show_quick_info() {
     echo -e "\033[2m  ─────────────────────────────────────────────\033[0m"
     echo ""
 
+    # System info line
+    local sys_info=""
+
+    # Uptime (format: 21h 34m)
+    local uptime_raw=$(uptime | sed 's/.*up //' | sed 's/,.*//' | xargs)
+    local uptime_str=$(echo "$uptime_raw" | sed -E 's/([0-9]+):([0-9]+)/\1h \2m/')
+    sys_info="Up: $uptime_str"
+
+    # Docker containers (if docker available)
+    if command -v docker &>/dev/null && docker info &>/dev/null 2>&1; then
+        local containers=$(docker ps -q 2>/dev/null | wc -l | tr -d ' ')
+        sys_info="$sys_info  ·  Docker: $containers running"
+    fi
+
+    echo -e "  \033[1m🚀 System\033[0m"
+    echo -e "\033[2m     $sys_info\033[0m"
+    echo ""
+
+    # Project info line
     local info=""
     # Git info
     if git rev-parse --git-dir &>/dev/null 2>&1; then
@@ -53,7 +72,7 @@ _show_quick_info() {
     local cwd="${PWD/#$HOME/~}"
     [[ -n "$info" ]] && info="$info  ·  $cwd" || info="$cwd"
 
-    echo -e "  \033[1m🚀 Quick Info\033[0m"
+    echo -e "  \033[1m📂 Project\033[0m"
     echo -e "\033[2m     $info\033[0m"
     echo ""
 }

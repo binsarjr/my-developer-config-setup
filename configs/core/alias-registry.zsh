@@ -1,25 +1,25 @@
 # =============================================================================
 # Alias Registry
-# DRY alias definitions with descriptions + fzf search
+# DRY alias definitions with descriptions, tags + fzf search
 # =============================================================================
 
-# Global registry: [name]="command|description"
+# Global registry: [name]="command|description|tags"
 typeset -gA ALIAS_REGISTRY
 
-# Register alias with description
-# Usage: _reg <name> <command> <description>
+# Register alias with description and tags
+# Usage: _reg <name> <command> <description> [tags]
 _reg() {
-    local name=$1 cmd=$2 desc=$3
-    ALIAS_REGISTRY[$name]="$cmd|$desc"
+    local name=$1 cmd=$2 desc=$3 tags=${4:-}
+    ALIAS_REGISTRY[$name]="$cmd|$desc|$tags"
     alias $name="$cmd"
 }
 
 # Register alias only if tool exists (for conditional tool aliases)
-# Usage: _reg_if <tool> <name> <command> <description>
+# Usage: _reg_if <tool> <name> <command> <description> [tags]
 _reg_if() {
-    local tool=$1 name=$2 cmd=$3 desc=$4
+    local tool=$1 name=$2 cmd=$3 desc=$4 tags=${5:-}
     if _has_bin "$tool"; then
-        ALIAS_REGISTRY[$name]="$cmd|$desc"
+        ALIAS_REGISTRY[$name]="$cmd|$desc|$tags"
         alias $name="$cmd"
     fi
 }
@@ -37,8 +37,15 @@ alias-list() {
     for name in ${(ko)ALIAS_REGISTRY}; do
         local entry="${ALIAS_REGISTRY[$name]}"
         local cmd="${entry%%|*}"
-        local desc="${entry#*|}"
-        printf "  \033[36m%-12s\033[0m %s\n" "$name" "$desc"
+        local rest="${entry#*|}"
+        local desc="${rest%%|*}"
+        local tags="${rest#*|}"
+        [[ "$tags" == "$desc" ]] && tags=""
+        if [[ -n "$tags" ]]; then
+            printf "  \033[36m%-12s\033[0m %-40s \033[2m[%s]\033[0m\n" "$name" "$desc" "$tags"
+        else
+            printf "  \033[36m%-12s\033[0m %s\n" "$name" "$desc"
+        fi
     done
     echo ""
     echo -e "\033[2mTotal: ${#ALIAS_REGISTRY[@]} aliases | Use 'alias-finder' or 'af' to search\033[0m"
@@ -50,6 +57,7 @@ alias-finder() {
     [[ "$1" == "-h" || "$1" == "--help" ]] && {
         echo "Usage: alias-finder (or af)"
         echo "  Search aliases interactively with fzf"
+        echo "  Search by alias name, description, or tags (e.g. 'laravel', 'git')"
         return 0
     }
     local fzf_cmd="fzf"
@@ -61,24 +69,33 @@ alias-finder() {
         return
     fi
 
-    # Build list: "name | description"
+    # Build list: "name | description | tags"
     local list=""
     for name in ${(ko)ALIAS_REGISTRY}; do
         local entry="${ALIAS_REGISTRY[$name]}"
-        local desc="${entry#*|}"
-        list+="$(printf "%-12s │ %s" "$name" "$desc")\n"
+        local cmd="${entry%%|*}"
+        local rest="${entry#*|}"
+        local desc="${rest%%|*}"
+        local tags="${rest#*|}"
+        [[ "$tags" == "$desc" ]] && tags=""
+        if [[ -n "$tags" ]]; then
+            list+="$(printf "%-12s │ %-40s │ %s" "$name" "$desc" "$tags")\n"
+        else
+            list+="$(printf "%-12s │ %s" "$name" "$desc")\n"
+        fi
     done
 
     # fzf selection with preview
     local selected
     selected=$(echo -e "$list" | $fzf_cmd \
+        --exact \
         --height=50% \
         --reverse \
         --border \
         --prompt="🔍 Search alias: " \
         --header="Tab: select | Enter: show info | Esc: cancel" \
         --preview='
-            name=$(echo {} | cut -d"|" -f1 | xargs)
+            name=$(echo {} | cut -d"│" -f1 | xargs)
             echo ""
             echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
             echo "  Alias:   $name"
@@ -91,7 +108,10 @@ alias-finder() {
     local name=$(echo "$selected" | cut -d'│' -f1 | xargs)
     local entry="${ALIAS_REGISTRY[$name]}"
     local cmd="${entry%%|*}"
-    local desc="${entry#*|}"
+    local rest="${entry#*|}"
+    local desc="${rest%%|*}"
+    local tags="${rest#*|}"
+    [[ "$tags" == "$desc" ]] && tags=""
 
     # Show detailed info
     echo ""
@@ -99,6 +119,7 @@ alias-finder() {
     echo -e "  \033[1mAlias:\033[0m   \033[36m$name\033[0m"
     echo -e "  \033[1mCommand:\033[0m $cmd"
     echo -e "  \033[1mDesc:\033[0m    $desc"
+    [[ -n "$tags" ]] && echo -e "  \033[1mTags:\033[0m    \033[33m$tags\033[0m"
     echo -e "\033[2m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
     echo ""
 }

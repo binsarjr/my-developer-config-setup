@@ -7,20 +7,20 @@
 command -v bun &>/dev/null || return 0
 
 # Package Manager
-_reg bi  "bun install"    "Install dependencies from bun.lockb"
-_reg ba  "bun add"        "Add package to dependencies"
-_reg bad "bun add -d"     "Add package to devDependencies"
-_reg brm "bun remove"     "Remove package from project"
-_reg bu  "bun update"     "Update all packages to latest versions"
-_reg bx  "bunx"           "Execute package from npm registry (like npx)"
+_reg bi  "bun install"    "Install dependencies from bun.lockb" "bun,js,node,install"
+_reg ba  "bun add"        "Add package to dependencies" "bun,js,node,add"
+_reg bad "bun add -d"     "Add package to devDependencies" "bun,js,node,add"
+_reg brm "bun remove"     "Remove package from project" "bun,js,node,remove"
+_reg bu  "bun update"     "Update all packages to latest versions" "bun,js,node,update"
+_reg bx  "bunx"           "Execute package from npm registry (like npx)" "bun,js,node,exec"
 
 # Runtime
-_reg br  "bun run"        "Run script from package.json or execute file"
-_reg bd  "bun run dev"    "Run dev script (development server)"
-_reg bb  "bun run build"  "Run build script (production build)"
-_reg bs  "bun run start"  "Run start script (production server)"
+_reg br  "bun run"        "Run script from package.json or execute file" "bun,js,node,run"
+_reg bd  "bun run dev"    "Run dev script (development server)" "bun,js,node,dev"
+_reg bb  "bun run build"  "Run build script (production build)" "bun,js,node,build"
+_reg bs  "bun run start"  "Run start script (production server)" "bun,js,node,start"
 
 # Testing
-_reg bt  "bun test"            "Run all tests"
-_reg btw "bun test --watch"    "Run tests in watch mode (re-run on change)"
-_reg btc "bun test --coverage" "Run tests with code coverage report"
+_reg bt  "bun test"            "Run all tests" "bun,js,node,test"
+_reg btw "bun test --watch"    "Run tests in watch mode (re-run on change)" "bun,js,node,test"
+_reg btc "bun test --coverage" "Run tests with code coverage report" "bun,js,node,test,coverage"
