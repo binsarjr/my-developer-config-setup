@@ -1,6 +1,6 @@
 # Utils
 
-Utility shortcuts dan productivity functions.
+Utility shortcuts and productivity functions.
 
 ## Files
 

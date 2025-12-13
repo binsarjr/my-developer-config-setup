@@ -1,6 +1,6 @@
 # Tools
 
-Konfigurasi untuk modern CLI tools.
+Configuration for modern CLI tools.
 
 ## Files
 

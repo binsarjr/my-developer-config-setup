@@ -78,3 +78,7 @@ Located in `binary-files/`. Only `.gitkeep` and `README.md` are tracked; binarie
 ## Environment Files
 
 Each Docker service has `.env.example`. Copy to `.env` before running. All `.env` files are gitignored.
+
+## Language
+
+Always use **English** for all documentation, comments, commit messages, and code in this repository.

@@ -1,6 +1,6 @@
 # PHP
 
-Aliases dan tools untuk PHP & Laravel development.
+Aliases and tools for PHP & Laravel development.
 
 ## Files
 

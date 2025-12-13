@@ -1,15 +1,15 @@
 # Core
 
-Fungsi inti yang digunakan oleh module lain.
+Core functions used by other modules.
 
 ## Files
 
-- `alias-registry.zsh` - Sistem registry alias dengan deskripsi
+- `alias-registry.zsh` - Alias registry system with descriptions
 
 ## Functions
 
 ### `_reg <name> <command> <description>`
-Register alias dengan deskripsi. Digunakan oleh semua module untuk mendefinisikan alias.
+Register alias with description. Used by all modules to define aliases.
 
 ```zsh
 _reg gs "git status" "Show Git working tree status"
@@ -19,15 +19,15 @@ _reg gs "git status" "Show Git working tree status"
 
 | Command | Description |
 |---------|-------------|
-| `alias-finder` / `af` | Cari alias dengan fzf picker |
-| `alias-list` | Tampilkan semua registered aliases |
+| `alias-finder` / `af` | Search aliases with fzf picker |
+| `alias-list` | Show all registered aliases |
 
 ## Usage
 
 ```zsh
-# Cari alias
+# Search aliases
 af
 
-# List semua alias
+# List all aliases
 alias-list
 ```

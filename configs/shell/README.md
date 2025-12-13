@@ -1,16 +1,16 @@
 # Shell
 
-Shell UI components: help system dan welcome message.
+Shell UI components: help system and welcome message.
 
 ## Files
 
-- `help.zsh` - Help commands dan tips
+- `help.zsh` - Help commands and tips
 - `welcome.zsh` - Welcome message on shell startup
 
 ## Commands
 
 ### `config-help`
-Tampilkan overview semua aliases dan commands.
+Display overview of all aliases and commands.
 
 ```zsh
 config-help
@@ -24,13 +24,13 @@ Output includes:
 - Cache management
 
 ### `tips`
-Tampilkan random tips (5 tips).
+Display random tips (5 tips).
 
 ```zsh
 tips
 ```
 
-Includes time-based greetings dan tips berdasarkan installed tools.
+Includes time-based greetings and tips based on installed tools.
 
 ## Welcome Message
 

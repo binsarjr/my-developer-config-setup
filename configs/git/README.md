@@ -1,10 +1,10 @@
 # Git
 
-Aliases untuk Git commands.
+Aliases for Git commands.
 
 ## Files
 
-- `aliases.zsh` - Semua Git aliases
+- `aliases.zsh` - All Git aliases
 
 ## Aliases
 

@@ -2,34 +2,6 @@
 
 Modular shell configuration for development environment.
 
-## Usage
-
-### Option 1: Direct Clone (use as-is)
-
-If you want to use all my configurations without modification:
-
-```bash
-git clone https://github.com/binsarjr/my-developer-config-setup.git ~/Developers/configs
-```
-
-### Option 2: Fork (for customization)
-
-If you want to customize it to your own style and needs, **fork this repo** then clone from your fork:
-
-```bash
-git clone https://github.com/USERNAME/my-developer-config-setup.git ~/Developers/configs
-```
-
-> **Note:** This is my personal configuration tailored to my own workflow. I don't accept PRs for changing preferences/style. However, with a fork you can still get the latest updates by syncing your fork from this repo.
-
-#### Sync Fork with Upstream
-
-```bash
-git remote add upstream https://github.com/binsarjr/my-developer-config-setup.git
-git fetch upstream
-git merge upstream/main
-```
-
 ## Setup
 
 Add this line to your `~/.zshrc`:

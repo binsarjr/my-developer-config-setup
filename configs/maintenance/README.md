@@ -1,6 +1,6 @@
 # Maintenance
 
-Cache cleanup dan maintenance tools.
+Cache cleanup and maintenance tools.
 
 ## Files
 
@@ -9,7 +9,7 @@ Cache cleanup dan maintenance tools.
 ## Commands
 
 ### `cache-cleanup`
-Interactive cache cleanup dengan fzf multi-select.
+Interactive cache cleanup with fzf multi-select.
 
 ```zsh
 cache-cleanup       # Verbose mode (default)

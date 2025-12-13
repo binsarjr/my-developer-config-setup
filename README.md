@@ -1,30 +1,58 @@
 # Development Utilities
 
-Repository ini berisi konfigurasi dan tools untuk mendukung development lokal di macOS.
+A macOS development utilities repository with modular shell configuration, Docker Compose services, and standalone binary tool management.
 
-## Kenapa Repo Ini Ada?
+## Why This Repo?
 
-**Capek install sana-sini, eh pas mau hapus malah ribet.**
+**Tired of install here, install there, then struggle to remove.**
 
-Kita semua pernah mengalami:
-- Install tool A, ternyata butuh dependency B, C, D
-- Setahun kemudian mau uninstall, eh "package X is required by Y, Z, ..."
-- Homebrew packages yang numpuk kayak koleksi action figure yang lupa pernah beli
-- `/usr/local/bin` yang isinya udah kayak gudang rongsok
+We've all been there:
+- Install tool A, turns out it needs dependency B, C, D
+- A year later want to uninstall, "package X is required by Y, Z, ..."
+- Homebrew packages piling up like forgotten action figures
+- `/usr/local/bin` looking like a junkyard
 
-**Solusinya?** Filosofi yang simple:
+**The solution?** A simple philosophy:
 
-1. **Binary standalone** - Download, taruh di folder, selesai. Mau hapus? Delete file. Done.
-2. **Docker untuk services** - Database, cache, storage? Containerized. `docker compose down && docker volume rm` = bersih tanpa bekas.
-3. **Config yang portable** - Satu source file, semua setup jalan. Pindah laptop? Copy folder, source, profit.
+1. **Standalone binaries** - Download, put in folder, done. Want to remove? Delete file. Done.
+2. **Docker for services** - Database, cache, storage? Containerized. `docker compose down && docker volume rm` = clean without trace.
+3. **Portable config** - One source file, everything works. New laptop? Copy folder, source, profit.
 
-Intinya: **Install cepat, hapus lebih cepat, nggak ada drama dependency.**
+Bottom line: **Install fast, remove faster, no dependency drama.**
 
-## Struktur
+## Usage
+
+### Option 1: Direct Clone (use as-is)
+
+If you want to use all my configurations without modification:
+
+```bash
+git clone https://github.com/binsarjr/my-developer-config-setup.git ~/Developers
+```
+
+### Option 2: Fork (for customization)
+
+If you want to customize it to your own style and needs, **fork this repo** then clone from your fork:
+
+```bash
+git clone https://github.com/USERNAME/my-developer-config-setup.git ~/Developers
+```
+
+> **Note:** This is my personal configuration tailored to my own workflow. I don't accept PRs for changing preferences/style. However, with a fork you can still get the latest updates by syncing your fork from this repo.
+
+#### Sync Fork with Upstream
+
+```bash
+git remote add upstream https://github.com/binsarjr/my-developer-config-setup.git
+git fetch upstream
+git merge upstream/main
+```
+
+## Structure
 
 ```
 .
-├── binary-files/              # Binary tools standalone
+├── binary-files/              # Standalone binary tools
 ├── configs/                   # Modular shell configuration
 │   ├── config.zsh             # Entry point
 │   ├── starship.toml          # Prompt config
@@ -50,21 +78,21 @@ Intinya: **Install cepat, hapus lebih cepat, nggak ada drama dependency.**
 
 ### Shell Configuration
 
-Tambahkan ke `~/.zshrc`:
+Add to `~/.zshrc`:
 
 ```bash
 source "$HOME/Developers/configs/config.zsh"
 ```
 
-Ini akan otomatis setup PATH, aliases, dan tool configurations. Lihat [configs/README.md](configs/README.md) untuk detail.
+This will automatically setup PATH, aliases, and tool configurations. See [configs/README.md](configs/README.md) for details.
 
 ### Binary Tools
 
-Jalankan `install-helper` untuk melihat panduan download binary sesuai arsitektur Mac. Lihat [binary-files/README.md](binary-files/README.md).
+Run `install-helper` to see download guide for binaries matching your Mac architecture. See [binary-files/README.md](binary-files/README.md).
 
 ### Docker Services
 
-Setiap service memiliki dokumentasi lengkap di folder masing-masing:
+Each service has complete documentation in its folder:
 
 - [DragonflyDB](docker-compose-setting/dragonfly/README.md) - In-memory database (Redis replacement)
 - [MinIO](docker-compose-setting/minio/README.md) - Object storage (S3 replacement)
@@ -72,7 +100,7 @@ Setiap service memiliki dokumentasi lengkap di folder masing-masing:
 - [PostgreSQL](docker-compose-setting/postgresql/README.md) - Relational database
 
 ```bash
-# Contoh menjalankan DragonflyDB
+# Example: running DragonflyDB
 cd docker-compose-setting/dragonfly
 cp .env.example .env
 docker compose up -d

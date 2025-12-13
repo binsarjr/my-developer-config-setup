@@ -197,6 +197,6 @@ for i in {1..$_half}; do
 done
 echo ""
 echo -e "  ───"
-echo -e "  💡 Gunakan \033[0m\033[1maf\033[0m\033[2m untuk mencari semua alias"
+echo -e "  💡 Use \033[0m\033[1maf\033[0m\033[2m to search all aliases"
 echo -e "\033[0m"
 unset _config_tips _headers _shown _tip _idx _hour _header _tips_count _tips_to_show _half _left _right _right_idx

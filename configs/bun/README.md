@@ -1,6 +1,6 @@
 # Bun
 
-Aliases untuk Bun - JavaScript/TypeScript runtime, package manager, dan test runner.
+Aliases for Bun - JavaScript/TypeScript runtime, package manager, and test runner.
 
 ## Files
 
