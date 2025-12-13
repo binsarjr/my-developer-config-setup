@@ -224,17 +224,22 @@ _cheat_search() {
             echo -e "\033[33mABOUT:\033[0m"
             echo "$desc"
             echo ""
+            echo -e "\033[33mCOMMAND:\033[0m"
+            echo "$cmd"
+            echo ""
             echo -e "\033[33mALIAS:\033[0m $is_alias"
-            echo -e "\033[33mBOOKMARK:\033[0m no"
             echo ""
             echo -e "\033[33mHELP:\033[0m"
-            # Try tldr first, then --help for custom commands
-            if tldr "$name" 2>/dev/null; then
-                :  # tldr found, already printed
-            elif command -v "$name" &>/dev/null; then
-                $name --help 2>/dev/null || $name -h 2>/dev/null || echo "No help available"
+            # Extract base command for tldr lookup
+            base_cmd=$(echo "$cmd" | awk "{print \$1}")
+            if [[ "$base_cmd" == "./"* ]]; then
+                echo "Local script - see command above"
+            elif tldr "$base_cmd" 2>/dev/null; then
+                :  # tldr found for base command
+            elif tldr "$name" 2>/dev/null; then
+                :  # tldr found for name
             else
-                echo "No help available for $name"
+                echo "No tldr entry - see command above"
             fi
         ' \
         --preview-window=right:50%:wrap \
