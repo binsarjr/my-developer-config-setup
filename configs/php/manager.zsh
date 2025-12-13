@@ -80,6 +80,11 @@ _php_resolve_formula() {
 
 # Show current PHP version
 php-current() {
+    [[ "$1" == "-h" || "$1" == "--help" ]] && {
+        echo "Usage: php-current"
+        echo "  Show current active PHP version and path"
+        return 0
+    }
     if ! command -v php &>/dev/null; then
         echo -e "\033[31m✗ PHP not found in PATH\033[0m"
         return 1
@@ -98,6 +103,11 @@ php-current() {
 
 # List installed PHP versions
 php-list() {
+    [[ "$1" == "-h" || "$1" == "--help" ]] && {
+        echo "Usage: php-list"
+        echo "  List all installed PHP versions via Homebrew"
+        return 0
+    }
     local installed=$(_php_get_installed)
     local current=$(_php_get_current_formula)
 
@@ -122,6 +132,11 @@ php-list() {
 
 # List available PHP versions
 php-available() {
+    [[ "$1" == "-h" || "$1" == "--help" ]] && {
+        echo "Usage: php-available"
+        echo "  List available PHP versions from Homebrew"
+        return 0
+    }
     local available=$(_php_get_available)
     local installed=$(_php_get_installed)
 
@@ -141,6 +156,14 @@ php-available() {
 
 # Switch PHP version
 php-switch() {
+    [[ "$1" == "-h" || "$1" == "--help" ]] && {
+        echo "Usage: php-switch [version]"
+        echo "  Switch to a different PHP version"
+        echo ""
+        echo "  php-switch        Interactive picker (fzf)"
+        echo "  php-switch 8.2    Switch to PHP 8.2"
+        return 0
+    }
     local target="$1"
 
     # If no version specified, use fzf or prompt
@@ -214,6 +237,14 @@ php-switch() {
 
 # Install PHP version
 php-install() {
+    [[ "$1" == "-h" || "$1" == "--help" ]] && {
+        echo "Usage: php-install [version]"
+        echo "  Install a PHP version via Homebrew"
+        echo ""
+        echo "  php-install        Interactive picker (fzf)"
+        echo "  php-install 8.3    Install PHP 8.3"
+        return 0
+    }
     local target="$1"
 
     # If no version specified, use fzf or prompt
@@ -275,6 +306,14 @@ php-install() {
 
 # Uninstall PHP version
 php-uninstall() {
+    [[ "$1" == "-h" || "$1" == "--help" ]] && {
+        echo "Usage: php-uninstall [version]"
+        echo "  Uninstall a PHP version via Homebrew"
+        echo ""
+        echo "  php-uninstall        Interactive picker (fzf)"
+        echo "  php-uninstall 8.1    Uninstall PHP 8.1"
+        return 0
+    }
     local target="$1"
 
     # If no version specified, use fzf or prompt
@@ -339,6 +378,11 @@ php-uninstall() {
 
 # Cleanup old PHP versions
 php-cleanup() {
+    [[ "$1" == "-h" || "$1" == "--help" ]] && {
+        echo "Usage: php-cleanup"
+        echo "  Clean up Homebrew cache for PHP versions"
+        return 0
+    }
     echo ""
     echo -e "\033[1m🐘 PHP Cleanup\033[0m"
     echo ""
@@ -369,6 +413,11 @@ php-cleanup() {
 
 # List PHP extensions
 php-extensions() {
+    [[ "$1" == "-h" || "$1" == "--help" ]] && {
+        echo "Usage: php-extensions"
+        echo "  List installed PHP extensions"
+        return 0
+    }
     if ! command -v php &>/dev/null; then
         echo -e "\033[31m✗ PHP not found\033[0m"
         return 1
@@ -388,6 +437,11 @@ php-extensions() {
 
 # Help command
 php-help() {
+    [[ "$1" == "-h" || "$1" == "--help" ]] && {
+        echo "Usage: php-help"
+        echo "  Show help for PHP version manager commands"
+        return 0
+    }
     echo ""
     echo -e "\033[1m🐘 PHP Version Manager\033[0m"
     echo ""

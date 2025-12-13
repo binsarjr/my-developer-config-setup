@@ -5,6 +5,18 @@
 # Analyze project and provide recommendations
 # Usage: project-analyze [directory]
 project-analyze() {
+    [[ "$1" == "-h" || "$1" == "--help" ]] && {
+        echo "Usage: project-analyze [directory]"
+        echo ""
+        echo "  project-analyze           Analyze current directory"
+        echo "  project-analyze ~/app     Analyze specific directory"
+        echo "  project-analyze -h        Show this help"
+        echo ""
+        echo "Detects: Node.js (npm/yarn/pnpm/bun), Laravel"
+        echo "Recommends: bun for JS projects, Docker for Laravel"
+        return 0
+    }
+
     local dir="${1:-.}"
 
     # Validate directory

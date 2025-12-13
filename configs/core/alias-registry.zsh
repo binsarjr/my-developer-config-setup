@@ -26,6 +26,11 @@ _reg_if() {
 
 # List all registered aliases
 alias-list() {
+    [[ "$1" == "-h" || "$1" == "--help" ]] && {
+        echo "Usage: alias-list"
+        echo "  List all registered aliases with descriptions"
+        return 0
+    }
     echo ""
     echo -e "\033[1m📋 Registered Aliases\033[0m"
     echo ""
@@ -42,6 +47,11 @@ alias-list() {
 
 # Search aliases with fzf
 alias-finder() {
+    [[ "$1" == "-h" || "$1" == "--help" ]] && {
+        echo "Usage: alias-finder (or af)"
+        echo "  Search aliases interactively with fzf"
+        return 0
+    }
     local fzf_cmd="fzf"
     [[ -x "$BINARY_DIR/fzf" ]] && fzf_cmd="$BINARY_DIR/fzf"
 

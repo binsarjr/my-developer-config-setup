@@ -11,13 +11,34 @@ _reg ..... "cd ../../../.."             "Navigate up 4 directory levels"
 # =============================================================================
 
 # mkcd - create directory and cd into it
-mkcd() { mkdir -p "$1" && cd "$1" }
+mkcd() {
+    [[ "$1" == "-h" || "$1" == "--help" ]] && {
+        echo "Usage: mkcd <directory>"
+        echo "  Create directory and cd into it"
+        return 0
+    }
+    mkdir -p "$1" && cd "$1"
+}
 
 # backup - create timestamped backup
-backup() { cp "$1" "$1.bak.$(date +%Y%m%d_%H%M%S)" }
+backup() {
+    [[ "$1" == "-h" || "$1" == "--help" ]] && {
+        echo "Usage: backup <file>"
+        echo "  Create timestamped backup (file.bak.YYYYMMDD_HHMMSS)"
+        return 0
+    }
+    cp "$1" "$1.bak.$(date +%Y%m%d_%H%M%S)"
+}
 
 # extract - universal archive extractor
 extract() {
+    [[ "$1" == "-h" || "$1" == "--help" ]] && {
+        echo "Usage: extract <archive>"
+        echo "  Extract any archive format"
+        echo ""
+        echo "Supported: .tar.gz .tar.bz2 .tar.xz .zip .rar .7z .gz .bz2"
+        return 0
+    }
     if [[ -f "$1" ]]; then
         case "$1" in
             *.tar.bz2) tar xjf "$1" ;;
@@ -44,13 +65,41 @@ extract() {
 # =============================================================================
 
 # ports - show listening ports
-ports() { lsof -i -P -n | grep LISTEN }
+ports() {
+    [[ "$1" == "-h" || "$1" == "--help" ]] && {
+        echo "Usage: ports"
+        echo "  Show all listening ports"
+        return 0
+    }
+    lsof -i -P -n | grep LISTEN
+}
 
 # myip - show public IP
-myip() { curl -s ifconfig.me && echo "" }
+myip() {
+    [[ "$1" == "-h" || "$1" == "--help" ]] && {
+        echo "Usage: myip"
+        echo "  Show public IP address"
+        return 0
+    }
+    curl -s ifconfig.me && echo ""
+}
 
 # localip - show local IP
-localip() { ipconfig getifaddr en0 }
+localip() {
+    [[ "$1" == "-h" || "$1" == "--help" ]] && {
+        echo "Usage: localip"
+        echo "  Show local IP address (en0)"
+        return 0
+    }
+    ipconfig getifaddr en0
+}
 
 # weather - show weather (optional city)
-weather() { curl -s "wttr.in/${1:-}?format=3" }
+weather() {
+    [[ "$1" == "-h" || "$1" == "--help" ]] && {
+        echo "Usage: weather [city]"
+        echo "  Show weather for current location or specified city"
+        return 0
+    }
+    curl -s "wttr.in/${1:-}?format=3"
+}

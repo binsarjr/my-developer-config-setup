@@ -44,6 +44,11 @@ _reg laralog "tail -f storage/logs/laravel.log" "Watch Laravel log file in real-
 
 # Clear all Laravel caches
 artclear() {
+    [[ "$1" == "-h" || "$1" == "--help" ]] && {
+        echo "Usage: artclear"
+        echo "  Clear all Laravel caches (cache, config, route, view)"
+        return 0
+    }
     php artisan cache:clear
     php artisan config:clear
     php artisan route:clear

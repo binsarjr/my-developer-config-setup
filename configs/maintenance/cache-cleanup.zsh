@@ -5,6 +5,17 @@
 # Interactive cache cleanup (fzf multi-select or fallback)
 # Usage: cache-cleanup [-q|--quick]
 cache-cleanup() {
+    [[ "$1" == "-h" || "$1" == "--help" ]] && {
+        echo "Usage: cache-cleanup [-q|--quick]"
+        echo ""
+        echo "  cache-cleanup      Interactive mode (fzf multi-select)"
+        echo "  cache-cleanup -q   Quick mode (clean all, minimal output)"
+        echo "  cache-cleanup -h   Show this help"
+        echo ""
+        echo "Cleans: Homebrew, Composer, npm, yarn, pnpm, bun, pip, Docker"
+        return 0
+    }
+
     local quick=false
     [[ "$1" == "-q" || "$1" == "--quick" ]] && quick=true
 
