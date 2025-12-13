@@ -35,8 +35,6 @@ config-help() {
     echo "  du              - dust (if installed)"
     echo "  df              - duf (if installed)"
     echo "  top, htop       - btm/bottom (if installed)"
-    echo "  help <cmd>      - tldr (if installed)"
-    echo "  ff, neofetch    - fastfetch (if installed)"
     echo ""
     echo -e "\033[1mUtilities:\033[0m"
     echo "  project-cleanup     - clean node_modules, vendor, __pycache__"
@@ -152,8 +150,6 @@ tips() {
     command -v dust &>/dev/null && _tips+=("du → dust (visual disk usage)")
     command -v duf &>/dev/null && _tips+=("df → duf (colorful disk free)")
     command -v btm &>/dev/null && _tips+=("top → btm (modern system monitor)")
-    command -v tldr &>/dev/null && _tips+=("help <cmd> → tldr pages")
-    command -v fastfetch &>/dev/null && _tips+=("ff → fastfetch (system info)")
     command -v jq &>/dev/null && _tips+=("jq → JSON processor")
 
     local _headers=(
@@ -265,8 +261,6 @@ config-doctor() {
 
     echo -e "\033[1mOther:\033[0m"
     _check "starship" "Shell prompt"
-    _check "tldr" "Simplified man pages"
-    _check "fastfetch" "System info display"
     echo ""
 
     local total=$((installed + missing))

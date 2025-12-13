@@ -118,17 +118,6 @@ if _has_bin btm; then
     _reg htop "btm"                     "Interactive system monitor with graphs (bottom)" "system,monitor,btm"
 fi
 
-# tealdeer - Better man pages (tldr)
-if _has_bin tldr; then
-    _reg help "tldr"                    "Show simplified command examples (tldr)" "help,docs,tldr"
-fi
-
-# fastfetch - System info display
-if _has_bin fastfetch; then
-    _reg ff       "fastfetch"           "Display system info with logo (fastfetch)" "system,info,fastfetch"
-    _reg neofetch "fastfetch"           "Display system info with logo (fastfetch)" "system,info,fastfetch"
-fi
-
 # lazydocker - Docker TUI
 if _has_bin lazydocker; then
     _reg ld "lazydocker"                "Docker TUI for containers, images & logs" "docker,lazydocker"
