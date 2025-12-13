@@ -184,13 +184,22 @@ done
 echo -e "\033[2m"
 echo "  $_header"
 _half=$(( (_tips_count + 1) / 2 ))
+
+# Calculate max width from left column tips
+_max_width=0
+for i in {1..$_half}; do
+    _len=${#_tips_to_show[$i]}
+    (( _len > _max_width )) && _max_width=$_len
+done
+
+# Display with dynamic width
 for i in {1..$_half}; do
     _left="${_tips_to_show[$i]}"
     _right_idx=$((i + _half))
     _right="${_tips_to_show[$_right_idx]}"
 
     if [[ -n "$_right" ]]; then
-        printf "    💡 %-30s 💡 %s\n" "$_left" "$_right"
+        printf "    💡 %-${_max_width}s  💡 %s\n" "$_left" "$_right"
     else
         printf "    💡 %s\n" "$_left"
     fi
@@ -199,4 +208,4 @@ echo ""
 echo -e "  ───"
 echo -e "  💡 Use \033[0m\033[1maf\033[0m\033[2m to search all aliases"
 echo -e "\033[0m"
-unset _config_tips _headers _shown _tip _idx _hour _header _tips_count _tips_to_show _half _left _right _right_idx
+unset _config_tips _headers _shown _tip _idx _hour _header _tips_count _tips_to_show _half _left _right _right_idx _max_width _len
