@@ -104,7 +104,7 @@ cheat() {
 
     [[ -z "$selected" ]] && return
 
-    # Extract name from selection
+    # Extract command from selection
     local name=$(echo "$selected" | cut -d'│' -f1 | xargs)
     local entry="${ALIAS_REGISTRY[$name]}"
     local cmd="${entry%%|*}"
@@ -122,5 +122,8 @@ cheat() {
     [[ -n "$tags" ]] && echo -e "  \033[1mTags:\033[0m    \033[33m$tags\033[0m"
     echo -e "\033[2m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
     echo ""
+
+    # Put command in buffer for editing (with trailing space for args)
+    print -z "$cmd "
 }
 
