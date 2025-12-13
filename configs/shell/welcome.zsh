@@ -21,16 +21,48 @@ unset _external_tools
 # =============================================================================
 # Introduction / Welcome Message
 # =============================================================================
+_show_ascii_header() {
+    echo "  ██████╗ ██╗███╗   ██╗███████╗ █████╗ ██████╗ "
+    echo "  ██╔══██╗██║████╗  ██║██╔════╝██╔══██╗██╔══██╗"
+    echo "  ██████╔╝██║██╔██╗ ██║███████╗███████║██████╔╝"
+    echo "  ██╔══██╗██║██║╚██╗██║╚════██║██╔══██║██╔══██╗"
+    echo "  ██████╔╝██║██║ ╚████║███████║██║  ██║██║  ██║"
+    echo "  ╚═════╝ ╚═╝╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝"
+}
+
+_show_profile() {
+    echo -e "\033[2m              Code craftsman by night 🌙\033[0m"
+    echo ""
+    echo -e "\033[2m  Backend · Bots · Automation\033[0m"
+    echo -e "\033[2m  github.com/binsarjr  ·  binsarjr.com\033[0m"
+}
+
+_show_quick_info() {
+    echo -e "\033[2m  ─────────────────────────────────────────────\033[0m"
+    echo ""
+
+    local info=""
+    # Git info
+    if git rev-parse --git-dir &>/dev/null 2>&1; then
+        local branch=$(git branch --show-current 2>/dev/null)
+        local changes=$(git status --porcelain 2>/dev/null | wc -l | tr -d ' ')
+        [[ $changes -eq 0 ]] && info="Git: $branch (clean)" || info="Git: $branch ($changes changes)"
+    fi
+
+    # Current dir (shortened)
+    local cwd="${PWD/#$HOME/~}"
+    [[ -n "$info" ]] && info="$info  ·  $cwd" || info="$cwd"
+
+    echo -e "  \033[1m🚀 Quick Info\033[0m"
+    echo -e "\033[2m     $info\033[0m"
+    echo ""
+}
+
 _show_intro() {
     echo ""
-    echo -e "\033[2m  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
-    echo -e "\033[1m  Binsar Dwi Jasuma\033[0m"
-    echo -e "\033[2m  \"Code craftsman by night 🌙\"\033[0m"
-    echo ""
-    echo -e "\033[2m  Software Engineer — Backend, Bots & Automation\033[0m"
-    echo -e "\033[2m  github.com/binsarjr  ·  binsarjr.com\033[0m"
-    echo -e "\033[2m  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
-    echo ""
+    _show_ascii_header
+    _show_profile
+    _show_quick_info
 }
 
 _show_intro
@@ -145,5 +177,8 @@ for i in {1..5}; do
         fi
     done
 done
+echo ""
+echo -e "  ───"
+echo -e "  💡 Gunakan \033[0m\033[1maf\033[0m\033[2m untuk mencari semua alias"
 echo -e "\033[0m"
 unset _config_tips _headers _shown _tip _idx _hour _header
