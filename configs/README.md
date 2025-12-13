@@ -1,28 +1,28 @@
 # Configs
 
-Modular shell configuration untuk development environment.
+Modular shell configuration for development environment.
 
-## Cara Menggunakan
+## Usage
 
-### Opsi 1: Clone langsung (untuk yang ingin pakai as-is)
+### Option 1: Direct Clone (use as-is)
 
-Jika kamu ingin menggunakan semua konfigurasi saya tanpa modifikasi:
+If you want to use all my configurations without modification:
 
 ```bash
 git clone https://github.com/binsarjr/my-developer-config-setup.git ~/Developers/configs
 ```
 
-### Opsi 2: Fork (untuk yang ingin customize)
+### Option 2: Fork (for customization)
 
-Jika kamu ingin menyesuaikan dengan style dan kebutuhan sendiri, **fork repo ini** kemudian clone dari fork kamu:
+If you want to customize it to your own style and needs, **fork this repo** then clone from your fork:
 
 ```bash
 git clone https://github.com/USERNAME/my-developer-config-setup.git ~/Developers/configs
 ```
 
-> **Note:** Konfigurasi ini adalah setup personal saya dan disesuaikan dengan workflow saya sendiri. Saya tidak menerima PR untuk mengubah preferensi/style. Namun dengan fork, kamu tetap bisa mendapatkan update terbaru dengan cara sync fork dari repo ini.
+> **Note:** This is my personal configuration tailored to my own workflow. I don't accept PRs for changing preferences/style. However, with a fork you can still get the latest updates by syncing your fork from this repo.
 
-#### Sync Fork dengan Upstream
+#### Sync Fork with Upstream
 
 ```bash
 git remote add upstream https://github.com/binsarjr/my-developer-config-setup.git
@@ -32,7 +32,7 @@ git merge upstream/main
 
 ## Setup
 
-Tambahkan satu baris ini ke `~/.zshrc`:
+Add this line to your `~/.zshrc`:
 
 ```bash
 source "$HOME/Developers/configs/config.zsh"
@@ -40,8 +40,8 @@ source "$HOME/Developers/configs/config.zsh"
 
 ## Structure
 
-| Module | Deskripsi |
-|--------|-----------|
+| Module | Description |
+|--------|-------------|
 | [core/](core/) | Alias registry system (`_reg`, `alias-finder`) |
 | [tools/](tools/) | Modern CLI tools (lsd, bat, lazygit, zoxide, fzf, delta) |
 | [git/](git/) | Git aliases & quick combos (gac, wip, nah) |
@@ -53,26 +53,26 @@ source "$HOME/Developers/configs/config.zsh"
 
 ## Key Files
 
-| File | Deskripsi |
-|------|-----------|
+| File | Description |
+|------|-------------|
 | `config.zsh` | Entry point - auto-detect paths, sources all modules |
 | `starship.toml` | Starship prompt configuration |
-| `install-helper` | Script untuk melihat panduan download binary tools |
-| `project-cleanup` | Script untuk cleanup node_modules, vendor, __pycache__ |
+| `install-helper` | Script to view binary tools download guide |
+| `project-cleanup` | Script to cleanup node_modules, vendor, __pycache__ |
 
 ## Auto Configuration
 
-`config.zsh` akan otomatis:
-- Menambahkan `binary-files/` dan `configs/` ke PATH
-- Detect tools yang terinstall (di binary-files atau system)
-- Apply konfigurasi/alias jika tool tersedia
-- Load modules sesuai urutan: core → tools → git → php → bun → utils → shell → maintenance
+`config.zsh` will automatically:
+- Add `binary-files/` and `configs/` to PATH
+- Detect installed tools (in binary-files or system)
+- Apply configuration/aliases if tool is available
+- Load modules in order: core → tools → git → php → bun → utils → shell → maintenance
 
 ## Project Cleanup
 
-`project-cleanup` menghapus folder-folder besar yang bisa di-regenerate:
+`project-cleanup` removes large folders that can be regenerated:
 - `node_modules` (Node.js/npm/yarn)
-- `vendor` (PHP/Composer - hanya jika ada composer.json)
+- `vendor` (PHP/Composer - only if composer.json exists)
 - `__pycache__` (Python)
 
 ### Usage
@@ -107,8 +107,8 @@ Would free: ~521M
 
 ### Starship Prompt
 
-Edit `starship.toml` untuk customize prompt. Dokumentasi: https://starship.rs/config/
+Edit `starship.toml` to customize prompt. Documentation: https://starship.rs/config/
 
 ### Aliases
 
-Tambahkan alias custom di `config.zsh` atau buat file terpisah dan source dari config.zsh.
+Add custom aliases in `config.zsh` or create a separate file and source it from config.zsh.
