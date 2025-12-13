@@ -53,6 +53,7 @@ for module in \
     "$CONFIG_DIR/bun/aliases.zsh" \
     "$CONFIG_DIR/utils/shortcuts.zsh" \
     "$CONFIG_DIR/utils/project-analyze.zsh" \
+    "$CONFIG_DIR/utils/rsync.zsh" \
     "$CONFIG_DIR/shell/help.zsh" \
     "$CONFIG_DIR/shell/welcome.zsh" \
     "$CONFIG_DIR/maintenance/cache-cleanup.zsh"
