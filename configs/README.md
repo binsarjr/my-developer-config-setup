@@ -14,7 +14,7 @@ source "$HOME/Developers/configs/config.zsh"
 
 | Module | Description |
 |--------|-------------|
-| [core/](core/) | Alias registry system (`_reg`, `cheat`) |
+| [core/](core/) | Alias registry system (`_reg`, `alias-finder`) |
 | [tools/](tools/) | Modern CLI tools (lsd, bat, lazygit, zoxide, fzf, delta) |
 | [git/](git/) | Git aliases & quick combos (gac, wip, nah) |
 | [php/](php/) | PHP & Laravel aliases + version manager |

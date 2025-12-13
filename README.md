@@ -1,99 +1,107 @@
-# Curlie
+# Development Utilities
 
-If you like the interface of [HTTPie](https://httpie.org) but miss the features of [curl](https://curl.haxx.se), curlie is what you are searching for. Curlie is a frontend to `curl` that adds the ease of use of `httpie`, without compromising on features and performance. All `curl` options are exposed with syntax sugar and output formatting inspired from `httpie`.
+A macOS development utilities repository with modular shell configuration, Docker Compose services, and standalone binary tool management.
 
-## Install
+## Why This Repo?
 
-Using [homebrew](https://brew.sh/):
+**Tired of install here, install there, then struggle to remove.**
 
-```sh
-brew install curlie
-```
+We've all been there:
+- Install tool A, turns out it needs dependency B, C, D
+- A year later want to uninstall, "package X is required by Y, Z, ..."
+- Homebrew packages piling up like forgotten action figures
+- `/usr/local/bin` looking like a junkyard
 
-Using [webi](https://webinstall.dev/curlie/):
+**The solution?** A simple philosophy:
 
-```sh
-# macOS / Linux
-curl -sS https://webinstall.dev/curlie | bash
-```
+1. **Standalone binaries** - Download, put in folder, done. Want to remove? Delete file. Done.
+2. **Docker for services** - Database, cache, storage? Containerized. `docker compose down && docker volume rm` = clean without trace.
+3. **Portable config** - One source file, everything works. New laptop? Copy folder, source, profit.
 
-```pwsh
-# Windows
-curl.exe -A "MS" https://webinstall.dev/curlie | powershell
-```
-
-Using [eget](https://github.com/zyedidia/eget):
-
-```sh
-# Ubuntu/Debian
-eget rs/curlie -a deb --to=curlie.deb
-sudo dpkg -i curlie.deb
-```
-
-Using [macports](https://www.macports.org):
-
-```sh
-sudo port install curlie
-```
-
-Using [pkg](https://man.freebsd.org/pkg/8):
-
-```sh
-pkg install curlie
-```
-
-Using [go](https://golang.org/):
-
-```sh
-go install github.com/rs/curlie@latest
-```
-
-Using [scoop](https://scoop.sh/):
-
-```sh
-scoop install curlie
-```
-
-Or download a [binary package](https://github.com/rs/curlie/releases/latest).
+Bottom line: **Install fast, remove faster, no dependency drama.**
 
 ## Usage
 
-Synopsis:
+### Option 1: Direct Clone (use as-is)
 
-```sh
-curlie [CURL_OPTIONS...] [METHOD] URL [ITEM [ITEM]]
+If you want to use all my configurations without modification:
+
+```bash
+git clone https://github.com/binsarjr/my-developer-config-setup.git ~/Developers
 ```
 
-Simple GET:
+### Option 2: Fork (for customization)
 
-![Simple GET request example](doc/get.png)
+If you want to customize it to your own style and needs, **fork this repo** then clone from your fork:
 
-Custom method, headers and JSON data:
-
-![Custom PUT request with headers and JSON data example](doc/put.png)
-
-When running interactively, `curlie` provides pretty-printed output for json. To force pretty-printed output, pass `--pretty`.
-
-## Build
-
-Build with [goreleaser](https://goreleaser.com) to test that all platforms compile properly.
-
-```sh
-goreleaser build --clean --snapshot
+```bash
+git clone https://github.com/USERNAME/my-developer-config-setup.git ~/Developers
 ```
 
-Or for your current platform only.
+> **Note:** This is my personal configuration tailored to my own workflow. I don't accept PRs for changing preferences/style. However, with a fork you can still get the latest updates by syncing your fork from this repo.
 
-```sh
-goreleaser build --clean --snapshot --single-target
+#### Sync Fork with Upstream
+
+```bash
+git remote add upstream https://github.com/binsarjr/my-developer-config-setup.git
+git fetch upstream
+git merge upstream/main
 ```
 
-## Differences with httpie
+## Structure
 
-* Like `curl` but unlike `httpie`, headers are written on `stderr` instead of `stdout`.
-* Output is not buffered, all the formatting is done on the fly so you can easily debug streamed data.
-* Use the `--curl` option to print executed curl command.
+```
+.
+├── binary-files/              # Standalone binary tools
+├── configs/                   # Modular shell configuration
+│   ├── config.zsh             # Entry point
+│   ├── starship.toml          # Prompt config
+│   ├── install-helper         # Binary download guide
+│   ├── project-cleanup        # Cleanup tool
+│   ├── core/                  # Alias registry
+│   ├── tools/                 # CLI tool configs
+│   ├── git/                   # Git aliases
+│   ├── php/                   # PHP & Laravel
+│   ├── bun/                   # Bun runtime
+│   ├── utils/                 # Utility functions
+│   ├── shell/                 # Help & welcome
+│   └── maintenance/           # Cache cleanup
+├── docker-compose-setting/
+│   ├── dragonfly/             # Redis-compatible in-memory database
+│   ├── minio/                 # S3-compatible object storage
+│   ├── mongodb/               # NoSQL document database
+│   └── postgresql/            # Relational database
+└── CLAUDE.md                  # AI assistant guidance
+```
 
-## License
+## Quick Start
 
-All source code is licensed under the [MIT License](https://raw.github.com/rs/curlie/master/LICENSE).
+### Shell Configuration
+
+Add to `~/.zshrc`:
+
+```bash
+source "$HOME/Developers/configs/config.zsh"
+```
+
+This will automatically setup PATH, aliases, and tool configurations. See [configs/README.md](configs/README.md) for details.
+
+### Binary Tools
+
+Run `install-helper` to see download guide for binaries matching your Mac architecture. See [binary-files/README.md](binary-files/README.md).
+
+### Docker Services
+
+Each service has complete documentation in its folder:
+
+- [DragonflyDB](docker-compose-setting/dragonfly/README.md) - In-memory database (Redis replacement)
+- [MinIO](docker-compose-setting/minio/README.md) - Object storage (S3 replacement)
+- [MongoDB](docker-compose-setting/mongodb/README.md) - NoSQL document database
+- [PostgreSQL](docker-compose-setting/postgresql/README.md) - Relational database
+
+```bash
+# Example: running DragonflyDB
+cd docker-compose-setting/dragonfly
+cp .env.example .env
+docker compose up -d
+```
