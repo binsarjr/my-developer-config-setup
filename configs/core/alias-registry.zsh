@@ -100,7 +100,7 @@ cheat() {
         --reverse \
         --border \
         --prompt="🔍 Search alias: " \
-        --header="Tab: select | Enter: show info | Esc: cancel" \
+        --header=$'Search: \'exact  ^prefix  suffix$  !exclude\nTab: select | Enter: show info | Esc: cancel' \
         --preview='
             name=$(echo {} | cut -d"│" -f1 | xargs)
             echo ""
