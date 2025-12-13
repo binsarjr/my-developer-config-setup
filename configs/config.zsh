@@ -41,7 +41,7 @@ _has_bin() {
 # =============================================================================
 # Order matters:
 # 1. core (alias-registry defines _reg function)
-# 2. tools, git, php, utils (use _reg)
+# 2. tools, git, php, bun, utils (use _reg)
 # 3. shell (help, welcome)
 # 4. maintenance (cache-cleanup)
 for module in \
@@ -50,6 +50,7 @@ for module in \
     "$CONFIG_DIR/git/aliases.zsh" \
     "$CONFIG_DIR/php/aliases.zsh" \
     "$CONFIG_DIR/php/manager.zsh" \
+    "$CONFIG_DIR/bun/aliases.zsh" \
     "$CONFIG_DIR/utils/shortcuts.zsh" \
     "$CONFIG_DIR/shell/help.zsh" \
     "$CONFIG_DIR/shell/welcome.zsh" \

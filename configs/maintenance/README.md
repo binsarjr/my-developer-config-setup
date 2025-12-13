@@ -20,6 +20,9 @@ cache-cleanup -q    # Quick mode (clean all, minimal output)
 - Homebrew (`brew cleanup`)
 - Composer (`composer clear-cache`)
 - npm (`npm cache clean --force`)
+- yarn (`yarn cache clean`)
+- pnpm (`pnpm store prune`)
+- bun (`bun pm cache rm`)
 - pip (`pip3 cache purge`)
 - Docker (`docker system prune -f`)
 
@@ -44,7 +47,7 @@ On shell startup, shows reminder:
 
 ## Project Cleanup
 
-For cleaning project dependencies (node_modules, vendor, __pycache__):
+For cleaning project dependencies (node_modules, .yarn, .pnpm-store, vendor, __pycache__):
 
 ```zsh
 project-cleanup ~/Projects       # Scan & clean

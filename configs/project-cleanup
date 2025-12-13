@@ -14,7 +14,7 @@ SCAN_DIR="."
 usage() {
     echo "Usage: project-cleanup [options] [directory]"
     echo ""
-    echo "Clean up node_modules, vendor, and __pycache__ folders"
+    echo "Clean up dependency folders: node_modules, .yarn, .pnpm-store, vendor, __pycache__"
     echo ""
     echo "Options:"
     echo "  -n, --dry-run    Preview what would be deleted"
@@ -69,6 +69,29 @@ while IFS= read -r -d '' dir; do
     found=true
     delete_folder "$dir"
 done < <(find "$SCAN_DIR" -type d -name "node_modules" -prune -print0 2>/dev/null)
+$found || echo "  (none found)"
+
+# .yarn (Yarn Berry/PnP cache)
+echo ""
+echo -e "${BOLD}.yarn (Yarn Berry):${NC}"
+found=false
+while IFS= read -r -d '' dir; do
+    # Only delete if package.json exists (actual yarn project)
+    if [[ -f "$(dirname "$dir")/package.json" ]]; then
+        found=true
+        delete_folder "$dir"
+    fi
+done < <(find "$SCAN_DIR" -type d -name ".yarn" -prune -print0 2>/dev/null)
+$found || echo "  (none found)"
+
+# .pnpm-store (pnpm local store)
+echo ""
+echo -e "${BOLD}.pnpm-store (pnpm):${NC}"
+found=false
+while IFS= read -r -d '' dir; do
+    found=true
+    delete_folder "$dir"
+done < <(find "$SCAN_DIR" -type d -name ".pnpm-store" -prune -print0 2>/dev/null)
 $found || echo "  (none found)"
 
 # vendor (with composer.json)

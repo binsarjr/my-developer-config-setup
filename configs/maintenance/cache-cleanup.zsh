@@ -24,6 +24,18 @@ cache-cleanup() {
         caches+=("npm")
         labels+=("npm")
     fi
+    if command -v yarn &>/dev/null; then
+        caches+=("yarn")
+        labels+=("yarn")
+    fi
+    if command -v pnpm &>/dev/null; then
+        caches+=("pnpm")
+        labels+=("pnpm")
+    fi
+    if command -v bun &>/dev/null; then
+        caches+=("bun")
+        labels+=("bun")
+    fi
     if command -v pip3 &>/dev/null; then
         caches+=("pip")
         labels+=("pip")
@@ -122,6 +134,36 @@ cache-cleanup() {
                 fi
                 ((cleaned++))
                 ;;
+            yarn)
+                if $quick; then
+                    yarn cache clean &>/dev/null && quick_result+=("yarn ✓") || quick_result+=("yarn ✗")
+                else
+                    echo -e "\033[1;36m→ yarn\033[0m"
+                    yarn cache clean
+                    echo ""
+                fi
+                ((cleaned++))
+                ;;
+            pnpm)
+                if $quick; then
+                    pnpm store prune &>/dev/null && quick_result+=("pnpm ✓") || quick_result+=("pnpm ✗")
+                else
+                    echo -e "\033[1;36m→ pnpm\033[0m"
+                    pnpm store prune
+                    echo ""
+                fi
+                ((cleaned++))
+                ;;
+            bun)
+                if $quick; then
+                    bun pm cache rm &>/dev/null && quick_result+=("bun ✓") || quick_result+=("bun ✗")
+                else
+                    echo -e "\033[1;36m→ bun\033[0m"
+                    bun pm cache rm
+                    echo ""
+                fi
+                ((cleaned++))
+                ;;
             pip)
                 if $quick; then
                     pip3 cache purge &>/dev/null && quick_result+=("pip ✓") || quick_result+=("pip ✗")
@@ -156,7 +198,7 @@ cache-cleanup() {
 
         # Show project cleanup info
         echo ""
-        echo -e "\033[2m💡 To clean project dependencies (node_modules, vendor, __pycache__):\033[0m"
+        echo -e "\033[2m💡 To clean project dependencies (node_modules, .yarn, .pnpm-store, vendor, __pycache__):\033[0m"
         echo -e "\033[2m   project-cleanup ~/Projects     # scan & clean folder\033[0m"
         echo -e "\033[2m   project-cleanup -n ~/Projects  # dry run (preview)\033[0m"
     fi
@@ -171,6 +213,9 @@ cache-help() {
     command -v brew &>/dev/null && echo -e "\033[2mHomebrew:\033[0m     brew cleanup"
     (command -v composer &>/dev/null || [[ -x "$BINARY_DIR/composer" ]]) && echo -e "\033[2mComposer:\033[0m     composer clear-cache"
     command -v npm &>/dev/null && echo -e "\033[2mnpm:\033[0m          npm cache clean --force"
+    command -v yarn &>/dev/null && echo -e "\033[2myarn:\033[0m         yarn cache clean"
+    command -v pnpm &>/dev/null && echo -e "\033[2mpnpm:\033[0m         pnpm store prune"
+    command -v bun &>/dev/null && echo -e "\033[2mbun:\033[0m          bun pm cache rm"
     command -v pip3 &>/dev/null && echo -e "\033[2mpip:\033[0m          pip3 cache purge"
     (command -v docker &>/dev/null && docker info &>/dev/null 2>&1) && echo -e "\033[2mDocker:\033[0m       docker system prune -f"
 
