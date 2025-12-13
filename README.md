@@ -24,17 +24,26 @@ Intinya: **Install cepat, hapus lebih cepat, nggak ada drama dependency.**
 
 ```
 .
-├── binary-files/          # Binary tools standalone
-├── configs/               # Shell configuration files
-│   ├── config.zsh
-│   ├── starship.toml
-│   └── install-helper
+├── binary-files/              # Binary tools standalone
+├── configs/                   # Modular shell configuration
+│   ├── config.zsh             # Entry point
+│   ├── starship.toml          # Prompt config
+│   ├── install-helper         # Binary download guide
+│   ├── project-cleanup        # Cleanup tool
+│   ├── core/                  # Alias registry
+│   ├── tools/                 # CLI tool configs
+│   ├── git/                   # Git aliases
+│   ├── php/                   # PHP & Laravel
+│   ├── bun/                   # Bun runtime
+│   ├── utils/                 # Utility functions
+│   ├── shell/                 # Help & welcome
+│   └── maintenance/           # Cache cleanup
 ├── docker-compose-setting/
-│   ├── dragonfly/         # Redis-compatible in-memory database
-│   ├── minio/             # S3-compatible object storage
-│   ├── mongodb/           # NoSQL document database
-│   └── postgresql/        # Relational database
-└── CLAUDE.md              # AI assistant guidance
+│   ├── dragonfly/             # Redis-compatible in-memory database
+│   ├── minio/                 # S3-compatible object storage
+│   ├── mongodb/               # NoSQL document database
+│   └── postgresql/            # Relational database
+└── CLAUDE.md                  # AI assistant guidance
 ```
 
 ## Quick Start

@@ -1,6 +1,6 @@
 # Configs
 
-Shell configuration files untuk development environment.
+Modular shell configuration untuk development environment.
 
 ## Setup
 
@@ -10,11 +10,24 @@ Tambahkan satu baris ini ke `~/.zshrc`:
 source "$HOME/Developers/configs/config.zsh"
 ```
 
-## Files
+## Structure
+
+| Module | Deskripsi |
+|--------|-----------|
+| [core/](core/) | Alias registry system (`_reg`, `alias-finder`) |
+| [tools/](tools/) | Modern CLI tools (lsd, bat, lazygit, zoxide, fzf, delta) |
+| [git/](git/) | Git aliases & quick combos (gac, wip, nah) |
+| [php/](php/) | PHP & Laravel aliases + version manager |
+| [bun/](bun/) | Bun runtime & package manager aliases |
+| [utils/](utils/) | Utility functions (mkcd, backup, extract, ports) |
+| [shell/](shell/) | Help system & welcome message |
+| [maintenance/](maintenance/) | Cache cleanup utilities |
+
+## Key Files
 
 | File | Deskripsi |
 |------|-----------|
-| `config.zsh` | Main shell configuration - aliases, PATH, tool configs |
+| `config.zsh` | Entry point - auto-detect paths, sources all modules |
 | `starship.toml` | Starship prompt configuration |
 | `install-helper` | Script untuk melihat panduan download binary tools |
 | `project-cleanup` | Script untuk cleanup node_modules, vendor, __pycache__ |
@@ -25,65 +38,7 @@ source "$HOME/Developers/configs/config.zsh"
 - Menambahkan `binary-files/` dan `configs/` ke PATH
 - Detect tools yang terinstall (di binary-files atau system)
 - Apply konfigurasi/alias jika tool tersedia
-- Menampilkan rekomendasi jika ada tools dari system PATH
-
-## Tool Configurations
-
-| Tool | Konfigurasi Otomatis |
-|------|---------------------|
-| lsd | `ls` → lsd dengan icons & colors |
-| bat | `cat` → bat dengan syntax highlighting |
-| lazygit | `lg` → lazygit |
-| delta | Git diff dengan syntax highlighting |
-| fzf | Ctrl+R (history), Ctrl+T (file picker) |
-| fd | Digunakan fzf untuk pencarian file |
-| rg | Digunakan fzf untuk pencarian konten |
-| zoxide | `cd` → smart cd dengan history |
-| starship | Shell prompt dengan config dari `starship.toml` |
-
-## Git Aliases
-
-`config.zsh` menyediakan git aliases untuk mempercepat workflow:
-
-| Alias | Command | Deskripsi |
-|-------|---------|-----------|
-| `g` | `git` | Shorthand git |
-| `gs` | `git status` | Status |
-| `ga` | `git add` | Add file |
-| `gaa` | `git add -A` | Add semua file |
-| `gc` | `git commit -m` | Commit dengan message |
-| `gca` | `git commit --amend` | Amend commit |
-| `gp` | `git push` | Push |
-| `gpf` | `git push --force-with-lease` | Force push (safe) |
-| `gl` | `git pull` | Pull |
-| `gb` | `git branch` | List branch |
-| `gbd` | `git branch -d` | Delete branch |
-| `gco` | `git checkout` | Checkout |
-| `gcob` | `git checkout -b` | Checkout new branch |
-| `gsw` | `git switch` | Switch branch |
-| `gswc` | `git switch -c` | Switch & create branch |
-| `gm` | `git merge` | Merge |
-| `gd` | `git diff` | Diff |
-| `gds` | `git diff --staged` | Diff staged |
-| `glog` | `git log --oneline --graph --decorate` | Log graph |
-| `gloga` | `git log --oneline --graph --decorate --all` | Log graph all |
-| `gst` | `git stash` | Stash |
-| `gstp` | `git stash pop` | Stash pop |
-| `gstl` | `git stash list` | Stash list |
-| `grh` | `git reset HEAD` | Reset HEAD |
-| `grhh` | `git reset HEAD --hard` | Hard reset |
-| `gclean` | `git clean -fd` | Clean untracked |
-| `gf` | `git fetch` | Fetch |
-| `gfa` | `git fetch --all` | Fetch all |
-| `gr` | `git remote -v` | Remote list |
-
-### Power Aliases
-
-| Alias | Deskripsi |
-|-------|-----------|
-| `gac "message"` | Add all + commit |
-| `wip` | Quick WIP commit |
-| `nah` | Reset hard + clean (undo everything) |
+- Load modules sesuai urutan: core → tools → git → php → bun → utils → shell → maintenance
 
 ## Project Cleanup
 
