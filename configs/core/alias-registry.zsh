@@ -253,8 +253,11 @@ _cheat_search() {
     local name=$(echo "$visible" | rev | cut -d'/' -f1 | rev)
     local cmd=$(echo "$hidden" | cut -d'|' -f2)
 
-    # Put command in buffer
-    print -z "$cmd "
+    # Put command in buffer (only if not empty, extract first line)
+    local first_cmd=$(echo "$cmd" | head -1 | sed 's/#.*//' | xargs)
+    if [[ -n "$first_cmd" ]]; then
+        print -z "$first_cmd "
+    fi
 }
 
 # Browse by group/tag
