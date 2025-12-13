@@ -5,6 +5,7 @@ Utility shortcuts and productivity functions.
 ## Files
 
 - `shortcuts.zsh` - Directory shortcuts & utility functions
+- `project-analyze.zsh` - Project analysis and recommendations
 
 ## Directory Shortcuts
 
@@ -77,3 +78,23 @@ weather
 weather Tokyo
 # Weather for Tokyo
 ```
+
+### `project-analyze [directory]`
+Analyze project and provide recommendations.
+
+```zsh
+project-analyze
+# Analyze current directory
+
+project-analyze ~/Projects/my-app
+# Analyze specific directory
+```
+
+**Detects:**
+- Node.js projects (package.json)
+- Package managers: npm, yarn, pnpm, bun
+- Laravel projects (artisan file)
+
+**Recommends:**
+- Switch to bun if using npm/yarn/pnpm
+- Use Docker for Laravel projects
