@@ -43,6 +43,57 @@ _RSYNC_NODE_EXCLUDES=(
 )
 
 # =============================================================================
+# Helper: Rsync confirmation with trailing slash explanation
+# =============================================================================
+
+_rsync_show_confirmation() {
+    local action="$1"
+    shift
+    local args=("$@")
+    local dest="${args[-1]}"
+    local sources=("${args[@]:0:${#args[@]}-1}")
+
+    echo ""
+    echo -e "\033[1m$action Preview:\033[0m"
+    echo ""
+
+    # Show each source with trailing slash explanation
+    for src in "${sources[@]}"; do
+        local src_display="${src/#$HOME/~}"
+        if [[ "$src" == */ ]]; then
+            echo -e "  Source:      \033[36m$src_display\033[0m (contents of folder)"
+        elif [[ -d "$src" ]]; then
+            echo -e "  Source:      \033[36m$src_display\033[0m (folder itself)"
+        else
+            echo -e "  Source:      \033[36m$src_display\033[0m"
+        fi
+    done
+
+    local dest_display="${dest/#$HOME/~}"
+    echo -e "  Destination: \033[36m$dest_display\033[0m"
+    echo ""
+
+    # Show trailing slash tip for directories
+    if [[ ${#sources[@]} -eq 1 && -d "${sources[0]}" ]]; then
+        local src="${sources[0]}"
+        local src_name=$(basename "$src")
+        if [[ "$src" == */ ]]; then
+            echo -e "  \033[2mResult: Files will be placed directly in $dest_display\033[0m"
+        else
+            echo -e "  \033[2mResult: Creates $dest_display/$src_name/\033[0m"
+            echo -e "  \033[2mTip: Add trailing slash ($src/) to copy contents only\033[0m"
+        fi
+        echo ""
+    fi
+}
+
+_rsync_confirm() {
+    echo -n "Proceed? [Y/n]: "
+    read -r response
+    [[ -z "$response" || "$response" =~ ^[Yy]$ ]]
+}
+
+# =============================================================================
 # Smart Copy/Move (with progress)
 # =============================================================================
 
@@ -50,7 +101,7 @@ _RSYNC_NODE_EXCLUDES=(
 cpr() {
     if [[ "$1" == "-h" || "$1" == "--help" ]]; then
         cat << 'EOF'
-Usage: cpr <source>... <destination>
+Usage: cpr [options] <source>... <destination>
   Copy files/directories with progress bar and resume capability
   Supports multiple sources like native cp command
 
@@ -67,23 +118,42 @@ Flags explained:
 
 Options:
   -n, --dry-run    Preview what would be copied without actually copying
+  -y, --yes        Skip confirmation prompt
+
+Trailing slash behavior (IMPORTANT):
+  source/  → Copy CONTENTS of folder into destination
+  source   → Copy FOLDER itself into destination
+
+  Example:
+    cpr Photos/ /Backup/     → /Backup/img1.jpg, /Backup/img2.jpg
+    cpr Photos /Backup/      → /Backup/Photos/img1.jpg, /Backup/Photos/img2.jpg
 
 Examples:
   cpr movie.mp4 /Volumes/USB/
-  # Output: movie.mp4
-  #         1.05G 100%   52.34MB/s    0:00:20 (xfr#1, to-chk=0/1)
-
   cpr file1.txt file2.txt file3.txt /Volumes/USB/   # Multiple sources
   cpr *.mp4 /Volumes/External/Videos/               # Wildcard
-  cpr -n ~/Projects /Volumes/Backup/                # Preview only
+  cpr -y ~/Projects /Volumes/Backup/                # Skip confirmation
 EOF
         return 0
     fi
 
-    local dry_run=""
-    [[ "$1" == "-n" || "$1" == "--dry-run" ]] && { dry_run="--dry-run"; shift; }
+    local dry_run="" skip_confirm=false
+    while [[ "$1" == -* ]]; do
+        case "$1" in
+            -n|--dry-run) dry_run="--dry-run"; shift ;;
+            -y|--yes) skip_confirm=true; shift ;;
+            *) shift ;;
+        esac
+    done
 
     [[ $# -lt 2 ]] && { echo "Usage: cpr <source>... <destination>"; return 1; }
+
+    # Show confirmation unless skipped or dry-run
+    if [[ "$skip_confirm" == false && -z "$dry_run" ]]; then
+        _rsync_show_confirmation "Copy" "$@"
+        _rsync_confirm || { echo "Cancelled."; return 0; }
+        echo ""
+    fi
 
     rsync -ah --progress --partial $dry_run "$@"
 }
@@ -92,7 +162,7 @@ EOF
 mvr() {
     if [[ "$1" == "-h" || "$1" == "--help" ]]; then
         cat << 'EOF'
-Usage: mvr <source>... <destination>
+Usage: mvr [options] <source>... <destination>
   Move files/directories with progress bar (copy then delete source)
   Supports multiple sources like native mv command
 
@@ -106,17 +176,46 @@ Flags explained:
   --remove-source-files     Delete source files after successful transfer
                             (directories are NOT deleted, only files inside)
 
+Options:
+  -y, --yes        Skip confirmation prompt
+
+Trailing slash behavior (IMPORTANT):
+  source/  → Move CONTENTS of folder into destination
+  source   → Move FOLDER itself into destination
+
+  Example:
+    mvr Photos/ /Backup/     → /Backup/img1.jpg (Photos/ becomes empty)
+    mvr Photos /Backup/      → /Backup/Photos/img1.jpg
+
 Examples:
   mvr large-file.zip /Volumes/External/
   mvr file1.txt file2.txt file3.txt ~/Documents/   # Multiple sources
   mvr ~/Downloads/*.iso /Volumes/USB/              # Wildcard
+  mvr -y ~/old-files /Volumes/Archive/             # Skip confirmation
 
 Note: Empty source directories remain after move. Use 'rm -r' to remove them.
 EOF
         return 0
     fi
 
+    local skip_confirm=false
+    while [[ "$1" == -* ]]; do
+        case "$1" in
+            -y|--yes) skip_confirm=true; shift ;;
+            *) shift ;;
+        esac
+    done
+
     [[ $# -lt 2 ]] && { echo "Usage: mvr <source>... <destination>"; return 1; }
+
+    # Show confirmation unless skipped
+    if [[ "$skip_confirm" == false ]]; then
+        _rsync_show_confirmation "Move" "$@"
+        echo -e "  \033[33mWarning: Source files will be DELETED after transfer\033[0m"
+        echo ""
+        _rsync_confirm || { echo "Cancelled."; return 0; }
+        echo ""
+    fi
 
     rsync -ah --progress --remove-source-files "$@"
 }
