@@ -196,3 +196,94 @@ tips() {
     done
     echo -e "\033[0m"
 }
+
+# =============================================================================
+# Config Doctor - Check recommended tools
+# =============================================================================
+config-doctor() {
+    [[ "$1" == "-h" || "$1" == "--help" ]] && {
+        echo "Usage: config-doctor"
+        echo "  Check installation status of recommended tools"
+        return 0
+    }
+
+    echo ""
+    echo -e "\033[1mConfig Doctor\033[0m"
+    echo -e "\033[2mChecking recommended tools...\033[0m"
+    echo ""
+
+    local installed=0
+    local missing=0
+    local missing_tools=()
+
+    _check() {
+        local name=$1
+        local desc=$2
+        local check_cmd=${3:-$1}
+
+        if command -v "$check_cmd" &>/dev/null || [[ -x "$BINARY_DIR/$check_cmd" ]]; then
+            echo -e "  \033[32m[ok]\033[0m $name - $desc"
+            ((installed++))
+        else
+            echo -e "  \033[31m[x]\033[0m $name - $desc"
+            ((missing++))
+            missing_tools+=("$name")
+        fi
+    }
+
+    echo -e "\033[1mCore Tools:\033[0m"
+    _check "fzf" "Fuzzy finder"
+    _check "rg" "Ripgrep (fast grep)"
+    _check "fd" "Fast file finder"
+    _check "bat" "Cat with syntax highlighting"
+    _check "jq" "JSON processor"
+    echo ""
+
+    echo -e "\033[1mGit Tools:\033[0m"
+    _check "lazygit" "Terminal UI for git"
+    _check "delta" "Git diff viewer"
+    echo ""
+
+    echo -e "\033[1mFile & System:\033[0m"
+    _check "lsd" "Modern ls replacement"
+    _check "zoxide" "Smart cd replacement"
+    _check "dust" "Better du (disk usage)"
+    _check "duf" "Better df (disk free)"
+    _check "btm" "Bottom (system monitor)"
+    echo ""
+
+    echo -e "\033[1mDocker:\033[0m"
+    _check "lima" "Lima VM (via brew)" "limactl"
+    _check "docker" "Docker CLI"
+    _check "lazydocker" "Docker TUI"
+    echo ""
+
+    echo -e "\033[1mJSON Tools:\033[0m"
+    _check "fx" "Interactive JSON viewer"
+    _check "gron" "Make JSON greppable"
+    echo ""
+
+    echo -e "\033[1mOther:\033[0m"
+    _check "starship" "Shell prompt"
+    _check "tldr" "Simplified man pages"
+    _check "fastfetch" "System info display"
+    echo ""
+
+    local total=$((installed + missing))
+    local pct=$((installed * 100 / total))
+
+    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    echo -e "\033[1mSummary:\033[0m $installed/$total tools installed ($pct%)"
+
+    if [[ $missing -gt 0 ]]; then
+        echo ""
+        echo -e "\033[33mMissing:\033[0m ${missing_tools[*]}"
+        echo -e "\033[2mRun 'install-helper' for download links\033[0m"
+    else
+        echo ""
+        echo -e "\033[32mAll tools installed!\033[0m"
+    fi
+    echo ""
+
+    unset -f _check
+}
