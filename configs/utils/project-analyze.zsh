@@ -124,3 +124,6 @@ project-analyze() {
 
     echo ""
 }
+
+# Register command
+_reg project-analyze "project-analyze" "Analyze project & recommend tools" "util,project"

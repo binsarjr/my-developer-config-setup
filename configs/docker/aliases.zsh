@@ -281,3 +281,14 @@ Shortcuts:
 
 EOF
 }
+
+# Register Docker/Lima commands
+_reg docker-start    "docker-start"    "Start Lima Docker VM" "docker,lima"
+_reg docker-stop     "docker-stop"     "Stop Lima Docker VM" "docker,lima"
+_reg docker-restart  "docker-restart"  "Restart Lima Docker VM" "docker,lima"
+_reg docker-status   "docker-status"   "Show Lima VM status" "docker,lima"
+_reg docker-install  "docker-install"  "Install Lima + Docker" "docker,lima,install"
+_reg docker-uninstall "docker-uninstall" "Remove Lima + Docker" "docker,lima,uninstall"
+_reg docker-prune    "docker-prune"    "Clean unused Docker resources" "docker,cleanup"
+_reg dsh             "dsh"             "Shell into container" "docker,shell"
+_reg lima-setup      "lima-setup"      "Show Lima setup guide" "docker,lima,help"

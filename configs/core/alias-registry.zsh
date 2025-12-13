@@ -84,11 +84,18 @@ cheat() {
         fi
     done
 
+    # Transform query: "docker stop" → "'docker 'stop" (exact per-word)
+    local query=""
+    if [[ -n "$*" ]]; then
+        for word in $@; do
+            query+="'$word "
+        done
+    fi
+
     # fzf selection with preview
     local selected
     selected=$(echo -e "$list" | $fzf_cmd \
-        --query="$*" \
-        --exact \
+        --query="$query" \
         --height=50% \
         --reverse \
         --border \
@@ -126,4 +133,8 @@ cheat() {
     # Put command in buffer for editing (with trailing space for args)
     print -z "$cmd "
 }
+
+# Register core commands
+_reg cheat      "cheat"      "Search commands (cheatsheet)" "help,search,cheat"
+_reg alias-list "alias-list" "List all registered aliases" "help,alias"
 

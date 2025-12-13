@@ -227,3 +227,9 @@ config-doctor() {
 
     unset -f _check
 }
+
+# Register help commands
+_reg config-help   "config-help"   "Show all available aliases" "help,config"
+_reg tips          "tips"          "Show random tips" "help,tips"
+_reg config-doctor "config-doctor" "Check recommended tools status" "help,doctor"
+_reg install-helper "install-helper" "Show binary download guide" "help,install"

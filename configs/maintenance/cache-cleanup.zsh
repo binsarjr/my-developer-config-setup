@@ -240,3 +240,8 @@ cache-help() {
 echo -e "\033[2m"
 echo "  🧹 Run cache-cleanup to clean caches | cache-help for commands"
 echo -e "\033[0m"
+
+# Register maintenance commands
+_reg cache-cleanup "cache-cleanup" "Interactive cache cleanup" "maintenance,cache"
+_reg cache-help    "cache-help"    "Show cache cleanup commands" "maintenance,cache,help"
+_reg project-cleanup "project-cleanup" "Clean node_modules, vendor, etc" "maintenance,cleanup"
