@@ -91,75 +91,15 @@ _show_intro() {
 _show_intro
 
 # =============================================================================
-# Random Tips on Load
+# Random Tips on Load (from ALIAS_REGISTRY)
 # =============================================================================
-_config_tips=(
-    "gs → git status"
-    "ga → git add"
-    "gaa → git add all"
-    "gc 'msg' → git commit"
-    "gca → amend commit"
-    "gp → git push"
-    "gpf → force push (safe)"
-    "gl → git pull"
-    "gd → git diff"
-    "gds → diff staged"
-    "glog → pretty git log"
-    "gloga → log all branches"
-    "gst → git stash"
-    "gstp → stash pop"
-    "gstl → stash list"
-    "gb → git branch"
-    "gbd → delete branch"
-    "gco → checkout"
-    "gcob → checkout -b"
-    "gsw → switch branch"
-    "gswc → switch -c"
-    "gm → merge"
-    "grh → reset HEAD"
-    "grhh → reset hard"
-    "gf → fetch"
-    "gfa → fetch all"
-    "gac 'msg' → add + commit"
-    "wip → quick WIP commit"
-    "nah → undo everything"
-    "project-cleanup → clean deps"
-    "config-help → show all aliases"
-    "tips → show random tips"
-    "mkcd dir → create & enter"
-    "backup file → timestamped backup"
-    "extract file → auto extract"
-    "ports → show listening ports"
-    "myip → show public IP"
-    "weather → check weather"
-    ".. / ... → go up directories"
-    "art → php artisan"
-    "artm → migrate"
-    "artmfs → migrate:fresh --seed"
-    "arts → artisan serve"
-    "artt → artisan tinker"
-    "artclear → clear all caches"
-    "ci → composer install"
-    "cu → composer update"
-    "cr → composer require"
-    "sail → Laravel Sail"
-    "sa → sail artisan"
-    "pu → phpunit"
-    "pest → run Pest tests"
-    "laralog → tail Laravel log"
-)
-
-# Tool-specific tips (only if installed)
-command -v lazygit &>/dev/null && _config_tips+=("lg → lazygit")
-command -v lsd &>/dev/null && _config_tips+=("ls → lsd with icons" "lt → tree view")
-command -v bat &>/dev/null && _config_tips+=("cat → bat with syntax highlighting")
-command -v zoxide &>/dev/null && _config_tips+=("cd → zoxide smart jump" "cdi → interactive directory picker")
-command -v dust &>/dev/null && _config_tips+=("du → dust (visual disk usage)")
-command -v duf &>/dev/null && _config_tips+=("df → duf (colorful disk free)")
-command -v btm &>/dev/null && _config_tips+=("top → btm (modern system monitor)")
-command -v tldr &>/dev/null && _config_tips+=("help <cmd> → tldr pages")
-command -v fastfetch &>/dev/null && _config_tips+=("ff → fastfetch (system info)")
-command -v jq &>/dev/null && _config_tips+=("jq → JSON processor")
+_config_tips=()
+for _name in ${(k)ALIAS_REGISTRY}; do
+    local _entry="${ALIAS_REGISTRY[$_name]}"
+    local _desc="${_entry#*|}"
+    _desc="${_desc%%|*}"
+    _config_tips+=("$_name → $_desc")
+done
 
 # Random headers
 _headers=(
@@ -231,4 +171,4 @@ echo ""
 echo -e "  ───"
 echo -e "  💡 Use \033[0m\033[1maf\033[0m\033[2m to search all aliases"
 echo -e "\033[0m"
-unset _config_tips _headers _shown _tip _idx _hour _header _tips_count _tips_to_show _half _left _right _right_idx _max_width _len
+unset _config_tips _headers _shown _tip _idx _hour _header _tips_count _tips_to_show _half _left _right _right_idx _max_width _len _name _entry _desc
