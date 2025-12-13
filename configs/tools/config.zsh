@@ -68,20 +68,15 @@ if _has_bin fzf; then
         export FZF_CTRL_T_OPTS="--preview 'bat --color=always --style=numbers --line-range=:500 {}'"
     fi
 
-    # Key bindings (Ctrl+R, Ctrl+T)
-    if [[ -f "$CONFIG_DIR/fzf-key-bindings.zsh" ]]; then
-        source "$CONFIG_DIR/fzf-key-bindings.zsh"
-    else
-        # Inline key bindings
-        __fzf_history__() {
-            local selected
-            selected=$(fc -rl 1 | fzf --query="$LBUFFER" +s --tac | sed 's/ *[0-9]* *//')
-            LBUFFER="$selected"
-            zle redisplay
-        }
-        zle -N __fzf_history__
-        bindkey '^R' __fzf_history__
-    fi
+    # Key bindings (Ctrl+R for history search)
+    __fzf_history__() {
+        local selected
+        selected=$(fc -rl 1 | fzf --query="$LBUFFER" +s --tac | sed 's/ *[0-9]* *//')
+        LBUFFER="$selected"
+        zle redisplay
+    }
+    zle -N __fzf_history__
+    bindkey '^R' __fzf_history__
 fi
 
 # rg - ripgrep (fast grep)

@@ -63,7 +63,7 @@ config-help() {
 }
 
 # =============================================================================
-# Tips Command
+# Tips Command (uses ALIAS_REGISTRY - single source of truth)
 # =============================================================================
 tips() {
     # Parse arguments
@@ -85,72 +85,14 @@ tips() {
             ;;
     esac
 
-    # Git aliases (always available)
-    local _tips=(
-        "gs → git status"
-        "ga → git add"
-        "gaa → git add all"
-        "gc 'msg' → git commit"
-        "gca → amend commit"
-        "gp → git push"
-        "gpf → force push (safe)"
-        "gl → git pull"
-        "gd → git diff"
-        "gds → diff staged"
-        "glog → pretty git log"
-        "gloga → log all branches"
-        "gst → git stash"
-        "gstp → stash pop"
-        "gstl → stash list"
-        "gb → git branch"
-        "gbd → delete branch"
-        "gco → checkout"
-        "gcob → checkout -b"
-        "gsw → switch branch"
-        "gswc → switch -c"
-        "gm → merge"
-        "grh → reset HEAD"
-        "grhh → reset hard"
-        "gf → fetch"
-        "gfa → fetch all"
-        "gac 'msg' → add + commit"
-        "wip → quick WIP commit"
-        "nah → undo everything"
-        "project-cleanup → clean deps"
-        "config-help → show all aliases"
-        "tips → show random tips"
-        "mkcd dir → create & enter"
-        "backup file → timestamped backup"
-        "extract file → auto extract"
-        "ports → show listening ports"
-        "myip → show public IP"
-        "weather → check weather"
-        ".. / ... → go up directories"
-        "art → php artisan"
-        "artm → migrate"
-        "artmfs → migrate:fresh --seed"
-        "arts → artisan serve"
-        "artt → artisan tinker"
-        "artclear → clear all caches"
-        "ci → composer install"
-        "cu → composer update"
-        "cr → composer require"
-        "sail → Laravel Sail"
-        "sa → sail artisan"
-        "pu → phpunit"
-        "pest → run Pest tests"
-        "laralog → tail Laravel log"
-    )
-
-    # Tool-specific tips (only if installed)
-    command -v lazygit &>/dev/null && _tips+=("lg → lazygit")
-    command -v lsd &>/dev/null && _tips+=("ls → lsd with icons" "lt → tree view")
-    command -v bat &>/dev/null && _tips+=("cat → bat with syntax highlighting")
-    command -v zoxide &>/dev/null && _tips+=("cd → zoxide smart jump" "cdi → interactive directory picker")
-    command -v dust &>/dev/null && _tips+=("du → dust (visual disk usage)")
-    command -v duf &>/dev/null && _tips+=("df → duf (colorful disk free)")
-    command -v btm &>/dev/null && _tips+=("top → btm (modern system monitor)")
-    command -v jq &>/dev/null && _tips+=("jq → JSON processor")
+    # Build tips from ALIAS_REGISTRY
+    local _tips=()
+    for _name in ${(k)ALIAS_REGISTRY}; do
+        local _entry="${ALIAS_REGISTRY[$_name]}"
+        local _desc="${_entry#*|}"
+        _desc="${_desc%%|*}"
+        _tips+=("$_name → $_desc")
+    done
 
     local _headers=(
         "📌 Quick Tips:"
