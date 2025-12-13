@@ -13,19 +13,17 @@ php-available
 # php-switch
 Switch to a different PHP version
 php-switch <version>
-# Example: php-switch 8.2
 ---
 # php-install
 Install a PHP version via Homebrew
 php-install <version>
-# Example: php-install 8.3
 ---
 # php-uninstall
 Uninstall a PHP version
 php-uninstall <version>
 ---
 # php-cleanup
-Cleanup old/unused PHP versions
+Cleanup Homebrew cache for PHP versions
 php-cleanup
 ---
 # php-extensions
@@ -37,7 +35,6 @@ Show PHP manager commands help
 php-help
 ---
 # artclear
-Clear all Laravel caches at once
+Clear all Laravel caches (cache, config, route, view)
 artclear
-# Runs: cache:clear, config:clear, route:clear, view:clear
 ---
