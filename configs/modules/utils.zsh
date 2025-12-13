@@ -1,10 +1,10 @@
 # =============================================================================
 # Directory Shortcuts
 # =============================================================================
-alias ..="cd .."
-alias ...="cd ../.."
-alias ....="cd ../../.."
-alias .....="cd ../../../.."
+_reg ..    "cd .."                      "Navigate up 1 directory level"
+_reg ...   "cd ../.."                   "Navigate up 2 directory levels"
+_reg ....  "cd ../../.."                "Navigate up 3 directory levels"
+_reg ..... "cd ../../../.."             "Navigate up 4 directory levels"
 
 # =============================================================================
 # Productivity Functions

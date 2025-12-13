@@ -39,8 +39,12 @@ _has_bin() {
 # =============================================================================
 # Source Modules
 # =============================================================================
-# Order matters: tools first, then aliases, utils, help, welcome (shows tips), cache-cleanup
+# Order matters:
+# 1. alias-registry (defines _reg function)
+# 2. tools, aliases, utils (use _reg)
+# 3. help, welcome, cache-cleanup (UI/output)
 for module in \
+    "$CONFIG_DIR/modules/alias-registry.zsh" \
     "$CONFIG_DIR/modules/tools.zsh" \
     "$CONFIG_DIR/modules/git-aliases.zsh" \
     "$CONFIG_DIR/modules/php-aliases.zsh" \

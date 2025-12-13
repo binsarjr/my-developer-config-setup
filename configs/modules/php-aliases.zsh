@@ -3,44 +3,44 @@
 # =============================================================================
 
 # Artisan
-alias art="php artisan"
-alias artm="php artisan migrate"
-alias artmf="php artisan migrate:fresh"
-alias artmfs="php artisan migrate:fresh --seed"
-alias artmr="php artisan migrate:rollback"
-alias arts="php artisan serve"
-alias artt="php artisan tinker"
-alias artc="php artisan cache:clear"
-alias artcc="php artisan config:clear"
-alias artrc="php artisan route:cache"
-alias artrl="php artisan route:list"
-alias artdb="php artisan db:seed"
-alias artmk="php artisan make:"
+_reg art    "php artisan"               "Laravel Artisan CLI tool"
+_reg artm   "php artisan migrate"       "Run pending Laravel database migrations"
+_reg artmf  "php artisan migrate:fresh" "Drop all tables & re-run all migrations"
+_reg artmfs "php artisan migrate:fresh --seed" "Fresh migration + run database seeders"
+_reg artmr  "php artisan migrate:rollback" "Rollback the last batch of migrations"
+_reg arts   "php artisan serve"         "Start Laravel development server (localhost:8000)"
+_reg artt   "php artisan tinker"        "Open Laravel REPL for interactive testing"
+_reg artc   "php artisan cache:clear"   "Clear Laravel application cache"
+_reg artcc  "php artisan config:clear"  "Clear cached Laravel configuration"
+_reg artrc  "php artisan route:cache"   "Cache routes for faster route resolution"
+_reg artrl  "php artisan route:list"    "Display all registered routes with details"
+_reg artdb  "php artisan db:seed"       "Run database seeders to populate tables"
+_reg artmk  "php artisan make:"         "Generate Laravel scaffolding (model, controller, etc)"
 
 # Composer
-alias ci="composer install"
-alias cu="composer update"
-alias cr="composer require"
-alias crd="composer require --dev"
-alias cdu="composer dump-autoload"
-alias cda="composer dump-autoload -o"
+_reg ci     "composer install"          "Install PHP dependencies from composer.lock"
+_reg cu     "composer update"           "Update PHP dependencies to latest versions"
+_reg cr     "composer require"          "Add new PHP package to project"
+_reg crd    "composer require --dev"    "Add PHP package as dev dependency"
+_reg cdu    "composer dump-autoload"    "Regenerate Composer autoloader"
+_reg cda    "composer dump-autoload -o" "Regenerate autoloader (optimized for prod)"
 
 # Laravel Sail (Docker)
-alias sail="./vendor/bin/sail"
-alias sa="sail artisan"
-alias sac="sail artisan cache:clear"
-alias sam="sail artisan migrate"
-alias samf="sail artisan migrate:fresh --seed"
+_reg sail   "./vendor/bin/sail"         "Laravel Sail - Docker dev environment CLI"
+_reg sa     "sail artisan"              "Run Artisan inside Sail Docker container"
+_reg sac    "sail artisan cache:clear"  "Clear cache inside Sail container"
+_reg sam    "sail artisan migrate"      "Run migrations inside Sail container"
+_reg samf   "sail artisan migrate:fresh --seed" "Fresh migrate + seed in Sail"
 
 # PHPUnit / Pest
-alias pf="./vendor/bin/phpunit --filter"
-alias pu="./vendor/bin/phpunit"
-alias pest="./vendor/bin/pest"
-alias pestf="./vendor/bin/pest --filter"
+_reg pf     "./vendor/bin/phpunit --filter" "Run PHPUnit tests matching filter pattern"
+_reg pu     "./vendor/bin/phpunit"      "Run all PHPUnit tests"
+_reg pest   "./vendor/bin/pest"         "Run all Pest tests"
+_reg pestf  "./vendor/bin/pest --filter" "Run Pest tests matching filter pattern"
 
 # Laravel utilities
-alias lnew="composer create-project laravel/laravel"
-alias laralog="tail -f storage/logs/laravel.log"
+_reg lnew   "composer create-project laravel/laravel" "Create new Laravel project from scratch"
+_reg laralog "tail -f storage/logs/laravel.log" "Watch Laravel log file in real-time"
 
 # Clear all Laravel caches
 artclear() {

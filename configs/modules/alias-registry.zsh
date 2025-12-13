@@ -1,0 +1,97 @@
+# =============================================================================
+# Alias Registry
+# DRY alias definitions with descriptions + fzf search
+# =============================================================================
+
+# Global registry: [name]="command|description"
+typeset -gA ALIAS_REGISTRY
+
+# Register alias with description
+# Usage: _reg <name> <command> <description>
+_reg() {
+    local name=$1 cmd=$2 desc=$3
+    ALIAS_REGISTRY[$name]="$cmd|$desc"
+    alias $name="$cmd"
+}
+
+# Register alias only if tool exists (for conditional tool aliases)
+# Usage: _reg_if <tool> <name> <command> <description>
+_reg_if() {
+    local tool=$1 name=$2 cmd=$3 desc=$4
+    if _has_bin "$tool"; then
+        ALIAS_REGISTRY[$name]="$cmd|$desc"
+        alias $name="$cmd"
+    fi
+}
+
+# List all registered aliases
+alias-list() {
+    echo ""
+    echo -e "\033[1m📋 Registered Aliases\033[0m"
+    echo ""
+    for name in ${(ko)ALIAS_REGISTRY}; do
+        local entry="${ALIAS_REGISTRY[$name]}"
+        local cmd="${entry%%|*}"
+        local desc="${entry#*|}"
+        printf "  \033[36m%-12s\033[0m %s\n" "$name" "$desc"
+    done
+    echo ""
+    echo -e "\033[2mTotal: ${#ALIAS_REGISTRY[@]} aliases | Use 'alias-finder' or 'af' to search\033[0m"
+    echo ""
+}
+
+# Search aliases with fzf
+alias-finder() {
+    local fzf_cmd="fzf"
+    [[ -x "$BINARY_DIR/fzf" ]] && fzf_cmd="$BINARY_DIR/fzf"
+
+    if ! command -v fzf &>/dev/null && [[ ! -x "$BINARY_DIR/fzf" ]]; then
+        echo "fzf not found. Showing alias-list instead."
+        alias-list
+        return
+    fi
+
+    # Build list: "name | description"
+    local list=""
+    for name in ${(ko)ALIAS_REGISTRY}; do
+        local entry="${ALIAS_REGISTRY[$name]}"
+        local desc="${entry#*|}"
+        list+="$(printf "%-12s │ %s" "$name" "$desc")\n"
+    done
+
+    # fzf selection with preview
+    local selected
+    selected=$(echo -e "$list" | $fzf_cmd \
+        --height=50% \
+        --reverse \
+        --border \
+        --prompt="🔍 Search alias: " \
+        --header="Tab: select | Enter: show info | Esc: cancel" \
+        --preview='
+            name=$(echo {} | cut -d"|" -f1 | xargs)
+            echo ""
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+            echo "  Alias:   $name"
+        ' \
+        --preview-window=down:5:wrap)
+
+    [[ -z "$selected" ]] && return
+
+    # Extract name from selection
+    local name=$(echo "$selected" | cut -d'│' -f1 | xargs)
+    local entry="${ALIAS_REGISTRY[$name]}"
+    local cmd="${entry%%|*}"
+    local desc="${entry#*|}"
+
+    # Show detailed info
+    echo ""
+    echo -e "\033[2m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
+    echo -e "  \033[1mAlias:\033[0m   \033[36m$name\033[0m"
+    echo -e "  \033[1mCommand:\033[0m $cmd"
+    echo -e "  \033[1mDesc:\033[0m    $desc"
+    echo -e "\033[2m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
+    echo ""
+}
+
+# Shortcut
+alias af="alias-finder"

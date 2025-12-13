@@ -5,23 +5,23 @@
 
 # lsd - Modern ls replacement
 if _has_bin lsd; then
-    alias ls="lsd --color auto --header --icon auto -l --hyperlink auto -L -g -h -F"
-    alias ll="lsd -la"
-    alias la="lsd -a"
-    alias lt="lsd --tree"
+    _reg ls  "lsd --color auto --header --icon auto -l --hyperlink auto -L -g -h -F" "List files with icons, sizes & git status (lsd)"
+    _reg ll  "lsd -la"                  "List ALL files including hidden (lsd)"
+    _reg la  "lsd -a"                   "List hidden files only (lsd)"
+    _reg lt  "lsd --tree"               "Display directory structure as tree (lsd)"
 fi
 
 # bat - Cat with syntax highlighting
 if _has_bin bat; then
-    alias cat="bat -p"
-    alias catp="bat"  # with pager
+    _reg cat  "bat -p"                  "View file with syntax highlighting (bat)"
+    _reg catp "bat"                     "View file with pager & line numbers (bat)"
     export BAT_THEME="TwoDark"
     export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 fi
 
 # lazygit - Terminal UI for git
 if _has_bin lazygit; then
-    alias lg="lazygit"
+    _reg lg "lazygit"                   "Open Git terminal UI for visual operations"
 fi
 
 # delta - Git diff viewer
@@ -92,8 +92,8 @@ fi
 # zoxide - Smart cd replacement
 if _has_bin zoxide; then
     eval "$(zoxide init zsh)"
-    alias cd="z"
-    alias cdi="zi"  # interactive mode with fzf
+    _reg cd  "z"                        "Smart directory jump based on history (zoxide)"
+    _reg cdi "zi"                       "Interactive directory picker with fzf (zoxide)"
 fi
 
 # starship - Shell prompt
@@ -104,27 +104,27 @@ fi
 
 # dust - Better du (disk usage visualizer)
 if _has_bin dust; then
-    alias du="dust"
+    _reg du "dust"                      "Show disk usage with visual bar chart (dust)"
 fi
 
 # duf - Better df (disk free)
 if _has_bin duf; then
-    alias df="duf"
+    _reg df "duf"                       "Show disk space with colorful table (duf)"
 fi
 
 # bottom - Better top/htop (system monitor)
 if _has_bin btm; then
-    alias top="btm"
-    alias htop="btm"
+    _reg top  "btm"                     "Interactive system monitor with graphs (bottom)"
+    _reg htop "btm"                     "Interactive system monitor with graphs (bottom)"
 fi
 
 # tealdeer - Better man pages (tldr)
 if _has_bin tldr; then
-    alias help="tldr"
+    _reg help "tldr"                    "Show simplified command examples (tldr)"
 fi
 
 # fastfetch - System info display
 if _has_bin fastfetch; then
-    alias ff="fastfetch"
-    alias neofetch="fastfetch"
+    _reg ff       "fastfetch"           "Display system info with logo (fastfetch)"
+    _reg neofetch "fastfetch"           "Display system info with logo (fastfetch)"
 fi
