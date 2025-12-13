@@ -26,6 +26,8 @@ fi
 
 # delta - Git diff viewer
 if _has_bin delta; then
+    _reg delta "delta"                  "Git diff viewer with syntax highlighting" "git,diff,delta"
+
     # Configure git to use delta (only if not already configured)
     if [[ "$(git config --global core.pager 2>/dev/null)" != "delta" ]]; then
         git config --global core.pager delta
@@ -38,8 +40,15 @@ if _has_bin delta; then
     fi
 fi
 
+# fd - Fast file finder
+if _has_bin fd; then
+    _reg fd "fd"                        "Fast file finder (find alternative)" "file,find,fd"
+fi
+
 # fzf - Fuzzy finder
 if _has_bin fzf; then
+    _reg fzf "fzf"                      "Fuzzy finder for files & text" "search,fzf"
+
     # Use fd for file finding if available
     if _has_bin fd; then
         export FZF_DEFAULT_COMMAND="fd --type f --hidden --follow --exclude .git"
@@ -81,6 +90,7 @@ fi
 
 # rg - ripgrep (fast grep)
 if _has_bin rg; then
+    _reg rg "rg"                        "Fast grep (ripgrep)" "search,grep,rg"
     export FZF_DEFAULT_COMMAND="${FZF_DEFAULT_COMMAND:-rg --files --hidden --follow --glob '!.git/*'}"
 fi
 
@@ -127,6 +137,11 @@ fi
 # fx - Interactive JSON viewer
 if _has_bin fx; then
     _reg fx "fx"                        "Interactive JSON viewer & processor" "json,fx"
+fi
+
+# jq - JSON processor
+if _has_bin jq; then
+    _reg jq "jq"                        "JSON processor & transformer" "json,jq"
 fi
 
 # curlie - curl with pretty output
