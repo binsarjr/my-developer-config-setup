@@ -627,6 +627,11 @@ EOF
 # =============================================================================
 
 rsync-help() {
+    [[ "$1" == "-h" || "$1" == "--help" ]] && {
+        echo "Usage: rsync-help"
+        echo "  Show rsync utilities guide (cpr, mvr, backup, deploy, sync)"
+        return 0
+    }
     cat << 'EOF'
 
 Rsync Utilities

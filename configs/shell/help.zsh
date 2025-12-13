@@ -2,6 +2,11 @@
 # Help Command
 # =============================================================================
 config-help() {
+    [[ "$1" == "-h" || "$1" == "--help" ]] && {
+        echo "Usage: config-help"
+        echo "  Show all available aliases and commands by category"
+        return 0
+    }
     echo ""
     echo -e "\033[1mGit Aliases:\033[0m"
     echo "  g, gs, ga, gaa, gc, gca, gp, gpf, gl"

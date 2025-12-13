@@ -250,6 +250,11 @@ docker-prune() {
 # =============================================================================
 
 lima-setup() {
+    [[ "$1" == "-h" || "$1" == "--help" ]] && {
+        echo "Usage: lima-setup"
+        echo "  Show Lima + Docker setup guide"
+        return 0
+    }
     cat << 'EOF'
 Lima + Docker Setup Guide
 =========================

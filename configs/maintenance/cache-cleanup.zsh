@@ -217,6 +217,11 @@ cache-cleanup() {
 
 # Show cache cleanup commands (only for installed tools)
 cache-help() {
+    [[ "$1" == "-h" || "$1" == "--help" ]] && {
+        echo "Usage: cache-help"
+        echo "  Show individual cache cleanup commands for installed tools"
+        return 0
+    }
     echo ""
     echo -e "\033[1m🧹 Cache Cleanup Commands\033[0m"
     echo ""
