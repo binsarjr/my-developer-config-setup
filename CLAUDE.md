@@ -53,6 +53,18 @@ _reg "alias" "command" "description" "tags"
 ```
 Tags (comma-separated) make aliases discoverable via `alias-finder` search.
 
+## Design Principles
+
+**SSOT (Single Source of Truth):** All alias data lives in `ALIAS_REGISTRY`. This feeds:
+- `tips` command
+- `alias-finder` / `af`
+- Welcome message tips
+- `alias-list`
+
+When adding new aliases, use `_reg` - they automatically appear everywhere.
+
+**DRY (Don't Repeat Yourself):** Avoid hardcoding the same data in multiple places. If you need alias/command info, read from `ALIAS_REGISTRY` instead of maintaining separate lists.
+
 ## Docker Services
 
 **Quick Start Pattern:**
