@@ -56,5 +56,3 @@ artclear() {
     echo "All caches cleared!"
 }
 
-# Register Laravel command
-_reg artclear "artclear" "Clear all Laravel caches" "php,laravel,cache"

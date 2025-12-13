@@ -1,0 +1,43 @@
+# docker-start
+Start Lima Docker VM
+docker-start
+---
+# docker-stop
+Stop Lima Docker VM
+docker-stop
+---
+# docker-restart
+Restart Lima Docker VM
+docker-restart
+---
+# docker-status
+Show Lima VM status
+docker-status
+# Uses: limactl list
+---
+# docker-install
+Auto install Lima + Docker CLI + Docker Compose
+docker-install
+# Installs via Homebrew, creates Lima VM
+---
+# docker-uninstall
+Remove Lima Docker VM and optionally packages
+docker-uninstall [-y]
+---
+# docker-prune
+Clean up unused Docker resources
+docker-prune       # Remove dangling images
+docker-prune -a    # Remove ALL unused images
+---
+# dsh
+Shell into running container
+dsh <container> [shell]
+# Examples:
+#   dsh nginx
+#   dsh myapp bash
+#   dsh postgres psql -U postgres
+---
+# lima-setup
+Show Lima + Docker setup guide
+lima-setup
+---

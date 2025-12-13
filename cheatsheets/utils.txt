@@ -1,0 +1,46 @@
+# mkcd
+Create directory and cd into it
+mkcd <directory>
+---
+# backup
+Create timestamped backup of file
+backup <file>
+# Creates: file.bak.YYYYMMDD_HHMMSS
+---
+# extract
+Universal archive extractor
+extract <archive>
+# Supports: .tar.gz .tar.bz2 .tar.xz .zip .rar .7z .gz .bz2
+---
+# dlx
+Download and extract file in one command
+dlx <url>
+dlx <url> -k           # Keep archive after extraction
+dlx <url> -o ./out     # Extract to specific directory
+---
+# ports
+Show all listening ports
+ports
+# Uses: lsof -i -P -n | grep LISTEN
+---
+# myip
+Show public IP address
+myip
+# Uses: curl ifconfig.me
+---
+# localip
+Show local IP address (en0)
+localip
+# Uses: ipconfig getifaddr en0
+---
+# weather
+Show weather for current location or city
+weather [city]
+# Uses: wttr.in
+---
+# project-analyze
+Analyze project and recommend tools
+project-analyze [dir]
+# Detects: Node.js (npm/yarn/pnpm/bun), Laravel
+# Recommends: bun for JS, Docker for Laravel
+---

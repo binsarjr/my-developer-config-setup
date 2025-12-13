@@ -58,15 +58,18 @@ alias-list() {
 
 # Custom cheatsheets storage (separate from ALIAS_REGISTRY)
 typeset -gA CUSTOM_CHEATSHEETS
-CHEATSHEET_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/cheatsheets"
 
-# Load custom cheatsheets from files
-_cheat_load_custom() {
-    CUSTOM_CHEATSHEETS=()
-    [[ ! -d "$CHEATSHEET_DIR" ]] && return
+# Project cheatsheets (versioned) + personal cheatsheets
+PROJECT_CHEATSHEET_DIR="$DEV_DIR/cheatsheets"
+PERSONAL_CHEATSHEET_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/cheatsheets"
+
+# Load cheatsheets from a directory
+_cheat_load_dir() {
+    local dir="$1"
+    [[ ! -d "$dir" ]] && return
 
     local file group name desc cmd
-    for file in "$CHEATSHEET_DIR"/*.txt(N); do
+    for file in "$dir"/*.txt(N); do
         [[ ! -f "$file" ]] && continue
         group="${${file:t}%.txt}"
 
@@ -102,6 +105,15 @@ _cheat_load_custom() {
             CUSTOM_CHEATSHEETS[$current_name]="$current_cmd|$current_desc|$group"
         fi
     done
+}
+
+# Load custom cheatsheets from both directories
+_cheat_load_custom() {
+    CUSTOM_CHEATSHEETS=()
+    # Load project cheatsheets first (versioned)
+    _cheat_load_dir "$PROJECT_CHEATSHEET_DIR"
+    # Then load personal cheatsheets (can override/add)
+    _cheat_load_dir "$PERSONAL_CHEATSHEET_DIR"
 }
 
 # Get fzf command
@@ -272,9 +284,9 @@ _cheat_groups() {
     _cheat_search "$selected_group"
 }
 
-# Add new custom cheatsheet entry
+# Add new custom cheatsheet entry (to personal dir)
 _cheat_add() {
-    mkdir -p "$CHEATSHEET_DIR"
+    mkdir -p "$PERSONAL_CHEATSHEET_DIR"
 
     echo -e "\033[1m📝 Add Custom Cheatsheet Entry\033[0m"
     echo ""
@@ -295,8 +307,8 @@ _cheat_add() {
     echo "Command/Note (press Ctrl-D when done):"
     local cmd=$(cat)
 
-    # Append to file
-    local file="$CHEATSHEET_DIR/$group.txt"
+    # Append to personal cheatsheet
+    local file="$PERSONAL_CHEATSHEET_DIR/$group.txt"
     {
         echo ""
         echo "# $name"
@@ -306,32 +318,61 @@ _cheat_add() {
     } >> "$file"
 
     echo ""
-    echo -e "\033[32m✓ Added '$name' to $group\033[0m"
+    echo -e "\033[32m✓ Added '$name' to $group (personal)\033[0m"
 }
 
-# Edit custom cheatsheets
+# Edit cheatsheets (personal dir by default)
 _cheat_edit() {
-    mkdir -p "$CHEATSHEET_DIR"
+    mkdir -p "$PERSONAL_CHEATSHEET_DIR"
 
     local editor="${EDITOR:-nano}"
     if [[ -n "$1" ]]; then
-        # Edit specific group
-        $editor "$CHEATSHEET_DIR/$1.txt"
+        # Edit specific group - check personal first, then project
+        if [[ -f "$PERSONAL_CHEATSHEET_DIR/$1.txt" ]]; then
+            $editor "$PERSONAL_CHEATSHEET_DIR/$1.txt"
+        elif [[ -f "$PROJECT_CHEATSHEET_DIR/$1.txt" ]]; then
+            $editor "$PROJECT_CHEATSHEET_DIR/$1.txt"
+        else
+            # Create in personal dir
+            $editor "$PERSONAL_CHEATSHEET_DIR/$1.txt"
+        fi
     else
-        # List groups and pick
+        # List groups from both dirs and pick
         local fzf_cmd
         fzf_cmd=$(_cheat_fzf)
 
-        if [[ -n "$fzf_cmd" ]] && [[ -d "$CHEATSHEET_DIR" ]]; then
-            local files=$(ls "$CHEATSHEET_DIR"/*.txt 2>/dev/null | xargs -n1 basename 2>/dev/null | sed 's/\.txt$//')
+        if [[ -n "$fzf_cmd" ]]; then
+            local files=""
+            # Project cheatsheets (read-only label)
+            if [[ -d "$PROJECT_CHEATSHEET_DIR" ]]; then
+                for f in "$PROJECT_CHEATSHEET_DIR"/*.txt(N); do
+                    [[ -f "$f" ]] && files+="${${f:t}%.txt} (project)\n"
+                done
+            fi
+            # Personal cheatsheets
+            if [[ -d "$PERSONAL_CHEATSHEET_DIR" ]]; then
+                for f in "$PERSONAL_CHEATSHEET_DIR"/*.txt(N); do
+                    [[ -f "$f" ]] && files+="${${f:t}%.txt} (personal)\n"
+                done
+            fi
+
             if [[ -n "$files" ]]; then
-                local selected=$(echo "$files" | $fzf_cmd --prompt="Edit group: ")
-                [[ -n "$selected" ]] && $editor "$CHEATSHEET_DIR/$selected.txt"
+                local selected=$(echo -e "$files" | $fzf_cmd --prompt="Edit cheatsheet: ")
+                if [[ -n "$selected" ]]; then
+                    local group=$(echo "$selected" | cut -d' ' -f1)
+                    local type=$(echo "$selected" | grep -o '(.*)')
+                    if [[ "$type" == "(project)" ]]; then
+                        $editor "$PROJECT_CHEATSHEET_DIR/$group.txt"
+                    else
+                        $editor "$PERSONAL_CHEATSHEET_DIR/$group.txt"
+                    fi
+                fi
             else
                 echo "No cheatsheets yet. Create one with: cheat -a"
             fi
         else
-            echo "Cheatsheet dir: $CHEATSHEET_DIR"
+            echo "Project:  $PROJECT_CHEATSHEET_DIR"
+            echo "Personal: $PERSONAL_CHEATSHEET_DIR"
             echo "Edit directly or use: cheat -a"
         fi
     fi
@@ -339,13 +380,13 @@ _cheat_edit() {
 
 # Help
 _cheat_help() {
-    cat << 'EOF'
+    cat << EOF
 Usage: cheat [options] [query]
 
 Options:
   -g, --groups    Browse by group/tag first
-  -a, --add       Add new custom cheatsheet entry
-  -e, --edit      Edit custom cheatsheets
+  -a, --add       Add new custom cheatsheet entry (personal)
+  -e, --edit      Edit cheatsheets
   -h, --help      Show this help
 
 Examples:
@@ -363,10 +404,12 @@ Key bindings (in fzf):
 Search syntax:
   'word     Exact match
   ^word     Starts with
-  word$     Ends with
+  word\$     Ends with
   !word     Exclude
 
-Custom cheatsheets: ~/.config/cheatsheets/*.txt
+Cheatsheet locations:
+  Project:  $PROJECT_CHEATSHEET_DIR
+  Personal: $PERSONAL_CHEATSHEET_DIR
 EOF
 }
 
@@ -381,7 +424,4 @@ cheat() {
     esac
 }
 
-# Register core commands
-_reg cheat      "cheat"      "Search commands (cheatsheet)" "help,search,cheat"
-_reg alias-list "alias-list" "List all registered aliases" "help,alias"
 

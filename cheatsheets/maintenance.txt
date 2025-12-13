@@ -1,0 +1,14 @@
+# cache-cleanup
+Interactive cache cleanup (Homebrew, npm, Composer, Docker...)
+cache-cleanup       # Interactive mode
+cache-cleanup -q    # Quick mode (clean all)
+---
+# cache-help
+Show individual cache cleanup commands
+cache-help
+---
+# project-cleanup
+Clean node_modules, vendor, __pycache__ from projects
+project-cleanup [dir]    # Clean directory
+project-cleanup -n       # Dry run (preview)
+---

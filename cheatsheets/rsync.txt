@@ -1,0 +1,56 @@
+# cpr
+Copy with progress bar (rsync, resumable)
+cpr <source> <destination>
+cpr -n <src> <dest>    # Dry run
+cpr -y <src> <dest>    # Skip confirmation
+# Tip: Add trailing slash to copy contents only
+---
+# mvr
+Move with progress bar (rsync, then delete source)
+mvr <source> <destination>
+mvr -y <src> <dest>    # Skip confirmation
+---
+# backup-dev
+Backup ~/Developers to external drive
+backup-dev <destination>
+backup-dev -n <dest>   # Dry run
+# Excludes: node_modules, vendor, .git, etc.
+---
+# backup-sync
+Backup any directory with smart excludes
+backup-sync <source> <destination>
+backup-sync -n <src> <dest>      # Dry run
+backup-sync --delete <src> <dest> # Mirror mode
+---
+# deploy
+Deploy project to remote server via SSH
+deploy <local-path> <user@host:remote-path>
+deploy -n <local> <remote>       # Dry run
+deploy --delete <local> <remote> # Mirror deploy
+---
+# deploy-laravel
+Deploy Laravel project with optimized excludes
+deploy-laravel <user@host:remote-path>
+deploy-laravel <local> <remote>
+# Excludes: vendor, storage/logs, storage/framework/*
+---
+# deploy-node
+Deploy Node.js project with optimized excludes
+deploy-node <user@host:remote-path>
+deploy-node <local> <remote>
+# Excludes: node_modules, .next, .nuxt, dist, build
+---
+# sync-push
+Push local directory to another machine
+sync-push <host> [directory]
+# Default: ~/Developers
+---
+# sync-pull
+Pull directory from another machine
+sync-pull <host> [directory]
+# Default: ~/Developers
+---
+# rsync-help
+Show all rsync commands with explanations
+rsync-help
+---

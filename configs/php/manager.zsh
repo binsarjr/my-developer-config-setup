@@ -462,12 +462,3 @@ php-help() {
 }
 
 # Register PHP commands
-_reg php-current    "php-current"    "Show current PHP version" "php,version"
-_reg php-list       "php-list"       "List installed PHP versions" "php,version"
-_reg php-available  "php-available"  "List available PHP versions" "php,version"
-_reg php-switch     "php-switch"     "Switch PHP version" "php,version"
-_reg php-install    "php-install"    "Install PHP version" "php,install"
-_reg php-uninstall  "php-uninstall"  "Uninstall PHP version" "php,uninstall"
-_reg php-cleanup    "php-cleanup"    "Cleanup old PHP versions" "php,cleanup"
-_reg php-extensions "php-extensions" "List PHP extensions" "php,extensions"
-_reg php-help       "php-help"       "Show PHP commands help" "php,help"

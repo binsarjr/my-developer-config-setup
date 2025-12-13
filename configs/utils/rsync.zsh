@@ -665,14 +665,3 @@ Common rsync flags used:
 EOF
 }
 
-# Register rsync commands
-_reg cpr           "cpr"           "Copy with progress (rsync)" "rsync,copy"
-_reg mvr           "mvr"           "Move with progress (rsync)" "rsync,move"
-_reg backup-dev    "backup-dev"    "Backup dev folder" "rsync,backup"
-_reg backup-sync   "backup-sync"   "Sync backup incrementally" "rsync,backup"
-_reg deploy        "deploy"        "Deploy project via rsync" "rsync,deploy"
-_reg deploy-laravel "deploy-laravel" "Deploy Laravel project" "rsync,deploy,laravel"
-_reg deploy-node   "deploy-node"   "Deploy Node.js project" "rsync,deploy,node"
-_reg sync-push     "sync-push"     "Push files to remote" "rsync,sync"
-_reg sync-pull     "sync-pull"     "Pull files from remote" "rsync,sync"
-_reg rsync-help    "rsync-help"    "Show rsync commands help" "rsync,help"

@@ -1,0 +1,27 @@
+# config-help
+Show all available aliases and commands
+config-help
+---
+# tips
+Show random tips from registered aliases
+tips [count]
+---
+# config-doctor
+Check installation status of recommended tools
+config-doctor
+---
+# install-helper
+Show binary download guide for your architecture
+install-helper
+---
+# cheat
+Interactive cheatsheet search (aliases + custom)
+cheat [query]
+cheat -g       # Browse by group
+cheat -a       # Add entry
+cheat -e       # Edit cheatsheets
+---
+# alias-list
+List all registered aliases with descriptions
+alias-list
+---

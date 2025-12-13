@@ -180,12 +180,3 @@ EOF
     fi
 }
 
-# Register utility commands
-_reg mkcd    "mkcd"    "Create & enter directory" "util,dir"
-_reg backup  "backup"  "Create timestamped backup" "util,backup"
-_reg extract "extract" "Auto extract any archive" "util,archive"
-_reg ports   "ports"   "Show listening ports" "util,network"
-_reg myip    "myip"    "Show public IP address" "util,network"
-_reg localip "localip" "Show local IP address" "util,network"
-_reg weather "weather" "Show weather info" "util,weather"
-_reg dlx     "dlx"     "Download & extract file" "util,download,archive"

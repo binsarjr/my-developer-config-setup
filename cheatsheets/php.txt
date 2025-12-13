@@ -1,0 +1,43 @@
+# php-current
+Show current PHP version in use
+php-current
+---
+# php-list
+List all installed PHP versions
+php-list
+---
+# php-available
+List available PHP versions from Homebrew
+php-available
+---
+# php-switch
+Switch to a different PHP version
+php-switch <version>
+# Example: php-switch 8.2
+---
+# php-install
+Install a PHP version via Homebrew
+php-install <version>
+# Example: php-install 8.3
+---
+# php-uninstall
+Uninstall a PHP version
+php-uninstall <version>
+---
+# php-cleanup
+Cleanup old/unused PHP versions
+php-cleanup
+---
+# php-extensions
+List installed PHP extensions
+php-extensions
+---
+# php-help
+Show PHP manager commands help
+php-help
+---
+# artclear
+Clear all Laravel caches at once
+artclear
+# Runs: cache:clear, config:clear, route:clear, view:clear
+---
