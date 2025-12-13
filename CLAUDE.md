@@ -41,12 +41,17 @@ source "$HOME/Developers/configs/config.zsh"
 
 **Key Commands:**
 - `config-help` - Show all available aliases by category
+- `config-doctor` - Check installation status of recommended tools
 - `tips` - Display random tips
 - `alias-finder` / `af` - fzf search through all aliases
 - `cache-cleanup` - Interactive cache cleanup (brew, npm, composer, docker, etc.)
 - `project-cleanup` - Remove node_modules, vendor, __pycache__ from projects
 
-**Alias Registration:** All aliases use `_reg "alias" "description"` for documentation. When adding new aliases, register them with `_reg` to make them discoverable via `alias-finder`.
+**Alias Registration:**
+```zsh
+_reg "alias" "command" "description" "tags"
+```
+Tags (comma-separated) make aliases discoverable via `alias-finder` search.
 
 ## Docker Services
 
@@ -64,6 +69,17 @@ docker compose up -d
 | mongodb | 27017 | MONGO_ROOT_USER, MONGO_ROOT_PASSWORD, MONGO_DATABASE |
 | postgresql | 5432 | POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB |
 
+## Docker with Lima
+
+Lima-based Docker setup (alternative to Docker Desktop/OrbStack).
+
+**Commands:**
+- `docker-install` - Auto install Lima + Docker + docker-compose
+- `docker-uninstall` - Remove Lima + Docker
+- `docker-start` / `docker-stop` / `docker-restart` - VM control
+- `docker-status` - Show Lima VM status
+- `docker-prune [-a]` - Clean up unused resources
+
 ## Binary Tools
 
 Located in `binary-files/`. Only `.gitkeep` and `README.md` are tracked; binaries are architecture-specific.
@@ -73,7 +89,9 @@ Located in `binary-files/`. Only `.gitkeep` and `README.md` are tracked; binarie
 2. Extract and move to `binary-files/`
 3. `chmod +x <binary>`
 
-**Recommended:** fzf, rg, fd, bat, lsd, lazygit, delta, starship, zoxide
+**Recommended:** fzf, rg, fd, bat, lsd, lazygit, lazydocker, delta, starship, zoxide, dust, duf, btm, jq, fx, gron
+
+Run `config-doctor` to check which tools are installed.
 
 ## Environment Files
 
