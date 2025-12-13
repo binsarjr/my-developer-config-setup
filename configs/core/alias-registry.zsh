@@ -128,7 +128,7 @@ _cheat_fzf() {
 }
 
 # Build combined list from aliases + custom (cheatshh-style format)
-# Format: Group/name\tdesc|cmd|is_alias (tab separates visible from hidden data)
+# Format: Group/name [tags]\tcmd|is_alias (tags visible for search)
 _cheat_build_list() {
     local list="" name entry cmd rest desc tags
 
@@ -145,8 +145,12 @@ _cheat_build_list() {
         local group="${tags%%,*}"
         [[ -z "$group" ]] && group="alias"
 
-        # Format: Group/name\tdesc|cmd|yes
-        list+="$group/$name\t$desc|$cmd|yes\n"
+        # Format: group/name [tags]\tdesc\tcmd|yes (tags visible, desc+cmd hidden)
+        if [[ -n "$tags" ]]; then
+            list+="$group/$name [$tags]\t$desc\t$cmd|yes\n"
+        else
+            list+="$group/$name\t$desc\t$cmd|yes\n"
+        fi
     done
 
     # Custom cheatsheets
@@ -160,7 +164,8 @@ _cheat_build_list() {
         [[ "$tags" == "$desc" ]] && tags=""
 
         local group="${tags:-custom}"
-        list+="$group/$name\t$desc|$cmd|no\n"
+        # Include group as searchable tag for custom entries
+        list+="$group/$name [$group]\t$desc\t$cmd|no\n"
     done
 
     echo -e "$list"
@@ -205,27 +210,34 @@ _cheat_search() {
         --layout=reverse \
         --border \
         --with-nth=1 \
+        --nth=1 \
         --delimiter=$'\t' \
         --prompt="🔍 Search: " \
         --header=$'Search: '\''exact ^prefix suffix$ !exclude\nEnter: select | Ctrl-T: tldr popup | Esc: quit' \
         --preview='
             line={}
+            # Format: group/name [tags]\tdesc\tcmd|is_alias (3 fields)
             visible=$(echo "$line" | cut -f1)
-            hidden=$(echo "$line" | cut -f2)
+            desc=$(echo "$line" | cut -f2)
+            hidden=$(echo "$line" | cut -f3)
 
-            name=$(echo "$visible" | rev | cut -d"/" -f1 | rev)
-            group=$(echo "$visible" | cut -d"/" -f1)
-            desc=$(echo "$hidden" | cut -d"|" -f1)
-            cmd=$(echo "$hidden" | cut -d"|" -f2)
-            is_alias=$(echo "$hidden" | cut -d"|" -f3)
+            # Parse visible: "group/name [tags]" or "group/name"
+            group_name=$(echo "$visible" | cut -d"[" -f1 | sed "s/ $//")
+            tags=$(echo "$visible" | grep -o "\[.*\]" | tr -d "[]")
+            name=$(echo "$group_name" | rev | cut -d"/" -f1 | rev)
+            group=$(echo "$group_name" | cut -d"/" -f1)
+            cmd=$(echo "$hidden" | cut -d"|" -f1)
+            is_alias=$(echo "$hidden" | cut -d"|" -f2)
 
-            echo -e "\033[33mCOMMAND/GROUP:\033[0m $name"
+            echo -e "\033[33mCOMMAND/GROUP:\033[0m $name ($group)"
             echo ""
             echo -e "\033[33mABOUT:\033[0m"
             echo "$desc"
             echo ""
             echo -e "\033[33mCOMMAND:\033[0m"
             echo "$cmd"
+            echo ""
+            echo -e "\033[33mTAGS:\033[0m $tags"
             echo ""
             echo -e "\033[33mALIAS:\033[0m $is_alias"
             echo ""
@@ -247,11 +259,13 @@ _cheat_search() {
 
     [[ -z "$selected" ]] && return
 
-    # Extract info from selection (tab-separated format)
+    # Extract info from selection (3 tab-separated fields: visible\tdesc\tcmd|is_alias)
     local visible=$(echo "$selected" | cut -f1)
-    local hidden=$(echo "$selected" | cut -f2)
-    local name=$(echo "$visible" | rev | cut -d'/' -f1 | rev)
-    local cmd=$(echo "$hidden" | cut -d'|' -f2)
+    local hidden=$(echo "$selected" | cut -f3)
+    # Parse visible: "group/name [tags]" - remove tags part
+    local group_name=$(echo "$visible" | cut -d'[' -f1 | sed 's/ $//')
+    local name=$(echo "$group_name" | rev | cut -d'/' -f1 | rev)
+    local cmd=$(echo "$hidden" | cut -d'|' -f1)
 
     # Put command in buffer (only if not empty, extract first line)
     local first_cmd=$(echo "$cmd" | head -1 | sed 's/#.*//' | xargs)

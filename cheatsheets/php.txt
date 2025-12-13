@@ -34,7 +34,3 @@ php-extensions
 Show PHP manager commands help
 php-help
 ---
-# artclear
-Clear all Laravel caches (cache, config, route, view)
-artclear
----

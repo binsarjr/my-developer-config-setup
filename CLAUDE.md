@@ -22,6 +22,11 @@ A macOS development utilities repository with Docker Compose services, modular s
 │   ├── utils/                  # Utility functions
 │   ├── shell/                  # Help system + welcome banner
 │   └── maintenance/            # Cache cleanup utilities
+├── cheatsheets/                # Project cheatsheets (versioned)
+│   ├── docker.txt              # Docker/Lima commands
+│   ├── php.txt                 # PHP manager commands
+│   ├── rsync.txt               # Rsync utilities
+│   └── utils.txt               # Utility functions
 ├── docker-compose-setting/     # Docker services
 │   ├── dragonfly/              # Redis-compatible (port 6379)
 │   ├── minio/                  # S3-compatible (API: 9000, Console: 9001)
@@ -64,6 +69,28 @@ Tags (comma-separated) make aliases discoverable via `cheat` search.
 When adding new aliases, use `_reg` - they automatically appear everywhere.
 
 **DRY (Don't Repeat Yourself):** Avoid hardcoding the same data in multiple places. If you need alias/command info, read from `ALIAS_REGISTRY` instead of maintaining separate lists.
+
+## Cheatsheets
+
+The `cheat` command provides an interactive fzf-based search across all commands.
+
+**Locations:**
+- Project: `cheatsheets/` (versioned, shared)
+- Personal: `~/.config/cheatsheets/` (user overrides, not tracked)
+
+**File Format:**
+```
+# command-name
+Description of what the command does
+actual-command <args>
+---
+```
+
+Each entry has: name (after `#`), description (next line), command (following lines), separator (`---`).
+
+**Adding Commands:**
+- Aliases: Use `_reg` in module files (auto-discovered)
+- Functions: Add to `cheatsheets/*.txt` with the format above
 
 ## Docker Services
 
