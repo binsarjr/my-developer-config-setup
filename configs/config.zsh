@@ -40,18 +40,20 @@ _has_bin() {
 # Source Modules
 # =============================================================================
 # Order matters:
-# 1. alias-registry (defines _reg function)
-# 2. tools, aliases, utils (use _reg)
-# 3. help, welcome, cache-cleanup (UI/output)
+# 1. core (alias-registry defines _reg function)
+# 2. tools, git, php, utils (use _reg)
+# 3. shell (help, welcome)
+# 4. maintenance (cache-cleanup)
 for module in \
-    "$CONFIG_DIR/modules/alias-registry.zsh" \
-    "$CONFIG_DIR/modules/tools.zsh" \
-    "$CONFIG_DIR/modules/git-aliases.zsh" \
-    "$CONFIG_DIR/modules/php-aliases.zsh" \
-    "$CONFIG_DIR/modules/utils.zsh" \
-    "$CONFIG_DIR/modules/help.zsh" \
-    "$CONFIG_DIR/modules/welcome.zsh" \
-    "$CONFIG_DIR/modules/cache-cleanup.zsh"
+    "$CONFIG_DIR/core/alias-registry.zsh" \
+    "$CONFIG_DIR/tools/config.zsh" \
+    "$CONFIG_DIR/git/aliases.zsh" \
+    "$CONFIG_DIR/php/aliases.zsh" \
+    "$CONFIG_DIR/php/manager.zsh" \
+    "$CONFIG_DIR/utils/shortcuts.zsh" \
+    "$CONFIG_DIR/shell/help.zsh" \
+    "$CONFIG_DIR/shell/welcome.zsh" \
+    "$CONFIG_DIR/maintenance/cache-cleanup.zsh"
 do
     [[ -f "$module" ]] && source "$module"
 done
