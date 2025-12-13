@@ -227,9 +227,15 @@ _cheat_search() {
             echo -e "\033[33mALIAS:\033[0m $is_alias"
             echo -e "\033[33mBOOKMARK:\033[0m no"
             echo ""
-            echo -e "\033[33mTLDR:\033[0m"
-            echo "Please wait while the TLDR page is being searched for..."
-            tldr "$name" 2>/dev/null || echo "No tldr entry for $name"
+            echo -e "\033[33mHELP:\033[0m"
+            # Try tldr first, then --help for custom commands
+            if tldr "$name" 2>/dev/null; then
+                :  # tldr found, already printed
+            elif command -v "$name" &>/dev/null; then
+                $name --help 2>/dev/null || $name -h 2>/dev/null || echo "No help available"
+            else
+                echo "No help available for $name"
+            fi
         ' \
         --preview-window=right:50%:wrap \
         --bind="ctrl-t:execute(command -v tldr &>/dev/null && tldr {1} 2>/dev/null | less || echo 'tldr not installed')")
