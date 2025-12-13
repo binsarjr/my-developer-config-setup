@@ -47,6 +47,7 @@ _has_bin() {
 for module in \
     "$CONFIG_DIR/core/alias-registry.zsh" \
     "$CONFIG_DIR/tools/config.zsh" \
+    "$CONFIG_DIR/docker/aliases.zsh" \
     "$CONFIG_DIR/git/aliases.zsh" \
     "$CONFIG_DIR/php/aliases.zsh" \
     "$CONFIG_DIR/php/manager.zsh" \

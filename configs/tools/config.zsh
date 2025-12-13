@@ -128,3 +128,19 @@ if _has_bin fastfetch; then
     _reg ff       "fastfetch"           "Display system info with logo (fastfetch)" "system,info,fastfetch"
     _reg neofetch "fastfetch"           "Display system info with logo (fastfetch)" "system,info,fastfetch"
 fi
+
+# lazydocker - Docker TUI
+if _has_bin lazydocker; then
+    _reg ld "lazydocker"                "Docker TUI for containers, images & logs" "docker,lazydocker"
+fi
+
+# gron - Make JSON greppable
+if _has_bin gron; then
+    _reg gron   "gron"                  "Flatten JSON to path=value (greppable)" "json,gron"
+    _reg ungron "gron -u"               "Convert gron output back to JSON" "json,gron"
+fi
+
+# fx - Interactive JSON viewer
+if _has_bin fx; then
+    _reg fx "fx"                        "Interactive JSON viewer & processor" "json,fx"
+fi

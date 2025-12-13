@@ -49,10 +49,14 @@ _show_quick_info() {
     local uptime_str=$(echo "$uptime_raw" | sed -E 's/([0-9]+):([0-9]+)/\1h \2m/')
     sys_info="Up: $uptime_str"
 
-    # Docker containers (if docker available)
-    if command -v docker &>/dev/null && docker info &>/dev/null 2>&1; then
-        local containers=$(docker ps -q 2>/dev/null | wc -l | tr -d ' ')
-        sys_info="$sys_info  ·  Docker: $containers running"
+    # Docker status
+    if command -v docker &>/dev/null; then
+        if docker info &>/dev/null 2>&1; then
+            local containers=$(docker ps -q 2>/dev/null | wc -l | tr -d ' ')
+            sys_info="$sys_info  ·  Docker: $containers running"
+        else
+            sys_info="$sys_info  ·  Docker: stopped"
+        fi
     fi
 
     echo -e "  \033[1m🚀 System\033[0m"
