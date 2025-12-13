@@ -49,16 +49,11 @@ Configuration for modern CLI tools.
 | `top` | `btm` | System monitor |
 | `htop` | `btm` | System monitor |
 
-### tldr (Quick help)
+### curlie (Pretty curl)
 | Alias | Command | Description |
 |-------|---------|-------------|
-| `help` | `tldr` | Simplified man pages |
-
-### fastfetch
-| Alias | Command | Description |
-|-------|---------|-------------|
-| `ff` | `fastfetch` | System info |
-| `neofetch` | `fastfetch` | System info |
+| `curl` | `curlie` | HTTP client with pretty output |
+| `rawcurl` | `command curl` | Native curl (no formatting) |
 
 ## Auto-configuration
 
