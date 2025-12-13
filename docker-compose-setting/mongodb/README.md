@@ -1,12 +1,12 @@
 # MongoDB
 
-Database NoSQL document-oriented untuk development.
+NoSQL document-oriented database for development.
 
 ## Setup
 
 ```bash
 cp .env.example .env
-# Edit .env sesuai kebutuhan
+# Edit .env as needed
 docker compose up -d
 ```
 
@@ -17,19 +17,19 @@ docker compose up -d
 mongodb://admin:MyStr0ngP@ssw0rd123@localhost:27017/app?authSource=admin
 ```
 
-**Environment Variables untuk aplikasi:**
+**Environment Variables for application:**
 ```env
 MONGO_URI=mongodb://admin:MyStr0ngP@ssw0rd123@localhost:27017/app?authSource=admin
 ```
 
 ## Configuration
 
-| Variable | Default | Deskripsi |
+| Variable | Default | Description |
 |----------|---------|-----------|
-| `MONGO_ROOT_USER` | admin | Username root |
-| `MONGO_ROOT_PASSWORD` | - | Password root |
-| `MONGO_DATABASE` | app | Database default |
-| `MONGO_PORT` | 27017 | Port MongoDB |
+| `MONGO_ROOT_USER` | admin | Root username |
+| `MONGO_ROOT_PASSWORD` | - | Root password |
+| `MONGO_DATABASE` | app | Default database |
+| `MONGO_PORT` | 27017 | MongoDB port |
 
 ## Commands
 
@@ -40,9 +40,9 @@ docker compose up -d
 # Stop
 docker compose down
 
-# Lihat logs
+# View logs
 docker compose logs -f
 
-# Masuk ke mongo shell
+# Enter mongo shell
 docker exec -it mongodb mongosh -u admin -p
 ```

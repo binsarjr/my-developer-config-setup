@@ -1,12 +1,12 @@
 # PostgreSQL
 
-Database relasional untuk development.
+Relational database for development.
 
 ## Setup
 
 ```bash
 cp .env.example .env
-# Edit .env sesuai kebutuhan
+# Edit .env as needed
 docker compose up -d
 ```
 
@@ -17,19 +17,19 @@ docker compose up -d
 postgresql://postgres:MyStr0ngP@ssw0rd123@localhost:5432/app
 ```
 
-**Environment Variables untuk aplikasi:**
+**Environment Variables for application:**
 ```env
 DATABASE_URL=postgresql://postgres:MyStr0ngP@ssw0rd123@localhost:5432/app
 ```
 
 ## Configuration
 
-| Variable | Default | Deskripsi |
-|----------|---------|-----------|
+| Variable | Default | Description |
+|----------|---------|-------------|
 | `POSTGRES_USER` | postgres | Username |
 | `POSTGRES_PASSWORD` | - | Password |
-| `POSTGRES_DB` | app | Database default |
-| `POSTGRES_PORT` | 5432 | Port PostgreSQL |
+| `POSTGRES_DB` | app | Default database |
+| `POSTGRES_PORT` | 5432 | PostgreSQL port |
 
 ## Commands
 
@@ -40,9 +40,9 @@ docker compose up -d
 # Stop
 docker compose down
 
-# Lihat logs
+# View logs
 docker compose logs -f
 
-# Masuk ke psql
+# Enter psql
 docker exec -it postgresql psql -U postgres -d app
 ```

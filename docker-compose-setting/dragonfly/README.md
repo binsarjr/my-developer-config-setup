@@ -1,61 +1,61 @@
 # DragonflyDB
 
-## Apa itu DragonflyDB?
+## What is DragonflyDB?
 
-DragonflyDB adalah in-memory database yang kompatibel dengan Redis dan Memcached. Dikembangkan dengan arsitektur modern yang memanfaatkan multi-threading, sehingga memiliki performa lebih tinggi dibanding Redis tradisional.
+DragonflyDB is an in-memory database compatible with Redis and Memcached. Built with modern architecture utilizing multi-threading, it delivers higher performance than traditional Redis.
 
-## Kegunaan
+## Use Cases
 
-- **Caching** - Menyimpan data sementara untuk mempercepat akses (session, API response, query results)
-- **Rate Limiting** - Membatasi jumlah request per user/IP
-- **Queue/Pub-Sub** - Message broker sederhana untuk komunikasi antar service
+- **Caching** - Store temporary data for faster access (session, API response, query results)
+- **Rate Limiting** - Limit number of requests per user/IP
+- **Queue/Pub-Sub** - Simple message broker for inter-service communication
 - **Real-time Data** - Leaderboard, online status, live counters
 
-## Cara Menjalankan
+## Running the Service
 
 ```bash
 # Copy environment file
 cp .env.example .env
 
-# Edit konfigurasi sesuai kebutuhan
+# Edit configuration as needed
 nano .env
 
-# Jalankan service
+# Run service
 docker compose up -d
 
-# Cek status
+# Check status
 docker compose ps
 
-# Lihat logs
+# View logs
 docker compose logs -f dragonfly
 ```
 
-## Konfigurasi (.env)
+## Configuration (.env)
 
-| Variable | Default | Keterangan |
-|----------|---------|------------|
-| `DRAGONFLY_PORT` | 6379 | Port untuk koneksi Redis |
-| `DRAGONFLY_PASSWORD` | - | Password autentikasi (wajib diisi) |
-| `DRAGONFLY_MAXMEMORY` | 4gb | Batas maksimal penggunaan memory |
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `DRAGONFLY_PORT` | 6379 | Redis connection port |
+| `DRAGONFLY_PASSWORD` | - | Authentication password (required) |
+| `DRAGONFLY_MAXMEMORY` | 4gb | Maximum memory usage limit |
 
-## Koneksi
+## Connection
 
 ```
 Host: localhost
-Port: 6379 (atau sesuai DRAGONFLY_PORT)
-Password: sesuai DRAGONFLY_PASSWORD
+Port: 6379 (or as set in DRAGONFLY_PORT)
+Password: as set in DRAGONFLY_PASSWORD
 ```
 
-Contoh koneksi dengan redis-cli:
+Example connection with redis-cli:
 ```bash
 redis-cli -p 6379 -a <password>
 ```
 
-## Menghentikan Service
+## Stopping the Service
 
 ```bash
 docker compose down
 
-# Dengan menghapus volume data
+# With data volume removal
 docker compose down -v
 ```

@@ -1,57 +1,57 @@
 # MinIO
 
-## Apa itu MinIO?
+## What is MinIO?
 
-MinIO adalah object storage yang kompatibel dengan Amazon S3 API. Cocok untuk development lokal sebagai pengganti AWS S3, sehingga tidak perlu biaya cloud saat development.
+MinIO is an object storage compatible with Amazon S3 API. Perfect for local development as an AWS S3 replacement, eliminating cloud costs during development.
 
-## Kegunaan
+## Use Cases
 
-- **File Storage** - Menyimpan file upload (gambar, dokumen, video)
-- **Static Assets** - Hosting file statis (CSS, JS, images)
-- **Backup Storage** - Tempat penyimpanan backup database atau file
-- **Data Lake** - Penyimpanan data mentah untuk analytics
+- **File Storage** - Store file uploads (images, documents, videos)
+- **Static Assets** - Host static files (CSS, JS, images)
+- **Backup Storage** - Storage location for database or file backups
+- **Data Lake** - Raw data storage for analytics
 
-## Cara Menjalankan
+## Running the Service
 
 ```bash
 # Copy environment file
 cp .env.example .env
 
-# Edit konfigurasi sesuai kebutuhan
+# Edit configuration as needed
 nano .env
 
-# Jalankan service
+# Run service
 docker compose up -d
 
-# Cek status
+# Check status
 docker compose ps
 
-# Lihat logs
+# View logs
 docker compose logs -f minio
 ```
 
-## Konfigurasi (.env)
+## Configuration (.env)
 
-| Variable | Default | Keterangan |
-|----------|---------|------------|
-| `MINIO_ROOT_USER` | - | Username untuk login (wajib diisi) |
-| `MINIO_ROOT_PASSWORD` | - | Password untuk login (wajib diisi) |
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `MINIO_ROOT_USER` | - | Login username (required) |
+| `MINIO_ROOT_PASSWORD` | - | Login password (required) |
 | `MINIO_REGION` | id-cgk-1 | Region identifier |
-| `MINIO_BUCKET` | develop | Nama bucket yang dibuat otomatis |
+| `MINIO_BUCKET` | develop | Auto-created bucket name |
 
-## Akses
+## Access
 
-| Service | URL | Keterangan |
-|---------|-----|------------|
-| Console | http://localhost:9001 | Web UI untuk manajemen |
+| Service | URL | Description |
+|---------|-----|-------------|
+| Console | http://localhost:9001 | Web UI for management |
 | API | http://localhost:9000 | S3-compatible API endpoint |
 
-Login ke console menggunakan `MINIO_ROOT_USER` dan `MINIO_ROOT_PASSWORD`.
+Login to console using `MINIO_ROOT_USER` and `MINIO_ROOT_PASSWORD`.
 
-## Contoh Penggunaan dengan AWS SDK
+## Usage Example with AWS SDK
 
 ```javascript
-// Node.js dengan AWS SDK
+// Node.js with AWS SDK
 const { S3Client } = require('@aws-sdk/client-s3');
 
 const s3 = new S3Client({
@@ -65,11 +65,11 @@ const s3 = new S3Client({
 });
 ```
 
-## Menghentikan Service
+## Stopping the Service
 
 ```bash
 docker compose down
 
-# Dengan menghapus volume data
+# With data volume removal
 docker compose down -v
 ```

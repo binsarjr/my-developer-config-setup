@@ -1,40 +1,40 @@
 # Binary Files
 
-Folder untuk menyimpan binary CLI tools standalone.
+Folder for storing standalone CLI binary tools.
 
 ## Download Guide
 
-Jalankan `install-helper` untuk melihat panduan download sesuai arsitektur Mac.
+Run `install-helper` to view download guide matching your Mac architecture.
 
-## Tools yang Direkomendasikan
+## Recommended Tools
 
-| Tool | Deskripsi | GitHub |
-|------|-----------|--------|
+| Tool | Description | GitHub |
+|------|-------------|--------|
 | fzf | Fuzzy finder | [junegunn/fzf](https://github.com/junegunn/fzf/releases) |
-| rg | ripgrep - pencarian teks cepat | [BurntSushi/ripgrep](https://github.com/BurntSushi/ripgrep/releases) |
-| fd | Alternatif `find` yang cepat | [sharkdp/fd](https://github.com/sharkdp/fd/releases) |
-| bat | `cat` dengan syntax highlighting | [sharkdp/bat](https://github.com/sharkdp/bat/releases) |
-| lsd | `ls` modern dengan icons | [lsd-rs/lsd](https://github.com/lsd-rs/lsd/releases) |
-| lazygit | Terminal UI untuk git | [jesseduffield/lazygit](https://github.com/jesseduffield/lazygit/releases) |
+| rg | ripgrep - fast text search | [BurntSushi/ripgrep](https://github.com/BurntSushi/ripgrep/releases) |
+| fd | Fast `find` alternative | [sharkdp/fd](https://github.com/sharkdp/fd/releases) |
+| bat | `cat` with syntax highlighting | [sharkdp/bat](https://github.com/sharkdp/bat/releases) |
+| lsd | Modern `ls` with icons | [lsd-rs/lsd](https://github.com/lsd-rs/lsd/releases) |
+| lazygit | Terminal UI for git | [jesseduffield/lazygit](https://github.com/jesseduffield/lazygit/releases) |
 | delta | Git diff viewer | [dandavison/delta](https://github.com/dandavison/delta/releases) |
 | starship | Shell prompt | [starship/starship](https://github.com/starship/starship/releases) |
 | zoxide | Smart cd replacement | [ajeetdsouza/zoxide](https://github.com/ajeetdsouza/zoxide/releases) |
 
-## Cara Install Manual
+## Manual Installation
 
 ```bash
-# 1. Download dari GitHub releases
+# 1. Download from GitHub releases
 # 2. Extract
-unzip file.zip          # untuk .zip
-tar -xzf file.tar.gz    # untuk .tar.gz
+unzip file.zip          # for .zip
+tar -xzf file.tar.gz    # for .tar.gz
 
-# 3. Pindahkan binary ke folder ini
+# 3. Move binary to this folder
 mv <binary> ~/Developers/binary-files/
 
-# 4. Set permission executable
+# 4. Set executable permission
 chmod +x ~/Developers/binary-files/<binary>
 ```
 
-## Konfigurasi
+## Configuration
 
-Lihat [configs/](../configs/) untuk shell configuration.
+See [configs/](../configs/) for shell configuration.
