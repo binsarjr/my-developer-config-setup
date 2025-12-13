@@ -193,7 +193,7 @@ Examples:
   mvr ~/Downloads/*.iso /Volumes/USB/              # Wildcard
   mvr -y ~/old-files /Volumes/Archive/             # Skip confirmation
 
-Note: Empty source directories remain after move. Use 'rm -r' to remove them.
+Note: Empty source directories are automatically removed after move.
 EOF
         return 0
     fi
@@ -208,6 +208,10 @@ EOF
 
     [[ $# -lt 2 ]] && { echo "Usage: mvr <source>... <destination>"; return 1; }
 
+    # Save sources for cleanup (all args except last)
+    local args=("$@")
+    local sources=("${args[@]:0:${#args[@]}-1}")
+
     # Show confirmation unless skipped
     if [[ "$skip_confirm" == false ]]; then
         _rsync_show_confirmation "Move" "$@"
@@ -218,6 +222,15 @@ EOF
     fi
 
     rsync -ah --progress --remove-source-files "$@"
+
+    # Remove empty directories left behind by rsync
+    for src in "${sources[@]}"; do
+        if [[ -d "$src" ]]; then
+            find "$src" -type d -empty -delete 2>/dev/null
+            # Remove the source dir itself if now empty
+            [[ -d "$src" ]] && rmdir "$src" 2>/dev/null
+        fi
+    done
 }
 
 # =============================================================================
