@@ -162,23 +162,41 @@ fi
 # Pick random header
 _header="${_headers[$((RANDOM % ${#_headers[@]} + 1))]}"
 
-# Show 5 random tips (unique)
+# Configurable tips count (default 10)
+_tips_count=${WELCOME_TIPS_COUNT:-10}
+
+# Collect random tips into array
 _shown=()
-echo -e "\033[2m"
-echo "  $_header"
-for i in {1..5}; do
+_tips_to_show=()
+for i in {1..$_tips_count}; do
     while true; do
         _idx=$((RANDOM % ${#_config_tips[@]} + 1))
         _tip="${_config_tips[$_idx]}"
         if [[ ! " ${_shown[*]} " =~ " ${_tip} " ]]; then
             _shown+=("$_tip")
-            echo "    💡 $_tip"
+            _tips_to_show+=("$_tip")
             break
         fi
     done
+done
+
+# Display tips in 2 columns
+echo -e "\033[2m"
+echo "  $_header"
+_half=$(( (_tips_count + 1) / 2 ))
+for i in {1..$_half}; do
+    _left="${_tips_to_show[$i]}"
+    _right_idx=$((i + _half))
+    _right="${_tips_to_show[$_right_idx]}"
+
+    if [[ -n "$_right" ]]; then
+        printf "    💡 %-30s 💡 %s\n" "$_left" "$_right"
+    else
+        printf "    💡 %s\n" "$_left"
+    fi
 done
 echo ""
 echo -e "  ───"
 echo -e "  💡 Gunakan \033[0m\033[1maf\033[0m\033[2m untuk mencari semua alias"
 echo -e "\033[0m"
-unset _config_tips _headers _shown _tip _idx _hour _header
+unset _config_tips _headers _shown _tip _idx _hour _header _tips_count _tips_to_show _half _left _right _right_idx
