@@ -19,14 +19,15 @@ _reg gs "git status" "Show Git working tree status"
 
 | Command | Description |
 |---------|-------------|
-| `alias-finder` / `af` | Search aliases with fzf picker |
+| `cheat` | Search aliases & commands with fzf (cheatsheet) |
 | `alias-list` | Show all registered aliases |
 
 ## Usage
 
 ```zsh
-# Search aliases
-af
+# Search commands (cheatsheet)
+cheat
+cheat git     # filter by 'git'
 
 # List all aliases
 alias-list

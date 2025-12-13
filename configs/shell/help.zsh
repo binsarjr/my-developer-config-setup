@@ -201,6 +201,10 @@ config-doctor() {
     _check "gron" "Make JSON greppable"
     echo ""
 
+    echo -e "\033[1mHTTP Tools:\033[0m"
+    _check "curlie" "curl with pretty output"
+    echo ""
+
     echo -e "\033[1mOther:\033[0m"
     _check "starship" "Shell prompt"
     echo ""

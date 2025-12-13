@@ -43,7 +43,7 @@ source "$HOME/Developers/configs/config.zsh"
 - `config-help` - Show all available aliases by category
 - `config-doctor` - Check installation status of recommended tools
 - `tips` - Display random tips
-- `alias-finder` / `af` - fzf search through all aliases
+- `cheat` - fzf search through all commands (cheatsheet)
 - `cache-cleanup` - Interactive cache cleanup (brew, npm, composer, docker, etc.)
 - `project-cleanup` - Remove node_modules, vendor, __pycache__ from projects
 
@@ -51,13 +51,13 @@ source "$HOME/Developers/configs/config.zsh"
 ```zsh
 _reg "alias" "command" "description" "tags"
 ```
-Tags (comma-separated) make aliases discoverable via `alias-finder` search.
+Tags (comma-separated) make aliases discoverable via `cheat` search.
 
 ## Design Principles
 
 **SSOT (Single Source of Truth):** All alias data lives in `ALIAS_REGISTRY`. This feeds:
 - `tips` command
-- `alias-finder` / `af`
+- `cheat` (searchable cheatsheet)
 - Welcome message tips
 - `alias-list`
 
@@ -101,7 +101,7 @@ Located in `binary-files/`. Only `.gitkeep` and `README.md` are tracked; binarie
 2. Extract and move to `binary-files/`
 3. `chmod +x <binary>`
 
-**Recommended:** fzf, rg, fd, bat, lsd, lazygit, lazydocker, delta, starship, zoxide, dust, duf, btm, jq, fx, gron
+**Recommended:** fzf, rg, fd, bat, lsd, lazygit, lazydocker, delta, starship, zoxide, dust, duf, btm, jq, fx, gron, curlie
 
 Run `config-doctor` to check which tools are installed.
 

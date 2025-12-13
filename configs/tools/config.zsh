@@ -128,3 +128,9 @@ fi
 if _has_bin fx; then
     _reg fx "fx"                        "Interactive JSON viewer & processor" "json,fx"
 fi
+
+# curlie - curl with pretty output
+if _has_bin curlie; then
+    _reg curl    "curlie"               "Pretty HTTP client (curlie)" "http,curl,curlie"
+    _reg rawcurl "command curl"         "Native curl (no formatting)" "http,curl,raw"
+fi

@@ -48,25 +48,24 @@ alias-list() {
         fi
     done
     echo ""
-    echo -e "\033[2mTotal: ${#ALIAS_REGISTRY[@]} aliases | Use 'alias-finder' or 'af' to search\033[0m"
+    echo -e "\033[2mTotal: ${#ALIAS_REGISTRY[@]} aliases | Use 'cheat' to search\033[0m"
     echo ""
 }
 
-# Search aliases with fzf
-alias-finder() {
+# Search aliases with fzf (cheatsheet)
+cheat() {
     [[ "$1" == "-h" || "$1" == "--help" ]] && {
-        echo "Usage: alias-finder (or af)"
-        echo "  Search aliases interactively with fzf"
-        echo "  Search by alias name, description, or tags (e.g. 'laravel', 'git')"
+        echo "Usage: cheat [query]"
+        echo "  Search aliases & commands interactively with fzf"
+        echo "  Search by name, description, or tags (e.g. 'git', 'docker')"
         return 0
     }
     local fzf_cmd="fzf"
     [[ -x "$BINARY_DIR/fzf" ]] && fzf_cmd="$BINARY_DIR/fzf"
 
     if ! command -v fzf &>/dev/null && [[ ! -x "$BINARY_DIR/fzf" ]]; then
-        echo "fzf not found. Showing alias-list instead."
-        alias-list
-        return
+        echo "fzf not found. Run 'alias-list' to see all aliases."
+        return 1
     fi
 
     # Build list: "name | description | tags"
@@ -88,6 +87,7 @@ alias-finder() {
     # fzf selection with preview
     local selected
     selected=$(echo -e "$list" | $fzf_cmd \
+        --query="$*" \
         --exact \
         --height=50% \
         --reverse \
@@ -124,5 +124,3 @@ alias-finder() {
     echo ""
 }
 
-# Shortcut
-alias af="alias-finder"

@@ -34,6 +34,7 @@ case "$ARCH" in
         DUF_FILE="duf_VERSION_darwin_arm64.tar.gz"
         BTM_FILE="bottom_aarch64-apple-darwin.tar.gz"
         JQ_FILE="jq-macos-arm64"
+        CURLIE_FILE="curlie_VERSION_darwin_arm64.tar.gz"
         ;;
     x86_64)
         ARCH_LABEL="Intel (x86_64)"
@@ -53,6 +54,7 @@ case "$ARCH" in
         DUF_FILE="duf_VERSION_darwin_amd64.tar.gz"
         BTM_FILE="bottom_x86_64-apple-darwin.tar.gz"
         JQ_FILE="jq-macos-amd64"
+        CURLIE_FILE="curlie_VERSION_darwin_amd64.tar.gz"
         ;;
     *)
         echo "Unsupported architecture: $ARCH"
@@ -166,6 +168,12 @@ echo -e "${BOLD}gron${NC} - Make JSON greppable [$(is_installed gron)]"
 echo -e "  GitHub: ${CYAN}https://github.com/tomnomnom/gron/releases${NC}"
 echo -e "  File:   $GRON_FILE"
 echo -e "  Extract: ${DIM}tar -xzf <file> && mv gron $INSTALL_DIR/${NC}"
+echo ""
+
+echo -e "${BOLD}curlie${NC} - curl with pretty output [$(is_installed curlie)]"
+echo -e "  GitHub: ${CYAN}https://github.com/rs/curlie/releases${NC}"
+echo -e "  File:   $CURLIE_FILE"
+echo -e "  Extract: ${DIM}tar -xzf <file> && mv curlie $INSTALL_DIR/${NC}"
 echo ""
 
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
