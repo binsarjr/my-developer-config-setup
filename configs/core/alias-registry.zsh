@@ -60,7 +60,7 @@ alias-list() {
 typeset -gA CUSTOM_CHEATSHEETS
 
 # Project cheatsheets (versioned) + personal cheatsheets
-PROJECT_CHEATSHEET_DIR="$DEV_DIR/cheatsheets"
+PROJECT_CHEATSHEET_DIR="${CONFIG_DIR:h}/cheatsheets"
 PERSONAL_CHEATSHEET_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/cheatsheets"
 
 # Load cheatsheets from a directory
