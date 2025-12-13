@@ -127,9 +127,10 @@ _cheat_fzf() {
     fi
 }
 
-# Build combined list from aliases + custom
+# Build combined list from aliases + custom (cheatshh-style format)
+# Format: Group/name\tdesc|cmd|is_alias (tab separates visible from hidden data)
 _cheat_build_list() {
-    local list="" name entry cmd rest desc tags source
+    local list="" name entry cmd rest desc tags
 
     # Aliases
     for name in ${(ko)ALIAS_REGISTRY}; do
@@ -139,7 +140,13 @@ _cheat_build_list() {
         desc="${rest%%|*}"
         tags="${rest#*|}"
         [[ "$tags" == "$desc" ]] && tags=""
-        list+="$(printf "%-14s │ %-38s │ %-12s │ %s" "$name" "$desc" "${tags:-—}" "alias")\n"
+
+        # Use first tag as group, or "alias" if no tags
+        local group="${tags%%,*}"
+        [[ -z "$group" ]] && group="alias"
+
+        # Format: Group/name\tdesc|cmd|yes
+        list+="$group/$name\t$desc|$cmd|yes\n"
     done
 
     # Custom cheatsheets
@@ -151,7 +158,9 @@ _cheat_build_list() {
         desc="${rest%%|*}"
         tags="${rest#*|}"
         [[ "$tags" == "$desc" ]] && tags=""
-        list+="$(printf "%-14s │ %-38s │ %-12s │ %s" "$name" "$desc" "${tags:-—}" "custom")\n"
+
+        local group="${tags:-custom}"
+        list+="$group/$name\t$desc|$cmd|no\n"
     done
 
     echo -e "$list"
@@ -173,7 +182,7 @@ _cheat_man() {
     man "$cmd" 2>/dev/null || echo "No man page for '$cmd'"
 }
 
-# Main search function
+# Main search function (cheatshh-style UI)
 _cheat_search() {
     local fzf_cmd
     fzf_cmd=$(_cheat_fzf) || { echo "fzf not found. Run 'alias-list' to see all aliases."; return 1; }
@@ -188,56 +197,50 @@ _cheat_search() {
         done
     fi
 
-    # fzf with key bindings
+    # fzf with cheatshh-style layout
     local selected
     selected=$(echo -e "$list" | $fzf_cmd \
         --query="$query" \
-        --height=60% \
-        --reverse \
+        --height=80% \
+        --layout=reverse \
         --border \
+        --with-nth=1 \
+        --delimiter=$'\t' \
         --prompt="🔍 Search: " \
-        --header=$'Search: \'exact ^prefix suffix$ !exclude\nEnter: select | Ctrl-T: tldr | Ctrl-M: man | Ctrl-G: groups' \
+        --header=$'Enter: select | Ctrl-T: tldr popup | Esc: quit' \
         --preview='
-            name=$(echo {} | cut -d"│" -f1 | xargs)
-            source=$(echo {} | rev | cut -d"│" -f1 | rev | xargs)
+            line={}
+            visible=$(echo "$line" | cut -f1)
+            hidden=$(echo "$line" | cut -f2)
+
+            name=$(echo "$visible" | rev | cut -d"/" -f1 | rev)
+            group=$(echo "$visible" | cut -d"/" -f1)
+            desc=$(echo "$hidden" | cut -d"|" -f1)
+            cmd=$(echo "$hidden" | cut -d"|" -f2)
+            is_alias=$(echo "$hidden" | cut -d"|" -f3)
+
+            echo -e "\033[33mCOMMAND/GROUP:\033[0m $name"
             echo ""
-            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-            echo "  Name:   $name"
-            echo "  Source: $source"
+            echo -e "\033[33mABOUT:\033[0m"
+            echo "$desc"
+            echo ""
+            echo -e "\033[33mALIAS:\033[0m $is_alias"
+            echo -e "\033[33mBOOKMARK:\033[0m no"
+            echo ""
+            echo -e "\033[33mTLDR:\033[0m"
+            echo "Please wait while the TLDR page is being searched for..."
+            tldr "$name" 2>/dev/null || echo "No tldr entry for $name"
         ' \
-        --preview-window=down:6:wrap \
-        --bind="ctrl-t:execute(command -v tldr &>/dev/null && tldr {1} 2>/dev/null | less || echo 'tldr not installed')" \
-        --bind="ctrl-m:execute(man {1} 2>/dev/null || echo 'No man page')")
+        --preview-window=right:50%:wrap \
+        --bind="ctrl-t:execute(command -v tldr &>/dev/null && tldr {1} 2>/dev/null | less || echo 'tldr not installed')")
 
     [[ -z "$selected" ]] && return
 
-    # Extract info from selection
-    local name=$(echo "$selected" | cut -d'│' -f1 | xargs)
-    local source=$(echo "$selected" | rev | cut -d'│' -f1 | rev | xargs)
-
-    local entry cmd rest desc tags
-    if [[ "$source" == "alias" ]]; then
-        entry="${ALIAS_REGISTRY[$name]}"
-    else
-        entry="${CUSTOM_CHEATSHEETS[$name]}"
-    fi
-
-    cmd="${entry%%|*}"
-    rest="${entry#*|}"
-    desc="${rest%%|*}"
-    tags="${rest#*|}"
-    [[ "$tags" == "$desc" ]] && tags=""
-
-    # Show detailed info
-    echo ""
-    echo -e "\033[2m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
-    echo -e "  \033[1mName:\033[0m    \033[36m$name\033[0m"
-    echo -e "  \033[1mCommand:\033[0m $cmd"
-    echo -e "  \033[1mDesc:\033[0m    $desc"
-    [[ -n "$tags" ]] && echo -e "  \033[1mGroup:\033[0m   \033[33m$tags\033[0m"
-    echo -e "  \033[1mSource:\033[0m  $source"
-    echo -e "\033[2m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
-    echo ""
+    # Extract info from selection (tab-separated format)
+    local visible=$(echo "$selected" | cut -f1)
+    local hidden=$(echo "$selected" | cut -f2)
+    local name=$(echo "$visible" | rev | cut -d'/' -f1 | rev)
+    local cmd=$(echo "$hidden" | cut -d'|' -f2)
 
     # Put command in buffer
     print -z "$cmd "
