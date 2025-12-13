@@ -68,6 +68,25 @@ config-help() {
 # Tips Command
 # =============================================================================
 tips() {
+    # Parse arguments
+    local _count=5
+    case "$1" in
+        -h|--help)
+            echo "Usage: tips [count]"
+            echo ""
+            echo "  tips        Show 5 random tips (default)"
+            echo "  tips 10     Show 10 random tips"
+            echo "  tips -h     Show this help"
+            return 0
+            ;;
+        ''|*[!0-9]*)
+            # No argument or non-numeric - use default
+            ;;
+        *)
+            _count=$1
+            ;;
+    esac
+
     # Git aliases (always available)
     local _tips=(
         "gs → git status"
@@ -159,9 +178,12 @@ tips() {
     local _header="${_headers[$((RANDOM % ${#_headers[@]} + 1))]}"
     local _shown=()
 
+    # Cap count to available tips
+    (( _count > ${#_tips[@]} )) && _count=${#_tips[@]}
+
     echo -e "\033[2m"
     echo "  $_header"
-    for i in {1..5}; do
+    for i in $(seq 1 $_count); do
         while true; do
             local _idx=$((RANDOM % ${#_tips[@]} + 1))
             local _tip="${_tips[$_idx]}"
