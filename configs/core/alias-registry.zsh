@@ -207,7 +207,7 @@ _cheat_search() {
         --with-nth=1 \
         --delimiter=$'\t' \
         --prompt="🔍 Search: " \
-        --header=$'Enter: select | Ctrl-T: tldr popup | Esc: quit' \
+        --header=$'Search: '\''exact ^prefix suffix$ !exclude\nEnter: select | Ctrl-T: tldr popup | Esc: quit' \
         --preview='
             line={}
             visible=$(echo "$line" | cut -f1)
