@@ -66,8 +66,10 @@ docker-install() {
         echo "This will:"
         echo "  1. Check/install lima, docker, docker-compose via Homebrew"
         echo "  2. Configure docker-compose plugin path"
-        echo "  3. Create Lima docker VM if not exists"
+        echo "  3. Create Lima docker VM with optimized config (writable mounts)"
         echo "  4. Start the VM"
+        echo ""
+        echo "The VM is pre-configured for Laravel Sail with full write access."
         return 0
     }
 
@@ -116,10 +118,10 @@ docker-install() {
         echo "[ok] Docker plugin path already configured"
     fi
 
-    # Create Lima VM if not exists
+    # Create Lima VM if not exists (using optimized template)
     if ! limactl list -q 2>/dev/null | grep -q "^docker$"; then
-        echo "Creating Lima docker VM..."
-        limactl create --name=docker --tty=false template:docker
+        echo "Creating Lima docker VM with optimized config..."
+        limactl create --name=docker --tty=false "$CONFIG_DIR/docker/lima-docker.yaml"
     else
         echo "[ok] Lima docker VM exists"
     fi
