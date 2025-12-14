@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+# Cheat Preview Helper
+# Called by fzf --preview to display entry details
+# Input: tab-separated line "visible\tdesc\thidden"
+
+line="$1"
+
+# Parse 3 tab-separated fields: visible, desc, hidden
+visible=$(echo "$line" | cut -f1)
+desc=$(echo "$line" | cut -f2)
+hidden=$(echo "$line" | cut -f3)
+
+# Parse visible: "group/name [tags]" or "group/name"
+group_name=$(echo "$visible" | cut -d'[' -f1 | sed 's/ $//')
+tags=$(echo "$visible" | grep -o '\[.*\]' | tr -d '[]')
+name=$(echo "$group_name" | rev | cut -d'/' -f1 | rev)
+group=$(echo "$group_name" | cut -d'/' -f1)
+cmd=$(echo "$hidden" | cut -d'|' -f1)
+is_alias=$(echo "$hidden" | cut -d'|' -f2)
+
+# Section 1: Command/Group header
+echo -e "\033[33mCOMMAND/GROUP:\033[0m $name ($group)"
+echo ""
+
+# Section 2: About (description)
+echo -e "\033[33mABOUT:\033[0m"
+echo "$desc"
+echo ""
+
+# Section 3: Command
+echo -e "\033[33mCOMMAND:\033[0m"
+echo "$cmd"
+echo ""
+
+# Section 4: Tags
+echo -e "\033[33mTAGS:\033[0m $tags"
+echo ""
+
+# Section 5: Is alias
+echo -e "\033[33mALIAS:\033[0m $is_alias"
+echo ""
+
+# Section 6: Help (tldr lookup)
+echo -e "\033[33mHELP:\033[0m"
+base_cmd=$(echo "$cmd" | awk '{print $1}')
+if [[ "$base_cmd" == "./"* ]]; then
+    echo "Local script - see command above"
+elif command -v tldr &>/dev/null; then
+    if tldr "$base_cmd" 2>/dev/null; then
+        :  # tldr found for base command
+    elif tldr "$name" 2>/dev/null; then
+        :  # tldr found for name
+    else
+        echo "No tldr entry - see command above"
+    fi
+else
+    echo "tldr not installed - see command above"
+fi

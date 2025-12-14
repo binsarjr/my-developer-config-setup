@@ -20,6 +20,29 @@ BINARY_DIR="${BINARY_DIR:-${CONFIG_DIR:h}/binary-files}"
 # Add to PATH
 export PATH="$PATH:$BINARY_DIR:$CONFIG_DIR"
 
+# =============================================================================
+# Version Check
+# =============================================================================
+# Require zsh 5.0+ for associative arrays and advanced parameter expansion
+_config_check_zsh_version() {
+    local required_major=5
+    local current_version="${ZSH_VERSION:-0.0}"
+
+    # Parse major version: "5.8.1" -> 5
+    local major="${current_version%%.*}"
+    major=${major//[^0-9]/}
+    [[ -z "$major" ]] && major=0
+
+    if (( major < required_major )); then
+        echo -e "\033[33m[configs]\033[0m Warning: zsh $ZSH_VERSION detected, requires $required_major.0+"
+        echo -e "  Some features may not work correctly (associative arrays, etc.)"
+        echo -e "  Upgrade: brew install zsh && chsh -s \$(which zsh)"
+        echo ""
+    fi
+}
+_config_check_zsh_version
+unset -f _config_check_zsh_version
+
 # Tracking for external tools
 typeset -a _external_tools=()
 

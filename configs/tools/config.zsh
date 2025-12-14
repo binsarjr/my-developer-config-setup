@@ -28,8 +28,8 @@ fi
 if _has_bin delta; then
     _reg delta "delta"                  "Git diff viewer with syntax highlighting" "git,diff,delta"
 
-    # Configure git to use delta (only if not already configured)
-    if [[ "$(git config --global core.pager 2>/dev/null)" != "delta" ]]; then
+    # Apply delta git configuration
+    _delta_apply_git_config() {
         git config --global core.pager delta
         git config --global interactive.diffFilter "delta --color-only"
         git config --global delta.navigate true
@@ -37,7 +37,86 @@ if _has_bin delta; then
         git config --global delta.side-by-side false
         git config --global merge.conflictStyle diff3
         git config --global diff.colorMoved default
-    fi
+    }
+
+    # Configure git to use delta (with user confirmation)
+    _delta_configure_git() {
+        local state_dir="${XDG_STATE_HOME:-$HOME/.local/state}/shell-config"
+        local state_file="$state_dir/delta-configured"
+
+        # Already configured in git?
+        [[ "$(git config --global core.pager 2>/dev/null)" == "delta" ]] && return 0
+
+        # Check saved choice
+        if [[ -f "$state_file" ]]; then
+            local choice=$(cat "$state_file" 2>/dev/null)
+            [[ "$choice" == "no" ]] && return 0
+            [[ "$choice" == "yes" ]] && { _delta_apply_git_config; return 0; }
+        fi
+
+        # Prompt user (one-time)
+        echo -e "\033[36m[delta]\033[0m Delta detected. Configure git to use it for diffs?"
+        echo -e "\033[2m  Sets: core.pager, interactive.diffFilter, delta.navigate,"
+        echo -e "  delta.line-numbers, delta.side-by-side, merge.conflictStyle, diff.colorMoved\033[0m"
+        echo -n "Configure git for delta? [Y/n]: "
+        read -r response
+
+        # Save choice
+        mkdir -p "$state_dir"
+        if [[ -z "$response" || "$response" =~ ^[Yy]$ ]]; then
+            echo "yes" > "$state_file"
+            _delta_apply_git_config
+            echo -e "\033[32m[delta]\033[0m Git configured to use delta!"
+        else
+            echo "no" > "$state_file"
+            echo -e "\033[2m[delta]\033[0m Skipped. Run 'delta-setup' to configure later.\033[0m"
+        fi
+    }
+
+    # Manual setup command (if user declined initially)
+    delta-setup() {
+        if [[ "$1" == "-h" || "$1" == "--help" ]]; then
+            echo "Usage: delta-setup"
+            echo "  Configure git to use delta for diffs"
+            echo ""
+            echo "This will set:"
+            echo "  core.pager = delta"
+            echo "  interactive.diffFilter = delta --color-only"
+            echo "  delta.navigate = true"
+            echo "  delta.line-numbers = true"
+            echo "  delta.side-by-side = false"
+            echo "  merge.conflictStyle = diff3"
+            echo "  diff.colorMoved = default"
+            return 0
+        fi
+
+        local state_dir="${XDG_STATE_HOME:-$HOME/.local/state}/shell-config"
+        local state_file="$state_dir/delta-configured"
+
+        _delta_apply_git_config
+        mkdir -p "$state_dir"
+        echo "yes" > "$state_file"
+        echo -e "\033[32m[delta]\033[0m Git configured to use delta!"
+    }
+    _reg delta-setup "delta-setup" "Configure git to use delta for diffs" "git,delta,setup"
+
+    # Reset delta choice (if user changes mind)
+    delta-reset() {
+        if [[ "$1" == "-h" || "$1" == "--help" ]]; then
+            echo "Usage: delta-reset"
+            echo "  Reset delta configuration choice"
+            echo "  You will be prompted again on next shell start"
+            return 0
+        fi
+
+        local state_file="${XDG_STATE_HOME:-$HOME/.local/state}/shell-config/delta-configured"
+        rm -f "$state_file" 2>/dev/null
+        echo -e "\033[2m[delta]\033[0m Choice reset. Restart shell to be prompted again.\033[0m"
+    }
+    _reg delta-reset "delta-reset" "Reset delta configuration choice" "git,delta,reset"
+
+    _delta_configure_git
+    unset -f _delta_configure_git _delta_apply_git_config
 fi
 
 # fd - Fast file finder

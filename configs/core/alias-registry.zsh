@@ -59,9 +59,64 @@ alias-list() {
 # Custom cheatsheets storage (separate from ALIAS_REGISTRY)
 typeset -gA CUSTOM_CHEATSHEETS
 
+# Track seen names for duplicate detection
+typeset -gA _CHEAT_SEEN_NAMES
+
 # Project cheatsheets (versioned) + personal cheatsheets
 PROJECT_CHEATSHEET_DIR="${CONFIG_DIR:h}/cheatsheets"
 PERSONAL_CHEATSHEET_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/cheatsheets"
+
+# Validate cheatsheet entry and warn if malformed (non-blocking)
+_cheat_validate_entry() {
+    local name="$1" desc="$2" cmd="$3" file="$4"
+    [[ -z "$name" ]] && return 1  # Silent skip for empty names
+
+    local warnings=()
+
+    # Check: name format (alphanumeric, dash, underscore only)
+    if [[ ! "$name" =~ ^[a-zA-Z0-9_-]+$ ]]; then
+        warnings+=("invalid characters in name '$name'")
+    fi
+
+    # Check: missing description
+    if [[ -z "$desc" || "$desc" =~ ^[[:space:]]*$ ]]; then
+        warnings+=("missing description for '$name'")
+    fi
+
+    # Check: empty command
+    if [[ -z "$cmd" || "$cmd" =~ ^[[:space:]]*$ ]]; then
+        warnings+=("empty command for '$name'")
+    fi
+
+    # Print warnings to stderr (non-blocking)
+    if [[ ${#warnings[@]} -gt 0 ]]; then
+        local file_short="${file/#$HOME/~}"
+        for warn in "${warnings[@]}"; do
+            echo -e "\033[33m[cheat]\033[0m Warning: $warn in $file_short" >&2
+        done
+    fi
+
+    return 0  # Always succeed - warnings don't block loading
+}
+
+# Store cheatsheet entry with validation and duplicate detection
+_cheat_store_entry() {
+    local name="$1" desc="$2" cmd="$3" group="$4" file="$5"
+    [[ -z "$name" ]] && return
+
+    # Validate entry
+    _cheat_validate_entry "$name" "$desc" "$cmd" "$file"
+
+    # Duplicate detection
+    if [[ -n "${_CHEAT_SEEN_NAMES[$name]:-}" ]]; then
+        local prev_file="${_CHEAT_SEEN_NAMES[$name]}"
+        echo -e "\033[33m[cheat]\033[0m Warning: duplicate '$name' (first: ${prev_file/#$HOME/~}, now: ${file/#$HOME/~})" >&2
+    fi
+    _CHEAT_SEEN_NAMES[$name]="$file"
+
+    # Store entry
+    CUSTOM_CHEATSHEETS[$name]="$cmd|$desc|$group"
+}
 
 # Load cheatsheets from a directory
 _cheat_load_dir() {
@@ -78,7 +133,7 @@ _cheat_load_dir() {
             if [[ "$line" =~ ^#\ (.+)$ ]]; then
                 # Save previous entry
                 if [[ -n "$current_name" ]]; then
-                    CUSTOM_CHEATSHEETS[$current_name]="$current_cmd|$current_desc|$group"
+                    _cheat_store_entry "$current_name" "$current_desc" "$current_cmd" "$group" "$file"
                 fi
                 current_name="${match[1]}"
                 current_desc=""
@@ -87,7 +142,7 @@ _cheat_load_dir() {
             elif [[ "$line" == "---" ]]; then
                 # Entry separator - save current
                 if [[ -n "$current_name" ]]; then
-                    CUSTOM_CHEATSHEETS[$current_name]="$current_cmd|$current_desc|$group"
+                    _cheat_store_entry "$current_name" "$current_desc" "$current_cmd" "$group" "$file"
                 fi
                 current_name=""
                 in_entry=false
@@ -102,7 +157,7 @@ _cheat_load_dir() {
         done < "$file"
         # Save last entry
         if [[ -n "$current_name" ]]; then
-            CUSTOM_CHEATSHEETS[$current_name]="$current_cmd|$current_desc|$group"
+            _cheat_store_entry "$current_name" "$current_desc" "$current_cmd" "$group" "$file"
         fi
     done
 }
@@ -110,6 +165,7 @@ _cheat_load_dir() {
 # Load custom cheatsheets from both directories
 _cheat_load_custom() {
     CUSTOM_CHEATSHEETS=()
+    _CHEAT_SEEN_NAMES=()  # Reset duplicate tracking
     # Load project cheatsheets first (versioned)
     _cheat_load_dir "$PROJECT_CHEATSHEET_DIR"
     # Then load personal cheatsheets (can override/add)
@@ -214,46 +270,7 @@ _cheat_search() {
         --delimiter=$'\t' \
         --prompt="🔍 Search: " \
         --header=$'Search: '\''exact ^prefix suffix$ !exclude\nEnter: select | Ctrl-T: tldr popup | Esc: quit' \
-        --preview='
-            line={}
-            # Format: group/name [tags]\tdesc\tcmd|is_alias (3 fields)
-            visible=$(echo "$line" | cut -f1)
-            desc=$(echo "$line" | cut -f2)
-            hidden=$(echo "$line" | cut -f3)
-
-            # Parse visible: "group/name [tags]" or "group/name"
-            group_name=$(echo "$visible" | cut -d"[" -f1 | sed "s/ $//")
-            tags=$(echo "$visible" | grep -o "\[.*\]" | tr -d "[]")
-            name=$(echo "$group_name" | rev | cut -d"/" -f1 | rev)
-            group=$(echo "$group_name" | cut -d"/" -f1)
-            cmd=$(echo "$hidden" | cut -d"|" -f1)
-            is_alias=$(echo "$hidden" | cut -d"|" -f2)
-
-            echo -e "\033[33mCOMMAND/GROUP:\033[0m $name ($group)"
-            echo ""
-            echo -e "\033[33mABOUT:\033[0m"
-            echo "$desc"
-            echo ""
-            echo -e "\033[33mCOMMAND:\033[0m"
-            echo "$cmd"
-            echo ""
-            echo -e "\033[33mTAGS:\033[0m $tags"
-            echo ""
-            echo -e "\033[33mALIAS:\033[0m $is_alias"
-            echo ""
-            echo -e "\033[33mHELP:\033[0m"
-            # Extract base command for tldr lookup
-            base_cmd=$(echo "$cmd" | awk "{print \$1}")
-            if [[ "$base_cmd" == "./"* ]]; then
-                echo "Local script - see command above"
-            elif tldr "$base_cmd" 2>/dev/null; then
-                :  # tldr found for base command
-            elif tldr "$name" 2>/dev/null; then
-                :  # tldr found for name
-            else
-                echo "No tldr entry - see command above"
-            fi
-        ' \
+        --preview="$CONFIG_DIR/core/_cheat_preview_helper {}" \
         --preview-window=right:50%:wrap \
         --bind="ctrl-t:execute(command -v tldr &>/dev/null && tldr {1} 2>/dev/null | less || echo 'tldr not installed')")
 
