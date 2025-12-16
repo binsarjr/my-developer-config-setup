@@ -228,3 +228,8 @@ if _has_bin curlie; then
     _reg curl    "curlie"               "Pretty HTTP client (curlie)" "http,curl,curlie"
     _reg rawcurl "command curl"         "Native curl (no formatting)" "http,curl,raw"
 fi
+
+# Claude Code - AI coding assistant
+if _has_bin claude; then
+    _reg cc "claude"                    "Claude Code AI assistant" "ai,claude,code"
+fi
