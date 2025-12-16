@@ -139,3 +139,67 @@ Each Docker service has `.env.example`. Copy to `.env` before running. All `.env
 ## Language
 
 Always use **English** for all documentation, comments, commit messages, and code in this repository.
+
+## Claude Code Status Line
+
+**File:** `statusline-command.sh`
+
+A comprehensive status line script for Claude Code that displays real-time session information.
+
+### Setup (Portable)
+
+Uses a **symlink approach** so the repo can be placed anywhere:
+
+1. **Run `/setup-statusline`** - Creates symlink and configures settings
+2. **Symlink location:** `~/.config/claude-code/statusline-command.sh` → repo's `statusline-command.sh`
+3. **If repo is moved:** Re-run `/setup-statusline` to update the symlink
+
+### Components
+
+| Component | Description | Colors |
+|-----------|-------------|--------|
+| Model | Claude model name | Magenta=Opus, Blue=Sonnet, Green=Haiku |
+| Think Mode | THINK/no-think | Cyan/Dim |
+| Output Style | Current style (if not default) | Cyan |
+| Directory | Git-aware path | Bright Cyan |
+| Git Branch | Branch + status indicators | Magenta + Yellow/Red/Green |
+| Lines Changed | +added/-removed | Green/Red |
+| Tokens | in:XXK out:XXK | Blue/Green |
+| Cost | $X.XXXX | Green/<$0.1, Yellow/$0.1-1, Red/>$1 |
+| Duration | Session time | Cyan |
+| Context % | Usage percentage | Green/Yellow/Red by level |
+| Version | Claude Code version | Dim |
+| Session ID | First 8 chars | Dim |
+
+### Git Status Indicators
+- `*` = Uncommitted changes (yellow)
+- `?` = Untracked files (red)
+- `+` = Staged changes (green)
+- `↑N` = Commits ahead (green)
+- `↓N` = Commits behind (red)
+
+### Custom Command
+
+**`/setup-statusline`** - Creates symlink and configures Claude Code to use the status line.
+
+### Manual Configuration
+
+1. Create symlink:
+```bash
+mkdir -p ~/.config/claude-code
+ln -sf /path/to/repo/statusline-command.sh ~/.config/claude-code/statusline-command.sh
+```
+
+2. Add to `~/.claude/settings.json`:
+```json
+{
+  "statusLine": {
+    "type": "command",
+    "command": "/bin/bash -c 'bash ~/.config/claude-code/statusline-command.sh'"
+  }
+}
+```
+
+### Customizing
+
+Edit `statusline-command.sh` in the repo to customize colors, format, or information displayed. Restart Claude Code after changes.
