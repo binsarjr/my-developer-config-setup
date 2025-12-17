@@ -16,7 +16,7 @@ Create a git commit for staged or all changes in the current repository.
    - Use conventional commits format: `feat:`, `fix:`, `docs:`, `refactor:`, `chore:`, etc.
    - First line: concise summary (50 chars or less ideal)
    - Blank line, then bullet points explaining key changes
-   - End with the Claude Code signature
+   - No signature or co-author attribution (private project)
 
 6. **Commit format**:
 ```bash
@@ -25,10 +25,6 @@ git commit -m "$(cat <<'EOF'
 
 - <bullet point 1>
 - <bullet point 2>
-
-🤖 Generated with [Claude Code](https://claude.com/claude-code)
-
-Co-Authored-By: Claude <model> <noreply@anthropic.com>
 EOF
 )"
 ```
@@ -51,4 +47,5 @@ EOF
 
 - Do NOT commit `.env` files or secrets
 - Do NOT use `--force` or destructive commands
+- Do NOT add Claude Code signature or Co-Authored-By (private project)
 - Ask user if unsure what to include in the commit
