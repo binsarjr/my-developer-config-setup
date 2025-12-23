@@ -232,4 +232,46 @@ fi
 # Claude Code - AI coding assistant
 if _has_bin claude; then
     _reg cc "claude"                    "Claude Code AI assistant" "ai,claude,code"
+
+    # ai - Claude AI assistant with prompt wrapper
+    ai() {
+        [[ "$1" == "-h" || "$1" == "--help" ]] && {
+            echo "Usage: ai <prompt>"
+            echo ""
+            echo "Examples:"
+            echo "  ai install nodejs"
+            echo "  ai refactor this function"
+            echo "  ai explain docker volumes"
+            echo ""
+            echo "Sends your prompt to Claude with Bash tools enabled."
+            echo "Use 'cc' for interactive Claude Code sessions."
+            return 0
+        }
+
+        [[ $# -eq 0 ]] && {
+            ai --help
+            return 1
+        }
+
+        local system_prompt="You are a helpful development assistant. Provide concise, practical advice for coding tasks."
+        local user_prompt="$*"
+
+        claude --settings "$HOME/Developers/.claude/settings.json" \
+               -p "${system_prompt} User request: ${user_prompt}" \
+               --allowedTools "Bash" \
+               --model sonnet
+    }
+
+    _reg ai "ai" "Claude AI assistant for dev tasks" "ai,claude,code,assistant"
+fi
+
+# MacVim - GUI Vim for macOS
+if _has_bin mvim; then
+    _reg gvim "mvim"                    "Open MacVim GUI editor" "editor,vim,macvim"
+
+    # gvim-doctor - Check MacVim dependencies (relative to CONFIG_DIR)
+    GVIM_DOCTOR="${CONFIG_DIR}/../editors/macvim/gvim-doctor"
+    if [[ -x "$GVIM_DOCTOR" ]]; then
+        _reg gvim-doctor "$GVIM_DOCTOR" "Check MacVim dependencies & config" "editor,vim,macvim,doctor"
+    fi
 fi
