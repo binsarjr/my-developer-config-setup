@@ -235,6 +235,9 @@ if _has_bin claude; then
 
     # ai - Claude AI assistant with prompt wrapper
     ai() {
+        # Disable glob expansion for arguments
+        setopt localoptions noglob
+
         [[ "$1" == "-h" || "$1" == "--help" ]] && {
             echo "Usage: ai <prompt>"
             echo ""
@@ -242,6 +245,7 @@ if _has_bin claude; then
             echo "  ai install nodejs"
             echo "  ai refactor this function"
             echo "  ai explain docker volumes"
+            echo "  ai ada jadwal apa aku hari ini?"
             echo ""
             echo "Sends your prompt to Claude with Bash tools enabled."
             echo "Use 'cc' for interactive Claude Code sessions."
