@@ -19,7 +19,7 @@ Configuration for modern CLI tools.
 ### bat (Modern cat)
 | Alias | Command | Description |
 |-------|---------|-------------|
-| `cat` | `bat -p` | View with syntax highlight |
+| `cat` | `bat -pp` | View with syntax highlight |
 | `catp` | `bat` | View with pager |
 
 ### lazygit
@@ -30,7 +30,6 @@ Configuration for modern CLI tools.
 ### zoxide (Smart cd)
 | Alias | Command | Description |
 |-------|---------|-------------|
-| `cd` | `z` | Smart directory jump |
 | `cdi` | `zi` | Interactive picker (fzf) |
 
 ### dust (Modern du)

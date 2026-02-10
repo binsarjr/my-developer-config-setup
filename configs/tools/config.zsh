@@ -13,7 +13,7 @@ fi
 
 # bat - Cat with syntax highlighting
 if _has_bin bat; then
-    _reg cat  "bat -p"                  "View file with syntax highlighting (bat)" "file,view,bat"
+    _reg cat  "bat -pp"                 "View file with syntax highlighting (bat)" "file,view,bat"
     _reg catp "bat"                     "View file with pager & line numbers (bat)" "file,view,bat"
     export BAT_THEME="TwoDark"
     export MANPAGER="sh -c 'col -bx | bat -l man -p'"
@@ -176,7 +176,6 @@ fi
 # zoxide - Smart cd replacement
 if _has_bin zoxide; then
     eval "$(zoxide init zsh)"
-    _reg cd  "z"                        "Smart directory jump based on history (zoxide)" "nav,cd,zoxide"
     _reg cdi "zi"                       "Interactive directory picker with fzf (zoxide)" "nav,cd,zoxide,fzf"
 fi
 
