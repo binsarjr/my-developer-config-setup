@@ -16,7 +16,6 @@ _reg bx  "bunx"           "Execute package from npm registry (like npx)" "bun,js
 
 # Runtime
 _reg br  "bun run"        "Run script from package.json or execute file" "bun,js,node,run"
-_reg bd  "bun run dev"    "Run dev script (development server)" "bun,js,node,dev"
 _reg bb  "bun run build"  "Run build script (production build)" "bun,js,node,build"
 _reg bs  "bun run start"  "Run start script (production server)" "bun,js,node,start"
 
